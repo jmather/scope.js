@@ -4,22 +4,21 @@ define(function (require) {
 
     /**
      *
-     * @param {Object.<string, *>} data
+     * @param {Object.<string, *>} types
      * @constructor
      */
-    function DataManager(data) {
-        this.data = data || {};
+    function TypeManager(types) {
+        this.types = types || {};
     }
 
     /**
      *
      * @param {string} name
-     * @param {*} fallback Returns if _name_ is not set.
      * @returns {*}
      */
-    DataManager.prototype.get = function(name, fallback) {
-        if (this.data[name] === undefined) {
-            return fallback;
+    TypeManager.prototype.getBuilder = function(name) {
+        if (this.types[name] === undefined) {
+            throw new Error("No type: " + name);
         }
 
         return this.data[name];
@@ -31,7 +30,7 @@ define(function (require) {
      * @param {*} value
      * @returns {*}
      */
-    DataManager.prototype.set = function(name, value) {
+    TypeManager.prototype.add = function(name, value) {
         var oldValue = this.data[name];
 
         this.data[name] = value;
@@ -39,5 +38,5 @@ define(function (require) {
         return (oldValue === undefined) ? null : oldValue;
     };
 
-    return DataManager;
+    return TypeManager;
 });
