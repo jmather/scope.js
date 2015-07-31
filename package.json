@@ -1,0 +1,19 @@
+{
+  "name": "scope.js",
+  "version": "1.0.0",
+  "description": "A tool for handling data transformations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jacob Mather",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmather/scope.js.git"
+  },
+  "dependencies": {
+    "amdefine": "^1.0.0",
+    "json-data-transformer": "^1.0.0"
+  }
+}
