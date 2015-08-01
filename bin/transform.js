@@ -16,9 +16,13 @@ cli.main(function(args, options) {
     var basedir = __dirname + '/..';
     var pluginsDir = basedir + '/plugins/';
 
-    var transformerModules = getTrasformerModules([pluginsDir]);
+    var transformerModules = getTrasformerModules([pluginsDir, process.cwd()]);
 
-    var transformer = new Transformer(transformerModules);
+    var transformers = _.map(transformerModules, function(TransformerClass) {
+        return new TransformerClass({});
+    });
+
+    var transformer = new Transformer(transformers);
 
     if (options.configPath === null) {
         console.error("No config path set, bailing...");
@@ -30,13 +34,15 @@ cli.main(function(args, options) {
         process.exit(1);
     }
 
-    var data = transformer.build([options.configPath]);
+    var data = Transformer.loadData([options.configPath]);
 
-    var output = JSON.stringify(data);
+    var compiledData = transformer.transform(data);
+
+    var output = JSON.stringify(compiledData);
 
     if (options.pretty) {
         var pd = require('pretty-data').pd;
-        output = pd.json(data);
+        output = pd.json(compiledData);
     }
 
     if (options.outputPath) {

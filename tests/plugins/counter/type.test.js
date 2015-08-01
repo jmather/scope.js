@@ -30,7 +30,7 @@ describe('CounterType', function() {
 
         it('throws an exception on invalid increment', function() {
             (function() {
-                counter.increment(11);
+                counter.increment(400);
             }).should.throw();
         });
 

@@ -1,6 +1,6 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(function (require) {
+define(['immutable'], function (Immutable) {
 
     /**
      *
@@ -8,21 +8,21 @@ define(function (require) {
      * @constructor
      */
     function DataManager(data) {
-        this.data = data || {};
+        this.data = new Immutable.Map(data || {});
     }
 
     /**
      *
      * @param {string} name
-     * @param {*} fallback Returns if _name_ is not set.
+     * @param {*} [fallback] Returns if _name_ is not set.
      * @returns {*}
      */
     DataManager.prototype.get = function(name, fallback) {
-        if (this.data[name] === undefined) {
-            return fallback;
+        if (this.data.has(name) === false) {
+            return (fallback !== undefined) ? fallback : null;
         }
 
-        return this.data[name];
+        return this.data.get(name);
     };
 
     /**
@@ -32,11 +32,19 @@ define(function (require) {
      * @returns {*}
      */
     DataManager.prototype.set = function(name, value) {
-        var oldValue = this.data[name];
+        var oldData = this.data;
+        this.data = oldData.set(name, value);
 
-        this.data[name] = value;
+        return (oldData.has(name)) ? oldData.get(name) : null;
+    };
 
-        return (oldValue === undefined) ? null : oldValue;
+    /**
+     *
+     * @returns {DataManager}
+     */
+    DataManager.prototype.clone = function() {
+        var data = this.data;
+        return new DataManager(data);
     };
 
     return DataManager;

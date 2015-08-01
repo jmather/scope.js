@@ -20,10 +20,10 @@ define(['underscore'], function(_) {
             return;
         }
 
-        output.decks = {};
+        output.values.decks = {};
 
         _.each(input.decks, function (config, name) {
-            output.decks[name] = this.processDeck(name, config);
+            output.values.decks[name] = this.processDeck(name, config);
         }.bind(this));
     };
 

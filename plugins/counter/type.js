@@ -1,6 +1,6 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(['underscore'], function (_) {
+define(['underscore', './definition'], function (_, definition) {
     /**
      *
      * @param {string} name
@@ -9,7 +9,7 @@ define(['underscore'], function (_) {
      * @constructor
      */
     function CounterType(name, config, valueManager) {
-        _.extend(this, config);
+        _.extend(this, definition, config);
         this.name = name;
         this.valueManager = valueManager;
     }
