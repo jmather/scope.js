@@ -39,6 +39,38 @@ describe('CounterType', function() {
             counter.increment(1);
             counter.getValue().should.equal(1);
         });
-    })
+    });
 
+    describe('decrement', function() {
+        var dataManager, valManager, counter;
+
+        beforeEach(function() {
+            dataManager = new DataManager();
+            valManager = new ValueManager(dataManager);
+            counter = new CounterType('test', {max: 10, min: 0, step: 1, default: 10}, valManager);
+        });
+
+        afterEach(function() {
+            valManager = null;
+            counter = null;
+        });
+
+        it('allows decrementing when it should', function() {
+            for (var i = 0; i < 10; i++) {
+                counter.decrement();
+            }
+        });
+
+        it('throws an exception on invalid decrement', function() {
+            (function() {
+                counter.decrement(11);
+            }).should.throw();
+        });
+
+        it('stores the decrements correctly', function() {
+            counter.getValue().should.equal(10);
+            counter.decrement(1);
+            counter.getValue().should.equal(9);
+        });
+    });
 });

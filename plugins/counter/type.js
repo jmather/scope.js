@@ -16,7 +16,7 @@ define(['underscore'], function (_) {
 
     /**
      *
-     * @param {number} amount
+     * @param {number} [amount]
      */
     CounterType.prototype.increment = function(amount) {
         var currentValue = this.getValue();
@@ -38,7 +38,7 @@ define(['underscore'], function (_) {
 
     /**
      *
-     * @param {number} amount
+     * @param {number} [amount]
      */
     CounterType.prototype.decrement = function(amount) {
         var currentValue = this.getValue();
@@ -78,15 +78,29 @@ define(['underscore'], function (_) {
         return setValue.call(this, value);
     };
 
-
+    /**
+     *
+     * @param {number} value
+     * @returns {*}
+     */
     function setValue(value) {
         return this.valueManager.setData(this.name, value);
     }
 
+    /**
+     *
+     * @param {number} value
+     * @returns {boolean}
+     */
     function isBelowMin(value) {
         return (this.min !== null && value < this.min);
     }
 
+    /**
+     *
+     * @param {number} value
+     * @returns {boolean}
+     */
     function isAboveMax(value) {
         return (this.max !== null && value > this.max);
     }
