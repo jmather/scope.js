@@ -9,7 +9,7 @@ define(['underscore', './definition', './transformation'], function (_, definiti
      * @constructor
      */
     function CounterType(name, config, valueManager) {
-        _.extend(this, definition, config);
+        this.config = config;
         this.name = name;
         this.valueManager = valueManager;
     }
@@ -26,13 +26,13 @@ define(['underscore', './definition', './transformation'], function (_, definiti
         var currentValue = this.getValue();
 
         if (amount === undefined) {
-            amount = this.step;
+            amount = this.config.step;
         }
 
         var newValue = currentValue + amount;
 
         if (isAboveMax.call(this, newValue)) {
-            throw new Error('Counter limit hit: ' + currentValue + ' + ' + amount + ' > ' + this.max);
+            throw new Error('Counter limit hit: ' + currentValue + ' + ' + amount + ' > ' + this.config.max);
         }
 
         setValue.call(this, newValue);
@@ -48,13 +48,13 @@ define(['underscore', './definition', './transformation'], function (_, definiti
         var currentValue = this.getValue();
 
         if (amount === undefined) {
-            amount = this.step;
+            amount = this.config.step;
         }
 
         var newValue = currentValue - amount;
 
         if (isBelowMin.call(this, newValue)) {
-            throw new Error('Counter limit hit: ' + currentValue + ' - ' + amount + ' < ' + this.min);
+            throw new Error('Counter limit hit: ' + currentValue + ' - ' + amount + ' < ' + this.config.min);
         }
 
         setValue.call(this, newValue);
@@ -76,7 +76,7 @@ define(['underscore', './definition', './transformation'], function (_, definiti
      */
     CounterType.prototype.setValue = function(value) {
         if (isAboveMax.call(this, value) || isBelowMin.call(this, value)) {
-            throw new Error('Value is out of bounds: ' + JSON.stringify({min: this.min, max: this.max}));
+            throw new Error('Value is out of bounds: ' + JSON.stringify({min: this.config.min, max: this.config.max}));
         }
 
         return setValue.call(this, value);
@@ -97,7 +97,7 @@ define(['underscore', './definition', './transformation'], function (_, definiti
      * @returns {boolean}
      */
     function isBelowMin(value) {
-        return (this.min !== null && value < this.min);
+        return (this.config.min !== null && value < this.config.min);
     }
 
     /**
@@ -106,7 +106,7 @@ define(['underscore', './definition', './transformation'], function (_, definiti
      * @returns {boolean}
      */
     function isAboveMax(value) {
-        return (this.max !== null && value > this.max);
+        return (this.config.max !== null && value > this.config.max);
     }
 
     return CounterType;

@@ -25,7 +25,8 @@ define(['underscore', '../definitions/scope', '../definitions/choice'], function
 
 
     function processScope(name, config) {
-        var scope = _.extend(config, ScopeDefinition);
+        var scope = {};
+        _.extend(scope, ScopeDefinition, config);
 
         scope.choices = _.each(scope.choices, function(choiceConfig, choiceName) {
             return _.extend(choiceConfig, ChoiceDefinition);

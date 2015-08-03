@@ -34,4 +34,17 @@ cli.main(function(args, options) {
         }
     });
 
+    var etcPath = __dirname + '/../etc';
+
+    child = exec("cp " + outputPath + '/data.json ' + etcPath + '/data.json', function (error, stdout, stderr) {
+        console.log(stdout);
+
+        if (stderr) {
+            console.error(stderr);
+        }
+        if (error !== null) {
+            console.error('error: ' + error);
+        }
+    });
+
 });

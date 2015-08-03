@@ -1,0 +1,29 @@
+{
+  "a": {
+    "type": "counter"
+  },
+  "b": {
+    "type": "counter"
+  },
+  "store": {
+    "type": "scope",
+    "choices": {
+      "incrementA": {
+        "instructions": [
+          { "instruction": "increment", "value": "test.a", "amount": 1 }
+        ]
+      },
+      "incrementB": {
+        "instructions": [
+          { "instruction": "increment", "value": "test.b", "amount": 1 }
+        ]
+      },
+      "incrementBoth": {
+        "instructions": [
+          { "instruction": "increment", "value": "test.a", "amount": 1 },
+          { "instruction": "increment", "value": "test.b", "amount": 1 }
+        ]
+      }
+    }
+  }
+}

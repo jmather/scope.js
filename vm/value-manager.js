@@ -3,20 +3,27 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(function (require) {
     /**
      *
+     * @param {Object.<string, Object>} valueConfig
      * @param {DataManager} dataManager
      * @param {TypeManager} typeManager
      * @constructor
      */
-    function ValueManager(dataManager, typeManager) {
+    function ValueManager(valueConfig, dataManager, typeManager) {
+        this.valueConfig = valueConfig;
         this.dataManager = dataManager;
         this.typeManager = typeManager;
         this.instances = {};
     }
 
     ValueManager.prototype.initialize = function(name) {
-        var valueConfiguration = this.getData('data.' + name);
-        var builder = this.typeManager.getBuilder(name);
-        this.instances[name] = builder(name, valueConfiguration, this);
+        if (this.valueConfig.values[name] === undefined) {
+            throw new Error("No value definition for " + name);
+        }
+
+        var config = this.valueConfig.values[name];
+        var builder = this.typeManager.get(config.type);
+
+        this.instances[name] = new builder(name, config, this);
     };
 
     /**
@@ -57,7 +64,7 @@ define(function (require) {
      */
     ValueManager.prototype.clone = function() {
         var dataManager = this.dataManager.clone();
-        return new ValueManager(dataManager, this.typeManager);
+        return new ValueManager(this.valueConfig, dataManager, this.typeManager);
     };
 
     return ValueManager;

@@ -6,18 +6,24 @@ define(['underscore', './type-manager', './value-manager', './instruction-execut
      * @param {VMTime} time
      * @param {DataManager} dataManager
      * @param {InputManager} inputManager
+     * @param {Object.<string, Object>} valueConfig
      * @param {Array.string} plugins
      * @constructor
      */
-    function VM(time, dataManager, inputManager, plugins) {
+    function VM(time, dataManager, inputManager, valueConfig, plugins) {
         this.time = time;
         this.dataManager = dataManager;
-        this.valueManager = new ValueManager(dataManager, new TypeManager(plugins), new InstructionExecutor(inputManager, plugins));
+        this.valueManager = new ValueManager(valueConfig, dataManager, new TypeManager(plugins), new InstructionExecutor(inputManager, plugins));
     }
 
     VM.prototype.execute = function(instruction, answers) {
         var valueManager = this.valueManager.clone();
 
+    };
+
+    VM.prototype.executeInstructionOnValue = function(value, instruction) {
+        var val = this.valueManager.get(value);
+        val[instruction].call(val);
     };
 
     function exeucte(valueManager, inputManager, valueName, methodName) {

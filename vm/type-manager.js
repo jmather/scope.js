@@ -11,7 +11,7 @@ define(['underscore'], function (_) {
         this.types = {};
 
         _.each(plugins, _.bind(function(plugin) {
-            _.each(plugin.types, _.bind(this.importTypes, this));
+            this.importTypes(plugin.types);
         }, this));
     }
 

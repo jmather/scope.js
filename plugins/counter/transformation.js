@@ -11,11 +11,11 @@ define(['underscore', './definition'], function (_, definition) {
      * @param output
      */
     CounterTransformer.prototype.process = function (input, output) {
-        if (!input.values) {
+        if (!input) {
             return;
         }
 
-        _.each(input.values, function(instanceConfig, name) {
+        _.each(input, function(instanceConfig, name) {
             if (instanceConfig.type !== 'counter') {
                 return;
             }

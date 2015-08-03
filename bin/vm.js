@@ -1,33 +1,52 @@
 #!/usr/bin/env node
 var fs = require('fs');
 var _ = require('underscore');
+var cli = require('cli');
 
-var pluginPath = __dirname + '/../plugins';
-var pluginNames = fs.readdirSync(pluginPath);
-var plugins = [];
-
-var pluginPaths = _.map(pluginNames, function(plugin) {
-    var pluginModulePath = pluginPath + '/' + plugin + '/index';
-
-    if (fs.existsSync(pluginModulePath + '.js') === false) {
-        return;
-    }
-
-    plugins.push(require(pluginModulePath));
+cli.parse({
+    state: ['s', 'State file', 'path', 'state.json'],
+    values: [ 'd', 'Data file', 'path', 'data.js'],
+    verbose: ['v', 'Verbose output']
 });
 
-var statePath = __dirname + '/../state.json';
+cli.main(function(args, options) {
+    var pluginPath = __dirname + '/../plugins';
+    var pluginNames = fs.readdirSync(pluginPath);
+    var plugins = [];
 
-var state = (fs.existsSync(statePath)) ? JSON.parse(fs.readFileSync(statePath)) : {};
+    var pluginPaths = _.map(pluginNames, function(plugin) {
+        var pluginModulePath = pluginPath + '/' + plugin + '/index';
+
+        if (fs.existsSync(pluginModulePath + '.js') === false) {
+            return;
+        }
+
+        plugins.push(require(pluginModulePath));
+    });
+
+    var valuePath = __dirname + '/../etc/data.json';
+
+    var valueConfig = JSON.parse(fs.readFileSync(valuePath));
+
+    var statePath = __dirname + '/../state.json';
+
+    var state = (fs.existsSync(statePath)) ? JSON.parse(fs.readFileSync(statePath)) : {};
 
 
-var VM = require(__dirname + '/../vm/index');
+    var VM = require(__dirname + '/../vm/index');
 
-var time = new VM.Time(new Date().getTime());
+    var time = new VM.Time(new Date().getTime());
 
-var dataManager = new VM.DataManager(state);
+    var dataManager = new VM.DataManager(state);
 
-var inputManager = new VM.InputManager();
+    var inputManager = new VM.InputManager();
 
-var vm = new VM(time, dataManager, inputManager, plugins);
+    var vm = new VM(time, dataManager, inputManager, valueConfig, plugins);
+
+    console.log(dataManager);
+
+    vm.executeInstructionOnValue(args[0], args[1])
+
+    console.log(dataManager);
+});
 
