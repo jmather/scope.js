@@ -21,9 +21,13 @@ define(['underscore', './type-manager', './value-manager', './instruction-execut
 
     };
 
-    VM.prototype.executeInstructionOnValue = function(value, instruction) {
-        var val = this.valueManager.get(value);
+    VM.prototype.executeInstructionOnValue = function(value, instruction, answers) {
+        var valueManager = this.valueManager.clone();
+        valueManager.enableChangeLogging();
+
+        var val = valueManager.get(value);
         val[instruction].call(val);
+        return valueManager.disableChangeLogging();
     };
 
     function exeucte(valueManager, inputManager, valueName, methodName) {

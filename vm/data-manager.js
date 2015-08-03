@@ -9,7 +9,41 @@ define(['immutable'], function (Immutable) {
      */
     function DataManager(data) {
         this.data = new Immutable.Map(data || {});
+        this.logChanges = false;
     }
+
+    /**
+     *
+     */
+    DataManager.prototype.enableChangeLogging = function() {
+        if (this.logChanges) {
+            throw new Error("Logging already enabled");
+        }
+
+        this.logChanges = true;
+        this.changeLog = [];
+    };
+
+    /**
+     *
+     * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
+     */
+    DataManager.prototype.disableChangeLogging = function() {
+        if (this.logChanges === false) {
+            throw new Error("Logging already disabled");
+        }
+
+        this.logChanges = false;
+        return this.changeLog;
+    };
+
+    /**
+     *
+     * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
+     */
+    DataManager.prototype.getChangeLog = function() {
+        return this.changeLog;
+    };
 
     /**
      *
@@ -32,10 +66,14 @@ define(['immutable'], function (Immutable) {
      * @returns {*}
      */
     DataManager.prototype.set = function(name, value) {
-        var oldData = this.data;
-        this.data = oldData.set(name, value);
+        var oldData = (this.data.has(name)) ? this.data.get(name) : null;
+        this.data = this.data.set(name, value);
 
-        return (oldData.has(name)) ? oldData.get(name) : null;
+        if (this.logChanges) {
+            this.changeLog.push({value: name, old: oldData, new: value, caller: arguments.callee.caller})
+        }
+
+        return oldData;
     };
 
     /**

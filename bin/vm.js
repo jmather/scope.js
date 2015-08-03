@@ -45,8 +45,8 @@ cli.main(function(args, options) {
 
     console.log(dataManager);
 
-    vm.executeInstructionOnValue(args[0], args[1])
+    var methodArgs = (args[2]) ? JSON.parse(args[2]) : {};
 
-    console.log(dataManager);
+    console.log(vm.executeInstructionOnValue(args[0], args[1], methodArgs));
 });
 

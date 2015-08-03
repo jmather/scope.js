@@ -6,12 +6,15 @@ define(function (require) {
      * @param {Object.<string, Object>} valueConfig
      * @param {DataManager} dataManager
      * @param {TypeManager} typeManager
+     * @param {InstructionExecutor} instuctionExecutor
      * @constructor
      */
-    function ValueManager(valueConfig, dataManager, typeManager) {
+    function ValueManager(valueConfig, dataManager, typeManager, instuctionExecutor) {
         this.valueConfig = valueConfig;
         this.dataManager = dataManager;
+        this.transactionDataManager = null;
         this.typeManager = typeManager;
+        this.instructionExecutor = instuctionExecutor;
         this.instances = {};
     }
 
@@ -60,11 +63,35 @@ define(function (require) {
     };
 
     /**
-     * @return {ValueManager}
+     *
+     * @returns {ValueManager}
      */
     ValueManager.prototype.clone = function() {
         var dataManager = this.dataManager.clone();
-        return new ValueManager(this.valueConfig, dataManager, this.typeManager);
+        return new ValueManager(this.valueConfig, dataManager, this.typeManager, this.instructionExecutor);
+    };
+
+    /**
+     * @return {ValueManager}
+     */
+    ValueManager.prototype.enableChangeLogging = function() {
+        this.dataManager.enableChangeLogging();
+    };
+
+    /**
+     *
+     * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
+     */
+    ValueManager.prototype.disableChangeLogging = function() {
+        return this.dataManager.disableChangeLogging();
+    };
+
+    /**
+     *
+     * @returns {InstructionExecutor|*}
+     */
+    ValueManager.prototype.getInstructionExecutor = function() {
+        return this.instructionExecutor;
     };
 
     return ValueManager;

@@ -44,10 +44,10 @@ define(['underscore'], function (_) {
 
     /**
      *
-     * @param {string} instruction
-     * @param {InputManager} input
+     * @param {ValueManager} valueManager
+     * @param {{type: "instruction",}} instruction
      */
-    InstructionExecutor.prototype.execute = function(instruction, scope) {
+    InstructionExecutor.prototype.execute = function(valueManager, instruction) {
         if (this.instructions[instruction] === undefined) {
             throw new Error("No such instruction: " + instruction);
         }
@@ -57,7 +57,7 @@ define(['underscore'], function (_) {
                 return input.get(arg, null);
             });
 
-            instructionData.method.apply(scope, args);
+            instructionData.method.apply(valueManager, args);
         });
     };
 
