@@ -14,7 +14,7 @@ cli.main(function(args, options) {
     var Transformer = require('json-data-transformer');
 
     var basedir = __dirname + '/..';
-    var pluginsDir = basedir + '/plugins/';
+    var pluginsDir = basedir + '/pluginNames/';
 
     var transformerModules = getTrasformerModules([pluginsDir, process.cwd()]);
 

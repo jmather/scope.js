@@ -1,6 +1,6 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(['underscore'], function(_) {
+define(['underscore', 'JSONSelect'], function(_, JSONSelect) {
     /**
      *
      * @param {{}} config
@@ -10,31 +10,32 @@ define(['underscore'], function(_) {
         this.config = config;
     }
 
+    DeckTransformer.prototype.preProcess = function(input, output) {
+        output.decks = {};
+    };
+
     /**
      *
      * @param {{decks: Object.<string, {suits: Array.<string>, faces: Array.<string>, extra: Array.<string>}>}} input
      * @param {{decks: Object.<string, [{type: string, suit: string, face: string}]>}} output
      */
     DeckTransformer.prototype.process = function (input, output) {
-        if (!input.decks || input.decks.length < 1) {
-            return;
-        }
+        _.each(input, function (config, name) {
+            if (config.type !== 'deck-definition') {
+                return;
+            }
 
-        output.values.decks = {};
-
-        _.each(input.decks, function (config, name) {
-            output.values.decks[name] = this.processDeck(name, config);
-        }.bind(this));
+            output.decks[name] = processDeck(config);
+        });
     };
 
     /**
      *
-     * @param {string} name
      * @param {{suits: Array.<string>, faces: Array.<string>, extra: Array.<string>}} config
      *
      * @return {Array.<{type: string, suit: string, face: string}>}
      */
-    DeckTransformer.prototype.processDeck = function (name, config) {
+    function processDeck(config) {
         var cards = [];
 
         _.each(config.suits, function (suit) {
@@ -48,7 +49,7 @@ define(['underscore'], function(_) {
         });
 
         return cards;
-    };
+    }
 
     return DeckTransformer;
 });

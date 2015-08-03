@@ -1,41 +1,50 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(function (require) {
+define(['underscore'], function (_) {
 
     /**
      *
-     * @param {Object.<string, *>} types
+     * @param {Array.<{types: Object.<string, function>}>} plugins
      * @constructor
      */
-    function TypeManager(types) {
-        this.types = types || {};
+    function TypeManager(plugins) {
+        this.types = {};
+
+        _.each(plugins, _.bind(function(plugin) {
+            _.each(plugin.types, _.bind(this.importTypes, this));
+        }, this));
     }
 
     /**
      *
+     * @param {Object.<string, function>} types
+     */
+    TypeManager.prototype.importTypes = function(types) {
+        _.each(types, _.bind(function(typeConstructor, typeName) {
+            this.importType(typeName, typeConstructor);
+        }, this));
+    };
+
+    /**
+     *
+     * @param {string} name
+     * @param {function} constructor
+     */
+    TypeManager.prototype.importType = function(name, constructor) {
+        this.types[name] = constructor;
+    };
+
+    /**
+     *
      * @param {string} name
      * @returns {*}
      */
-    TypeManager.prototype.getBuilder = function(name) {
+    TypeManager.prototype.get = function(name) {
         if (this.types[name] === undefined) {
             throw new Error("No type: " + name);
         }
 
-        return this.data[name];
-    };
-
-    /**
-     * Set a new value for key _name_, returns prior value
-     * @param {string} name
-     * @param {*} value
-     * @returns {*}
-     */
-    TypeManager.prototype.add = function(name, value) {
-        var oldValue = this.data[name];
-
-        this.data[name] = value;
-
-        return (oldValue === undefined) ? null : oldValue;
+        return this.types[name];
     };
 
     return TypeManager;

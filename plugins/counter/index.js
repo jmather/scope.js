@@ -1,14 +1,15 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(function(requre) {
+define(['./type', './transformation', './instructions'],function(CounterType, CounterTransformation, CounterInstructions) {
     /**
      *
      * @type {CounterPlugin}
      */
     var CounterPlugin = {
-        definition: require('./definition'),
-        type: require('./type'),
-        transformation: require('./transformation')
+        types: {
+            counter: CounterType
+        },
+        instructions: [ CounterInstructions ]
     };
 
     return CounterPlugin;

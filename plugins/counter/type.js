@@ -1,6 +1,6 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(['underscore', './definition'], function (_, definition) {
+define(['underscore', './definition', './transformation'], function (_, definition, transformation) {
     /**
      *
      * @param {string} name
@@ -13,6 +13,10 @@ define(['underscore', './definition'], function (_, definition) {
         this.name = name;
         this.valueManager = valueManager;
     }
+
+
+    CounterType.definition = definition;
+    CounterType.transformation = transformation;
 
     /**
      *

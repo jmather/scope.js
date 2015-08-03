@@ -1,6 +1,6 @@
 module.exports = {
   "type": "counter",
-  "min": 0,
+  "min": null,
   "max": null,
   "step": 1,
   "default": 0
