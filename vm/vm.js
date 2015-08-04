@@ -3,53 +3,31 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(['underscore', './type-manager', './value-manager', './instruction-executor'], function (_, TypeManager, ValueManager, InstructionExecutor) {
     /**
      *
-     * @param {VMTime} time
-     * @param {DataManager} dataManager
-     * @param {InputManager} inputManager
-     * @param {Object.<string, Object>} valueConfig
-     * @param {Array.string} plugins
+     * @param {VMConfig} config
      * @constructor
      */
-    function VM(time, dataManager, inputManager, valueConfig, plugins) {
-        this.time = time;
-        this.dataManager = dataManager;
-        this.valueManager = new ValueManager(valueConfig, dataManager, new TypeManager(plugins), new InstructionExecutor(inputManager, plugins));
+    function VM(config) {
+        this.timeManager = config.getTimeManager();
+        this.dataManager = config.getDataManager();
+        this.valueManager = config.getValueManager();
+        this.inputManager = config.getInputManager();
     }
 
-    VM.prototype.execute = function(instruction, answers) {
-        var valueManager = this.valueManager.clone();
-
-    };
-
-    VM.prototype.executeInstructionOnValue = function(value, instruction, answers) {
+    VM.prototype.execute = function(value, choice, input) {
         var valueManager = this.valueManager.clone();
         valueManager.enableChangeLogging();
+        this.inputManager.setAnswers(input);
 
-        var val = valueManager.get(value);
-        val[instruction].call(val);
-        return valueManager.disableChangeLogging();
+        var executor = valueManager.getInstructionExecutor();
+
+        executor.execute(valueManager, {type: "instruction", instruction: "execute"}, {value: value, choice: choice});
+
+        var changes = valueManager.disableChangeLogging();
+
+        this.valueManager = valueManager;
+
+        return changes;
     };
-
-    function exeucte(valueManager, inputManager, valueName, methodName) {
-        var value = valueManager.get(valueName);
-
-        if (typeof value[actionName] !== 'function') {
-            throw new Error("Value '" + valueName + "' is type '" + typeof value + "' and has no method named '" + actionName + "'");
-        }
-
-        var methodArgs = getArgumentsForMethod(value[actionName]);
-
-        var argsToSend = [];
-
-        _.map(methodArgs, function(arg) {
-
-        });
-    }
-
-    function getArgumentsForMethod(method) {
-        var argString = method.toString().match(/\(([^)]+)\)/)[1];
-        return argString.replace(/[^a-zA-Z0-9,]+/g, '').split(',');
-    }
 
     return VM;
 });

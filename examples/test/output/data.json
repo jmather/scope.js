@@ -19,22 +19,49 @@
       "type": "scope",
       "choices": {
         "incrementA": {
-          "instructions": [],
           "type": "choice",
           "when": [],
-          "notWhen": []
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "test.a",
+              "amount": 1
+            }
+          ]
         },
         "incrementB": {
-          "instructions": [],
           "type": "choice",
           "when": [],
-          "notWhen": []
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "test.b",
+              "amount": 1
+            }
+          ]
         },
         "incrementBoth": {
-          "instructions": [],
           "type": "choice",
           "when": [],
-          "notWhen": []
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "test.a",
+              "amount": 1
+            },
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "test.b",
+              "amount": 1
+            }
+          ]
         }
       }
     }

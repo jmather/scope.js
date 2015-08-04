@@ -1,6 +1,6 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
-define(['underscore', '../definitions/scope', '../definitions/choice'], function (_, ScopeDefinition, ChoiceDefinition) {
+define(['underscore', '../definitions/scope', '../definitions/choice', '../definitions/instruction'], function (_, ScopeDefinition, ChoiceDefinition, InstructionDefinition) {
     function ScopeTransformer(config) {
         this.config = config;
     }
@@ -28,11 +28,28 @@ define(['underscore', '../definitions/scope', '../definitions/choice'], function
         var scope = {};
         _.extend(scope, ScopeDefinition, config);
 
-        scope.choices = _.each(scope.choices, function(choiceConfig, choiceName) {
-            return _.extend(choiceConfig, ChoiceDefinition);
+        _.each(scope.choices, function(choiceConfig, choiceName) {
+            scope.choices[choiceName] = processChoice(choiceName, choiceConfig);
         });
 
         return scope;
+    }
+
+    function processChoice(name, config) {
+        var choice = {};
+        _.extend(choice, ChoiceDefinition, config);
+
+        choice.instructions = _.map(choice.instructions, function(config) {
+            return processInstruction(config);
+        });
+
+        return choice;
+    }
+
+    function processInstruction(config) {
+        var instruction = {};
+        _.extend(instruction, InstructionDefinition, config);
+        return instruction;
     }
 
     return ScopeTransformer;

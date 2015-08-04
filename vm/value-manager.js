@@ -12,7 +12,6 @@ define(function (require) {
     function ValueManager(valueConfig, dataManager, typeManager, instuctionExecutor) {
         this.valueConfig = valueConfig;
         this.dataManager = dataManager;
-        this.transactionDataManager = null;
         this.typeManager = typeManager;
         this.instructionExecutor = instuctionExecutor;
         this.instances = {};

@@ -9,7 +9,7 @@ define(function(requre) {
      * @param {number} amount
      */
     instructions.increment = function(value, amount) {
-        this.valueManager.get(value).increment(amount);
+        this.get(value).increment(amount);
     };
 
     /**
@@ -18,7 +18,7 @@ define(function(requre) {
      * @param {number} amount
      */
     instructions.decrement = function(value, amount) {
-        this.valueManager.get(value).decrement(amount);
+        this.get(value).decrement(amount);
     };
 
     return instructions;

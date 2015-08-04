@@ -27,7 +27,7 @@ define(['underscore', '../../../vm/instruction-executor'], function (_, Instruct
      * @returns {{instructions: Array.Object}}
      */
     ScopeType.prototype.getChoice = function(name) {
-        if (this.config.choices[choice] === undefined) {
+        if (this.config.choices[name] === undefined) {
             throw new Error("No choice " + name);
         }
         return this.config.choices[name];
@@ -37,9 +37,9 @@ define(['underscore', '../../../vm/instruction-executor'], function (_, Instruct
         var executor = this.valueManager.getInstructionExecutor();
         var choice = this.getChoice(name);
 
-        _.each(choice.instructions, function(instruction) {
-            executor.execute()
-        });
+        _.each(choice.instructions, _.bind(function(instruction) {
+            executor.execute(this.valueManager, instruction)
+        }, this));
     };
 
     return ScopeType;

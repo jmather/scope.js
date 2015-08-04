@@ -35,18 +35,24 @@ cli.main(function(args, options) {
 
     var VM = require(__dirname + '/../vm/index');
 
-    var time = new VM.Time(new Date().getTime());
+    var config = new VM.Config(state, valueConfig, new Date().getTime(), plugins);
 
-    var dataManager = new VM.DataManager(state);
+    var vm = new VM(config);
 
-    var inputManager = new VM.InputManager();
-
-    var vm = new VM(time, dataManager, inputManager, valueConfig, plugins);
-
-    console.log(dataManager);
+    console.log('Loaded state');
+    _.each(vm.valueManager.dataManager.data.toJS(), function(value, key) {
+        console.log('  ' + key + ': ' + JSON.stringify(value));
+    });
 
     var methodArgs = (args[2]) ? JSON.parse(args[2]) : {};
 
-    console.log(vm.executeInstructionOnValue(args[0], args[1], methodArgs));
+    var changes = vm.execute(args[0], args[1], methodArgs);
+
+    console.log('Changes to the data');
+    _.each(changes, function(change) {
+        console.log('  ' + change.value + ': ' + JSON.stringify(change.old) + ' -> ' + JSON.stringify(change.new));
+    });
+
+    fs.writeFileSync(statePath, JSON.stringify(vm.valueManager.dataManager.data.toJS()));
 });
 

@@ -46,19 +46,29 @@ define(['underscore'], function (_) {
      *
      * @param {ValueManager} valueManager
      * @param {{type: "instruction",}} instruction
+     * @param {Object.<string, *>} [extraArgs]
      */
-    InstructionExecutor.prototype.execute = function(valueManager, instruction) {
-        if (this.instructions[instruction] === undefined) {
-            throw new Error("No such instruction: " + instruction);
+    InstructionExecutor.prototype.execute = function(valueManager, instruction, extraArgs) {
+        if (this.instructions[instruction.instruction] === undefined) {
+            throw new Error("No such instruction: " + instruction.instruction);
         }
 
-        _.each(this.instructions[instruction], function(instructionData) {
-            var args = _.map(instructionData.arguments, function(arg) {
-                return input.get(arg, null);
-            });
+
+        _.each(this.instructions[instruction.instruction], _.bind(function(instructionData) {
+            var args = _.map(instructionData.arguments, _.bind(function(arg) {
+                if (extraArgs && extraArgs[arg] !== undefined) {
+                    return extraArgs[arg];
+                }
+
+                if (instruction[arg] !== undefined) {
+                    return instruction[arg];
+                }
+
+                return this.inputManager.get(arg, null);
+            }, this));
 
             instructionData.method.apply(valueManager, args);
-        });
+        }, this));
     };
 
 
