@@ -5,6 +5,11 @@
   "b": {
     "type": "counter"
   },
+  "grid": {
+    "type": "grid",
+    "rows": 3,
+    "cols": 3
+  },
   "store": {
     "type": "scope",
     "choices": {

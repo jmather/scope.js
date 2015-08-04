@@ -15,6 +15,13 @@ module.exports = {
       "step": 1,
       "default": 0
     },
+    "test.grid": {
+      "type": "grid",
+      "rows": 3,
+      "cols": 3,
+      "default": {},
+      "nestedGrids": []
+    },
     "test.store": {
       "type": "scope",
       "choices": {
