@@ -8,10 +8,10 @@ See a full flow:
 
     npm install
     ./bin/build-example.js -e test
-    ./bin/vm.js test.store incrementA
-    ./bin/vm.js test.store incrementB
-    ./bin/vm.js test.store incrementA
-    ./bin/vm.js test.store incrementBoth
+    ./bin/vm.js test.store incrementA -v
+    ./bin/vm.js test.store incrementB -v
+    ./bin/vm.js test.store incrementA -v
+    ./bin/vm.js test.store incrementBoth -v
 
 Example output:
 
