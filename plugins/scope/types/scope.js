@@ -33,6 +33,10 @@ define(['underscore', '../../../vm/instruction-executor'], function (_, Instruct
         return this.config.choices[name];
     };
 
+    /**
+     *
+     * @param {string} name
+     */
     ScopeType.prototype.executeChoice = function(name) {
         var executor = this.valueManager.getInstructionExecutor();
         var choice = this.getChoice(name);

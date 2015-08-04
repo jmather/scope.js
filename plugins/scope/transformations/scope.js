@@ -23,7 +23,12 @@ define(['underscore', '../definitions/scope', '../definitions/choice', '../defin
         });
     };
 
-
+    /**
+     *
+     * @param {string} name
+     * @param {*} config
+     * @returns {*}
+     */
     function processScope(name, config) {
         var scope = {};
         _.extend(scope, ScopeDefinition, config);
@@ -35,6 +40,12 @@ define(['underscore', '../definitions/scope', '../definitions/choice', '../defin
         return scope;
     }
 
+    /**
+     *
+     * @param {string} name
+     * @param {*} config
+     * @returns {*}
+     */
     function processChoice(name, config) {
         var choice = {};
         _.extend(choice, ChoiceDefinition, config);
@@ -46,6 +57,11 @@ define(['underscore', '../definitions/scope', '../definitions/choice', '../defin
         return choice;
     }
 
+    /**
+     *
+     * @param {*} config
+     * @returns {*}
+     */
     function processInstruction(config) {
         var instruction = {};
         _.extend(instruction, InstructionDefinition, config);

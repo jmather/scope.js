@@ -45,33 +45,42 @@ define(['underscore'], function (_) {
     /**
      *
      * @param {ValueManager} valueManager
-     * @param {{type: "instruction",}} instruction
-     * @param {Object.<string, *>} [extraArgs]
+     * @param {{type: "instruction", instruction: string, }} instruction
      */
-    InstructionExecutor.prototype.execute = function(valueManager, instruction, extraArgs) {
+    InstructionExecutor.prototype.execute = function(valueManager, instruction) {
         if (this.instructions[instruction.instruction] === undefined) {
             throw new Error("No such instruction: " + instruction.instruction);
         }
 
 
         _.each(this.instructions[instruction.instruction], _.bind(function(instructionData) {
-            var args = _.map(instructionData.arguments, _.bind(function(arg) {
-                if (extraArgs && extraArgs[arg] !== undefined) {
-                    return extraArgs[arg];
-                }
-
-                if (instruction[arg] !== undefined) {
-                    return instruction[arg];
-                }
-
-                return this.inputManager.get(arg, null);
-            }, this));
+            var args = resolveInstructionArguments(instruction, instructionData, this.inputManager);
 
             instructionData.method.apply(valueManager, args);
         }, this));
     };
 
+    /**
+     *
+     * @param {{type: "instruction", instruction: string, }} instruction
+     * @param {{method: function, arguments: Array.string}} instructionData
+     * @param {InputManager} inputManager
+     */
+    function resolveInstructionArguments(instruction, instructionData, inputManager) {
+        return _.map(instructionData.arguments, function(arg) {
+            if (instruction[arg] !== undefined) {
+                return instruction[arg];
+            }
 
+            return inputManager.get(arg, null);
+        });
+    }
+
+    /**
+     *
+     * @param {function} method
+     * @returns {Array.string}
+     */
     function getArgumentsForMethod(method) {
         var argString = method.toString().match(/\(([^)]+)\)/)[1];
         return argString.replace(/[^a-zA-Z0-9,]+/g, '').split(',');

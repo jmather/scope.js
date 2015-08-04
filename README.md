@@ -20,22 +20,22 @@ Example output:
     Wrote data to /Users/jmather/code/scope.js/examples/test/output/data.json
     Wrote js loadable data to /Users/jmather/code/scope.js/examples/test/output/data.js
 
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js test.store incrementA
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementA
     Loaded state
     Changes to the data
       test.a: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js test.store incrementB
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementB
     Loaded state
       test.a: 1
     Changes to the data
       test.b: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js test.store incrementA
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementA
     Loaded state
       test.a: 1
       test.b: 1
     Changes to the data
       test.a: 1 -> 2
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js test.store incrementBoth
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementBoth
     Loaded state
       test.a: 2
       test.b: 1

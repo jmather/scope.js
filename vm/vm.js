@@ -20,7 +20,7 @@ define(['underscore', './type-manager', './value-manager', './instruction-execut
 
         var executor = valueManager.getInstructionExecutor();
 
-        executor.execute(valueManager, {type: "instruction", instruction: "execute"}, {value: value, choice: choice});
+        executor.execute(valueManager, {type: "instruction", instruction: "execute", value: value, choice: choice});
 
         var changes = valueManager.disableChangeLogging();
 
