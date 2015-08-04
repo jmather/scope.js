@@ -1,0 +1,16 @@
+{
+  "grid": {
+    "type": "grid",
+    "rows": 3,
+    "cols": 3
+  },
+  "scope": {
+    "type": "scope",
+    "choices": {
+      "doSomething": {
+        "instructions": [
+        ]
+      }
+    }
+  }
+}

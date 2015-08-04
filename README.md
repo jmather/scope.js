@@ -8,10 +8,10 @@ See a full flow:
 
     npm install
     ./bin/build-example.js test
-    ./bin/vm.js test.store incrementA -v
-    ./bin/vm.js test.store incrementB -v
-    ./bin/vm.js test.store incrementA -v
-    ./bin/vm.js test.store incrementBoth -v
+    ./bin/vm.js counter.scope incrementA -v
+    ./bin/vm.js counter.scope incrementB -v
+    ./bin/vm.js counter.scope incrementA -v
+    ./bin/vm.js counter.scope incrementBoth -v
 
 Example output:
 
@@ -20,35 +20,35 @@ Example output:
     Wrote data to /Users/jmather/code/scope.js/examples/test/output/data.json
     Wrote js loadable data to /Users/jmather/code/scope.js/examples/test/output/data.js
 
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementA
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementA
     Loaded state
     Changes to the data
-      test.a: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementB
+      counter.a: null -> 1
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementB
     Loaded state
-      test.a: 1
+      counter.a: 1
     Changes to the data
-      test.b: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementA
+      counter.b: null -> 1
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementA
     Loaded state
-      test.a: 1
-      test.b: 1
+      counter.a: 1
+      counter.b: 1
     Changes to the data
-      test.a: 1 -> 2
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v test.store incrementBoth
+      counter.a: 1 -> 2
+    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementBoth
     Loaded state
-      test.a: 2
-      test.b: 1
+      counter.a: 2
+      counter.b: 1
     Changes to the data
-      test.a: 2 -> 3
-      test.b: 1 -> 2
+      counter.a: 2 -> 3
+      counter.b: 1 -> 2
 
 
 Example command:
 
-    ./bin/build-example.js -e cards-war
+    ./bin/build-example.js cards-war
 
-    ./bin/transform.js -c examples/cards-war/config -o examples/cards-war/output -p
+    ./bin/transform.js examples/cards-war/config examples/cards-war/output -p
 
 
 # QA Metrics

@@ -1,0 +1,23 @@
+{
+  "gold": {
+    "type": "counter",
+    "default": 10
+  },
+  "thing": {
+    "type": "instance-template",
+    "thing": { "value": "collection.counter" }
+  },
+  "things": {
+    "type": "collection",
+    "template": "collection.thing"
+  },
+  "scope": {
+    "type": "scope",
+    "choices": {
+      "doSomething": {
+        "instructions": [
+        ]
+      }
+    }
+  }
+}
