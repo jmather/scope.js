@@ -10,7 +10,13 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-    var pluginPath = __dirname + '/../plugins';
+    if (args.length < 1) {
+        console.error('Not enough arguments.');
+        console.log('usage: vm.js <scope_value> <choice>');
+        process.exit(1);
+    }
+
+    var pluginPath = __dirname + '/../lib/plugins';
     var pluginNames = fs.readdirSync(pluginPath);
     var plugins = [];
 
@@ -32,7 +38,7 @@ cli.main(function(args, options) {
 
     var state = (fs.existsSync(statePath)) ? JSON.parse(fs.readFileSync(statePath)) : {};
 
-    var VM = require(__dirname + '/../vm/index');
+    var VM = require(__dirname + '/../lib/vm/index');
 
     var config = new VM.Config(state, valueConfig, new Date().getTime(), plugins);
 
@@ -45,15 +51,25 @@ cli.main(function(args, options) {
         });
     }
 
-    var methodArgs = (args[2]) ? JSON.parse(args[2]) : {};
+    try {
+        var changes = vm.execute(args[0], args[1]);
 
-    var changes = vm.execute(args[0], args[1], methodArgs);
-
-    if (options.verbose) {
-        console.log('Changes to the data');
-        _.each(changes, function(change) {
-            console.log('  ' + change.value + ': ' + JSON.stringify(change.old) + ' -> ' + JSON.stringify(change.new));
-        });
+        if (options.verbose) {
+            console.log('Changes to the data');
+            _.each(changes, function(change) {
+                console.log('  ' + change.value + ': ' + JSON.stringify(change.old) + ' -> ' + JSON.stringify(change.new));
+            });
+        }
+    } catch (e) {
+        if (e.questions) {
+            console.error('The command you executed requires more information.');
+            _.each(e.questions, function(question) {
+                console.log(JSON.stringify(question));
+            });
+        } else {
+            console.error('Received an error:');
+            console.log(e);
+        }
     }
 
     fs.writeFileSync(statePath, JSON.stringify(vm.valueManager.dataManager.data.toJS()));

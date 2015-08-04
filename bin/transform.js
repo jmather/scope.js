@@ -4,8 +4,6 @@ var cli = require('cli');
 var _ = require('underscore');
 
 cli.parse({
-    configPath:   ['c', 'Config path', 'path'],
-    outputPath: ['o', 'Output path', 'path'],
     pretty: ['p', 'Output pretty', 'bool', false],
     verbose: ['v', 'Verbose output']
 });
@@ -14,9 +12,9 @@ cli.main(function(args, options) {
     var Transformer = require('json-data-transformer');
 
     var basedir = __dirname + '/..';
-    var pluginsDir = basedir + '/plugins/';
+    var pluginsDir = basedir + '/lib/plugins/';
 
-    var transformerModules = getTrasformerModules([pluginsDir, process.cwd()]);
+    var transformerModules = getTrasformerModules([pluginsDir, process.cwd() + '/lib']);
 
     var transformers = _.map(transformerModules, function(TransformerClass) {
         return new TransformerClass({});
@@ -24,15 +22,14 @@ cli.main(function(args, options) {
 
     var transformer = new Transformer(transformers);
 
-    if (options.configPath === null) {
-        console.error("No config path set, bailing...");
+    if (args.length < 2) {
+        console.error('Canot proceed because we are missing arguments.');
+        printHelp();
         process.exit(1);
     }
 
-    if (options.outputPath === null) {
-        console.error("No output destination set, bailing...");
-        process.exit(1);
-    }
+    options.configPath = args[0];
+    options.outputPath = args[1];
 
     var data = Transformer.loadData([options.configPath]);
 
@@ -86,4 +83,9 @@ function getTrasformerModules(paths) {
     });
 
     return transformers;
+}
+
+function printHelp() {
+    console.log('usage: ' + process.argv[1] + ' [-h|--help] [options] <config path> <output path>');
+
 }

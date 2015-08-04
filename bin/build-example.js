@@ -2,17 +2,27 @@
 var fs = require('fs');
 var cli = require('cli');
 var _ = require('underscore');
+var examplePath = __dirname + '/../examples';
 
 cli.parse({
-    example: ['e', 'Example', 'string'],
+    clean: ['c', 'Clean state', 'boolean', false],
     verbose: ['v', 'Verbose output']
 });
 
 cli.main(function(args, options) {
-    var exampleDir = process.cwd() + '/examples/' + options.example;
+    if (args.length === 0) {
+        console.error("No example given.");
+        printHelp();
+        process.exit(1);
+    }
+
+    var example = args[0];
+
+    var exampleDir = examplePath + '/' + example;
     var fs = require('fs');
     if (fs.existsSync(exampleDir) === false) {
-        console.error('Example "' + options.example +'" does not exist.');
+        console.error('Example "' + example +'" does not exist.');
+        printHelp();
         process.exit(1);
     }
 
@@ -48,3 +58,8 @@ cli.main(function(args, options) {
     });
 
 });
+
+function printHelp() {
+    console.log('usage: ' + process.argv[1] + ' [-c|--clean] <example>');
+    console.log('Available examples: ' + fs.readdirSync(examplePath).join(', '));
+}

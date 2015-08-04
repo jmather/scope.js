@@ -1,7 +1,7 @@
 describe('ScopeType', function() {
-    var DataManager = require.main.require('vm/data-manager');
-    var ValueManager = require.main.require('vm/value-manager');
-    var CounterType = require.main.require('pluginNames/counter/type');
+    var DataManager = require.main.require('lib/vm/data-manager');
+    var ValueManager = require.main.require('lib/vm/value-manager');
+    var CounterType = require.main.require('lib/plugins/counter/type');
 
     it('Instantiates correctly', function() {
         var valManager = new ValueManager();
