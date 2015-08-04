@@ -7,7 +7,7 @@ Explanation to come.
 See a full flow:
 
     npm install
-    ./bin/build-example.js -e test
+    ./bin/build-example.js test
     ./bin/vm.js test.store incrementA -v
     ./bin/vm.js test.store incrementB -v
     ./bin/vm.js test.store incrementA -v
@@ -15,7 +15,7 @@ See a full flow:
 
 Example output:
 
-    Jacobs-MBP:scope.js jmather$ ./bin/build-example.js -e test
+    Jacobs-MBP:scope.js jmather$ ./bin/build-example.js test
 
     Wrote data to /Users/jmather/code/scope.js/examples/test/output/data.json
     Wrote js loadable data to /Users/jmather/code/scope.js/examples/test/output/data.js

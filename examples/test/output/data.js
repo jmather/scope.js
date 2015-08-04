@@ -19,49 +19,77 @@ module.exports = {
       "type": "scope",
       "choices": {
         "incrementA": {
-          "type": "choice",
+          "type": "grid",
           "when": [],
           "notWhen": [],
           "instructions": [
             {
-              "type": "instruction",
+              "type": "grid",
+              "rows": 1,
+              "cols": 1,
+              "default": {},
+              "nestedGrids": [],
               "instruction": "increment",
               "value": "test.a",
               "amount": 1
             }
-          ]
+          ],
+          "rows": 1,
+          "cols": 1,
+          "default": {},
+          "nestedGrids": []
         },
         "incrementB": {
-          "type": "choice",
+          "type": "grid",
           "when": [],
           "notWhen": [],
           "instructions": [
             {
-              "type": "instruction",
+              "type": "grid",
+              "rows": 1,
+              "cols": 1,
+              "default": {},
+              "nestedGrids": [],
               "instruction": "increment",
               "value": "test.b",
               "amount": 1
             }
-          ]
+          ],
+          "rows": 1,
+          "cols": 1,
+          "default": {},
+          "nestedGrids": []
         },
         "incrementBoth": {
-          "type": "choice",
+          "type": "grid",
           "when": [],
           "notWhen": [],
           "instructions": [
             {
-              "type": "instruction",
+              "type": "grid",
+              "rows": 1,
+              "cols": 1,
+              "default": {},
+              "nestedGrids": [],
               "instruction": "increment",
               "value": "test.a",
               "amount": 1
             },
             {
-              "type": "instruction",
+              "type": "grid",
+              "rows": 1,
+              "cols": 1,
+              "default": {},
+              "nestedGrids": [],
               "instruction": "increment",
               "value": "test.b",
               "amount": 1
             }
-          ]
+          ],
+          "rows": 1,
+          "cols": 1,
+          "default": {},
+          "nestedGrids": []
         }
       }
     }

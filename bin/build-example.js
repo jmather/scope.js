@@ -33,7 +33,7 @@ cli.main(function(args, options) {
     var configDir = exampleDir + '/config';
     var outputPath = exampleDir + '/output';
 
-    child = exec(__dirname + "/transform.js -p -c " + configDir + ' -o ' + outputPath, function (error, stdout, stderr) {
+    child = exec(__dirname + "/transform.js -p " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
         console.log(stdout);
 
         if (stderr) {
@@ -42,21 +42,20 @@ cli.main(function(args, options) {
         if (error !== null) {
             console.error('error: ' + error);
         }
+
+        var etcPath = __dirname + '/../etc';
+
+        child = exec("cp " + outputPath + '/config.json ' + etcPath + '/config.json', function (error, stdout, stderr) {
+            console.log(stdout);
+
+            if (stderr) {
+                console.error(stderr);
+            }
+            if (error !== null) {
+                console.error('error: ' + error);
+            }
+        });
     });
-
-    var etcPath = __dirname + '/../etc';
-
-    child = exec("cp " + outputPath + '/config.json ' + etcPath + '/config.json', function (error, stdout, stderr) {
-        console.log(stdout);
-
-        if (stderr) {
-            console.error(stderr);
-        }
-        if (error !== null) {
-            console.error('error: ' + error);
-        }
-    });
-
 });
 
 function printHelp() {
