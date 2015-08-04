@@ -49,3 +49,39 @@ Example command:
     ./bin/build-example.js -e cards-war
 
     ./bin/transform.js -c examples/cards-war/config -o examples/cards-war/output -p
+
+
+# QA Metrics
+
+Because I'm a bit of a nerd about knowing the state of things:
+
+## Lines of code
+
+    npm run loc
+
+## Linting
+
+    npm run lint
+
+## Code Complexity
+
+    npm run complexity
+
+or
+
+    npm run complexity-simple
+
+## Tests
+
+    npm test
+
+## Test Coverage
+
+    npm run coverage
+
+## Docs
+
+Not working right now, not sure why. Any ideas?
+
+    npm run docsø
+

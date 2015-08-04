@@ -2,6 +2,12 @@
 .idea
 *.iml
 
+# QA Tools
+docs
+complexity
+complexity.json
+complexity.txt
+
 # Logs
 logs
 *.log
