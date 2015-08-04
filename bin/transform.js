@@ -44,9 +44,9 @@ cli.main(function(args, options) {
 
     if (options.outputPath) {
         require('fs').writeFileSync(options.outputPath + '/config.json', output);
-        require('fs').writeFileSync(options.outputPath + '/data.js', 'module.exports = ' + output + ';');
+        require('fs').writeFileSync(options.outputPath + '/config.js', 'module.exports = ' + output + ';');
         console.log('Wrote data to ' + options.outputPath + '/config.json');
-        console.log('Wrote js loadable data to ' + options.outputPath + '/data.js');
+        console.log('Wrote js loadable data to ' + options.outputPath + '/config.js');
     } else {
         console.log(output);
     }
