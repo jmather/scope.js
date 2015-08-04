@@ -1,24 +1,24 @@
-describe('ScopeType', function() {
-    var DataManager = require.main.require('lib/vm/data-manager');
-    var ValueManager = require.main.require('lib/vm/value-manager');
-    var CounterType = require.main.require('lib/plugins/counter/type');
+describe('CounterType', function() {
+    var DepBuilder = require.main.require('test-data/bootstrap/builder');
+    var plugins = DepBuilder.loadPlugins(['counter']);
+    var data;
+
+    beforeEach(function() {
+        data = DepBuilder.byFileName(__filename, plugins);
+    });
 
     it('Instantiates correctly', function() {
-        var valManager = new ValueManager();
-        var counter = new CounterType('test', {max: null, min: 0}, valManager);
+        var counter = data.valueManager.get('incrementCounter');
     });
 
     describe('increment', function() {
-        var dataManager, valManager, counter;
+        var counter;
 
         beforeEach(function() {
-            dataManager = new DataManager();
-            valManager = new ValueManager(dataManager);
-            counter = new CounterType('test', {max: 10, min: 0, step: 1, default: 0}, valManager);
+            counter = data.valueManager.get('incrementCounter');
         });
 
         afterEach(function() {
-            valManager = null;
             counter = null;
         });
 
@@ -42,16 +42,13 @@ describe('ScopeType', function() {
     });
 
     describe('decrement', function() {
-        var dataManager, valManager, counter;
+        var counter;
 
         beforeEach(function() {
-            dataManager = new DataManager();
-            valManager = new ValueManager(dataManager);
-            counter = new CounterType('test', {max: 10, min: 0, step: 1, default: 10}, valManager);
+            counter = data.valueManager.get('decrementCounter');
         });
 
         afterEach(function() {
-            valManager = null;
             counter = null;
         });
 

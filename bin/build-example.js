@@ -46,7 +46,7 @@ cli.main(function(args, options) {
 
     var etcPath = __dirname + '/../etc';
 
-    child = exec("cp " + outputPath + '/data.json ' + etcPath + '/data.json', function (error, stdout, stderr) {
+    child = exec("cp " + outputPath + '/config.json ' + etcPath + '/config.json', function (error, stdout, stderr) {
         console.log(stdout);
 
         if (stderr) {

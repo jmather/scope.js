@@ -30,7 +30,7 @@ cli.main(function(args, options) {
         plugins.push(require(pluginModulePath));
     });
 
-    var valuePath = __dirname + '/../etc/data.json';
+    var valuePath = __dirname + '/../etc/config.json';
 
     var valueConfig = JSON.parse(fs.readFileSync(valuePath));
 
