@@ -83,5 +83,29 @@ or
 
 Not working right now, not sure why. Any ideas?
 
-    npm run docsø
+    npm run docs
+
+# How it works
+
+## Data Compiling
+
+Each transformation currently has three phases: preProcess, process, and postProcess
+
+### preProcess (copy)
+
+This is the step for actually moving data around. Copying raw data to specific areas (like values, or instanceTemplates).
+
+### process (resolve)
+
+This is where you can 'fill in' the information. Currently this is primarily used to go back over all of the types and fill
+in their definitions from the definition templates.
+
+### postProcess (validate)
+
+This is used for validation.
+
+### metadata (coming soon)
+
+This will be where you introspect values and try to prime the config with relational data to help things like
+predictive caching, and cascading effects.
 
