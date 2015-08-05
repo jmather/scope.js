@@ -1,26 +1,23 @@
 {
-  "decks": {},
-  "instanceTemplates": {
-    "collection.thing": {
-      "type": "instance-template",
-      "thing": {
-        "value": "collection.counter"
-      }
-    }
-  },
   "values": {
     "collection.things": {
       "type": "collection",
       "template": "collection.thing",
       "default": {}
     },
-    "collection.things.nextId": {
+    "collection.things.lastId": {
       "type": "counter",
-      "min": 1,
-      "default": 1
+      "min": 0,
+      "max": null,
+      "step": 1,
+      "default": 0
     },
     "collection.things.size": {
-      "type": "counter"
+      "type": "counter",
+      "min": null,
+      "max": null,
+      "step": 1,
+      "default": 0
     },
     "collection.gold": {
       "type": "counter",
@@ -124,6 +121,18 @@
         }
       },
       "default": {}
+    }
+  },
+  "decks": {},
+  "instanceTemplates": {
+    "collection.thing": {
+      "thing": {
+        "type": "pick-one",
+        "choices": [
+          "a",
+          "b"
+        ]
+      }
     }
   }
 }

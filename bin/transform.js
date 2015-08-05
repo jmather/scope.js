@@ -14,7 +14,7 @@ cli.main(function(args, options) {
     var basedir = __dirname + '/..';
     var pluginsDir = basedir + '/lib/plugins/';
 
-    var transformerModules = getTrasformerModules([pluginsDir, process.cwd() + '/lib']);
+    var transformerModules = getTrasformerModules([process.cwd() + '/lib', pluginsDir]);
 
     var transformers = _.map(transformerModules, function(TransformerClass) {
         return new TransformerClass({});

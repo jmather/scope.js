@@ -5,7 +5,7 @@
   },
   "thing": {
     "type": "instance-template",
-    "thing": { "value": "collection.counter" }
+    "thing": { "type": "pick-one", "choices": ["a", "b"] }
   },
   "things": {
     "type": "collection",
