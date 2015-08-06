@@ -1,21 +1,17 @@
 {
-  "gold": {
-    "type": "counter",
-    "default": 10
-  },
   "thing": {
-    "type": "instance-template",
+    "type": "object",
     "thing": { "type": "pick-one", "choices": ["a", "b"] }
   },
   "things": {
-    "type": "collection",
-    "template": "collection.thing"
+    "type": "list"
   },
   "scope": {
     "type": "scope",
     "choices": {
       "doSomething": {
         "instructions": [
+          { "instruction": "create", "object": "collection.thing", "value": "collection.things"}
         ]
       }
     }

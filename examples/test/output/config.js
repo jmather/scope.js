@@ -1,30 +1,24 @@
 module.exports = {
   "values": {
-    "collection.things": {
+    "collection.thing": {
       "type": "collection",
-      "template": "collection.thing",
-      "default": {}
+      "template": null,
+      "default": {},
+      "object": "collection.thing"
     },
-    "collection.things.lastId": {
+    "collection.thing.lastId": {
       "type": "counter",
       "min": 0,
       "max": null,
       "step": 1,
       "default": 0
     },
-    "collection.things.size": {
+    "collection.thing.size": {
       "type": "counter",
       "min": null,
       "max": null,
       "step": 1,
       "default": 0
-    },
-    "collection.gold": {
-      "type": "counter",
-      "min": null,
-      "max": null,
-      "step": 1,
-      "default": 10
     },
     "counter.a": {
       "type": "counter",
@@ -54,7 +48,14 @@ module.exports = {
           "type": "choice",
           "when": [],
           "notWhen": [],
-          "instructions": []
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "create",
+              "object": "collection.thing",
+              "value": "collection.things"
+            }
+          ]
         }
       },
       "default": {}
@@ -124,7 +125,7 @@ module.exports = {
     }
   },
   "decks": {},
-  "instanceTemplates": {
+  "objects": {
     "collection.thing": {
       "thing": {
         "type": "pick-one",

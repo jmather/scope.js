@@ -1,0 +1,46 @@
+{
+  "instanceTemplates": {
+    "collection.thing": {
+      "thing": {
+        "type": "pick-one",
+        "choices": [
+          "a",
+          "b"
+        ]
+      }
+    }
+  },
+  "values": {
+    "collection.things": {
+      "type": "collection",
+      "template": "collection.thing",
+      "default": {}
+    },
+    "collection.things.lastId": {
+      "type": "counter",
+      "min": 0,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "collection.things.size": {
+      "type": "counter",
+      "min": null,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "collection.scope": {
+      "type": "scope",
+      "choices": {
+        "doSomething": {
+          "type": "choice",
+          "when": [],
+          "notWhen": [],
+          "instructions": []
+        }
+      },
+      "default": {}
+    }
+  }
+}
