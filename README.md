@@ -50,6 +50,39 @@ Example command:
 
     ./bin/transform.js examples/cards-war/config examples/cards-war/output -p
 
+## Usage Details
+
+The VM will now report back more options:
+
+    $ ./bin/build-example.js test
+    // snip...
+
+    $ ./bin/vm.js
+      Not enough arguments.
+      usage: vm.js <scope> <choice>
+      Scopes:  counter.scope, entity.scope, grid.scope
+
+    $ ./bin/vm.js entity.scope
+      The command you executed requires more information.
+      {"name":"choice","type":"pick-one","choices":["doSomething"]}
+
+    $ ./bin/vm.js entity.scope doSomething -v
+      Loaded state
+      The command you executed requires more information.
+      {"name":"thing","type":"pick-one","choices":["a","b"]}
+
+    $ ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
+      Loaded state
+      The command you executed requires more information.
+      {"name":"thing","type":"pick-one","choices":["a","b"]}
+
+    $ ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
+      Loaded state
+      Changes to the data
+        entity.thing.lastId: null -> 1
+        entity.thing.size: null -> 1
+        entity.thing: null -> {"1":{"entity":"entity.thing","thing":"a"}}
+        entity.things: null -> [{"value":"entity.thing","id":1}]
 
 # QA Metrics
 
@@ -81,26 +114,28 @@ or
 
 ## Docs
 
-Not working right now, not sure why. Any ideas?
-
     npm run docs
 
 # How it works
 
 ## Data Compiling
 
-Each transformation currently has three phases: preProcess, process, and postProcess
+Each transformation currently has many phases available:
 
-### preProcess (copy)
+### init
 
-This is the step for actually moving data around. Copying raw data to specific areas (like values, or instanceTemplates).
+This is where any initial priming needs to happen (initial keys for values and entities are created here, for example).
 
-### process (resolve)
+### copy
+
+This is the step for actually moving data around. Copying raw data to specific areas (like values, or entities).
+
+### resolve
 
 This is where you can 'fill in' the information. Currently this is primarily used to go back over all of the types and fill
 in their definitions from the definition templates.
 
-### postProcess (validate)
+### validate
 
 This is used for validation.
 
@@ -108,4 +143,3 @@ This is used for validation.
 
 This will be where you introspect values and try to prime the config with relational data to help things like
 predictive caching, and cascading effects.
-
