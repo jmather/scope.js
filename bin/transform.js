@@ -9,21 +9,21 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-    var Transformer = require('json-data-transformer');
+    var Transformer = require('../lib/compiler/index');
 
     var basedir = __dirname + '/..';
     var pluginsDir = basedir + '/lib/plugins/';
 
-    var transformerModules = getTrasformerModules([process.cwd() + '/lib', pluginsDir]);
+    var transformerModules = getTrasformerModules([process.cwd() + '/lib/vm/plugins', pluginsDir]);
 
     var transformers = _.map(transformerModules, function(TransformerClass) {
         return new TransformerClass({});
     });
 
-    var transformer = new Transformer(transformers);
+    var transformer = new Transformer(transformers, ['init', 'copy', 'resolve', 'validate']);
 
     if (args.length < 2) {
-        console.error('Canot proceed because we are missing arguments.');
+        console.error('Cannot proceed because we are missing arguments.');
         printHelp();
         process.exit(1);
     }
@@ -61,6 +61,7 @@ function getTrasformerModules(paths) {
 
     _.each(paths, function(path) {
         var dirFiles = fs.readdirSync(path);
+
         _.each(dirFiles, function(file) {
             var filePath =  path + '/' + file + '/transformation';
 
@@ -87,5 +88,4 @@ function getTrasformerModules(paths) {
 
 function printHelp() {
     console.log('usage: ' + process.argv[1] + ' [-h|--help] [options] <config path> <output path>');
-
 }

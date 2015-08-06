@@ -1,6 +1,6 @@
 {
   "thing": {
-    "type": "object",
+    "type": "entity",
     "thing": { "type": "pick-one", "choices": ["a", "b"] }
   },
   "things": {
@@ -11,7 +11,7 @@
     "choices": {
       "doSomething": {
         "instructions": [
-          { "instruction": "create", "object": "collection.thing", "value": "collection.things"}
+          { "instruction": "create", "entity": "entity.thing", "listValue": "entity.things"}
         ]
       }
     }

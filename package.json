@@ -20,24 +20,22 @@
     "url": "git+https://github.com/jmather/scope.js.git"
   },
   "dependencies": {
-    "JSONSelect": "^0.4.0",
     "amdefine": "^1.0.0",
     "cli": "^0.9.0",
     "immutable": "^3.7.4",
-    "istanbul": "^0.3.17",
-    "jsc": "^0.3.11",
-    "jsdoc": "^3.3.2",
-    "jshint": "^2.8.0",
-    "jshint-full-path": "^1.1.1",
-    "json-data-transformer": "^1.0.0",
-    "plato": "^1.5.0",
     "pretty-data": "^0.40.0",
-    "sloc": "^0.1.9",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
     "mocha": "^2.2.5",
     "should": "^7.0.2",
-    "sinon": "^1.15.4"
+    "sinon": "^1.15.4",
+    "sloc": "^0.1.9",
+    "jshint": "^2.8.0",
+    "jshint-full-path": "^1.1.1",
+    "istanbul": "^0.3.17",
+    "jsc": "^0.3.11",
+    "jsdoc": "^3.3.2",
+    "plato": "^1.5.0"
   }
 }

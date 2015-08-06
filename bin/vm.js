@@ -10,29 +10,42 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-    if (args.length < 1) {
-        console.error('Not enough arguments.');
-        console.log('usage: vm.js <scope_value> <choice>');
-        process.exit(1);
-    }
-
-    var pluginPath = __dirname + '/../lib/plugins';
-    var pluginNames = fs.readdirSync(pluginPath);
+    var pluginPaths = [__dirname + '/../lib/vm/plugins', __dirname + '/../lib/plugins'];
     var plugins = [];
 
-    var pluginPaths = _.map(pluginNames, function(plugin) {
-        var pluginModulePath = pluginPath + '/' + plugin + '/index';
+    _.each(pluginPaths, function(pluginPath) {
+        var pluginNames = fs.readdirSync(pluginPath);
+        _.each(pluginNames, function(plugin) {
+            var pluginModulePath = pluginPath + '/' + plugin + '/index';
 
-        if (fs.existsSync(pluginModulePath + '.js') === false) {
-            return;
-        }
+            if (fs.existsSync(pluginModulePath + '.js') === false) {
+                return;
+            }
 
-        plugins.push(require(pluginModulePath));
+            plugins.push(require(pluginModulePath));
+        });
     });
 
     var valuePath = __dirname + '/../etc/config.json';
 
     var valueConfig = JSON.parse(fs.readFileSync(valuePath));
+
+    if (args.length < 1) {
+        console.error('Not enough arguments.');
+        console.log('usage: vm.js <scope> <choice>');
+
+        var scopes = [];
+        _.each(valueConfig.values, function(value, name) {
+            if (value.type !== 'scope') {
+                return;
+            }
+
+            scopes.push(name);
+        });
+
+        console.log('Scopes: ', scopes.join(', '));
+        process.exit(1);
+    }
 
     var statePath = __dirname + '/../state.json';
 
@@ -51,8 +64,13 @@ cli.main(function(args, options) {
         });
     }
 
+    var extraArgs = {};
+    if (args[2] !== undefined) {
+        extraArgs = JSON.parse(args[2]);
+    }
+
     try {
-        var changes = vm.execute(args[0], args[1]);
+        var changes = vm.execute(args[0], args[1], extraArgs);
 
         if (options.verbose) {
             console.log('Changes to the data');
@@ -69,6 +87,7 @@ cli.main(function(args, options) {
         } else {
             console.error('Received an error:');
             console.log(e);
+            console.log(e.stack);
         }
     }
 
