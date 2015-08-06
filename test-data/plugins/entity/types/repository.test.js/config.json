@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "entity.thing": {
+      "thing": {
+        "type": "pick-one",
+        "choices": [
+          "a",
+          "b"
+        ]
+      }
+    }
+  },
+  "values": {
+    "entity.things": {
+      "type": "list",
+      "default": []
+    },
+    "entity.thing": {
+      "type": "repository",
+      "entity": "entity.thing",
+      "default": {}
+    },
+    "entity.thing.lastId": {
+      "type": "counter",
+      "min": 0,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "entity.thing.size": {
+      "type": "counter",
+      "min": null,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "counter.scope": {
+      "type": "scope",
+      "choices": {
+        "incrementA": {
+          "type": "choice",
+          "when": [],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "counter.a",
+              "amount": 1
+            }
+          ]
+        },
+        "incrementB": {
+          "type": "choice",
+          "when": [],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "counter.b",
+              "amount": 1
+            }
+          ]
+        },
+        "incrementBoth": {
+          "type": "choice",
+          "when": [],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "counter.a",
+              "amount": 1
+            },
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "value": "counter.b",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "default": {}
+    }
+  }
+}
