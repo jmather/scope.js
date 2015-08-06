@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plugins/counter/types/counter.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plugins/counter/types/counter.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
+define(['underscore', '../definitions/counter', '../transformations/counter'], function (_, definition, transformation) {
+    /**
+     *
+     * @param {string} name
+     * @param {{max: integer, min: integer, step: integer, default: integer}} config
+     * @param {ValueManager} valueManager
+     * @exports CounterType
+     * @constructor
+     */
+    function CounterType(name, config, valueManager) {
+        this.config = config;
+        this.name = name;
+        this.valueManager = valueManager;
+    }
+
+
+    CounterType.definition = definition;
+    CounterType.transformation = transformation;
+
+    /**
+     *
+     * @param {number} [amount]
+     */
+    CounterType.prototype.increment = function(amount) {
+        var currentValue = this.getValue();
+
+        if (amount === undefined) {
+            amount = this.config.step;
+        }
+
+        var newValue = currentValue + amount;
+
+        if (isAboveMax.call(this, newValue)) {
+            throw new Error('Counter limit hit: ' + currentValue + ' + ' + amount + ' > ' + this.config.max);
+        }
+
+        setValue.call(this, newValue);
+
+        return newValue;
+    };
+
+    /**
+     *
+     * @param {number} [amount]
+     */
+    CounterType.prototype.decrement = function(amount) {
+        var currentValue = this.getValue();
+
+        if (amount === undefined) {
+            amount = this.config.step;
+        }
+
+        var newValue = currentValue - amount;
+
+        if (isBelowMin.call(this, newValue)) {
+            throw new Error('Counter limit hit: ' + currentValue + ' - ' + amount + ' &lt; ' + this.config.min);
+        }
+
+        setValue.call(this, newValue);
+
+        return newValue;
+    };
+
+    /**
+     * @return {number}
+     */
+    CounterType.prototype.getValue = function() {
+        return this.valueManager.getData(this.name, this.config.default);
+    };
+
+    /**
+     *
+     * @param {string} value
+     * @returns {*}
+     */
+    CounterType.prototype.setValue = function(value) {
+        if (isAboveMax.call(this, value) || isBelowMin.call(this, value)) {
+            throw new Error('Value is out of bounds: ' + JSON.stringify({min: this.config.min, max: this.config.max}));
+        }
+
+        return setValue.call(this, value);
+    };
+
+    /**
+     *
+     * @param {number} value
+     * @returns {*}
+     */
+    function setValue(value) {
+        return this.valueManager.setData(this.name, value);
+    }
+
+    /**
+     *
+     * @param {number} value
+     * @returns {boolean}
+     */
+    function isBelowMin(value) {
+        return (this.config.min !== null &amp;&amp; value &lt; this.config.min);
+    }
+
+    /**
+     *
+     * @param {number} value
+     * @returns {boolean}
+     */
+    function isAboveMax(value) {
+        return (this.config.max !== null &amp;&amp; value > this.config.max);
+    }
+
+    return CounterType;
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Thu Aug 06 2015 13:12:54 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

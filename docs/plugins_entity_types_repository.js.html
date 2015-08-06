@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plugins/entity/types/repository.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plugins/entity/types/repository.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>if (typeof define !== 'function') { var define = require('amdefine')(module); }
+
+define(['underscore', '../definitions/repository', '../transformations/repository'], function (_, definition, transformation) {
+    /**
+     *
+     * @param {string} name
+     * @param {{max: integer, min: integer, step: integer, default: integer}} config
+     * @param {ValueManager} valueManager
+     * @exports EntityRepositoryType
+     * @constructor
+     */
+    function RepositoryType(name, config, valueManager) {
+        this.config = config;
+        this.name = name;
+        this.lastId = this.name + '.lastId';
+        this.size = this.name + '.size';
+        this.valueManager = valueManager;
+    }
+
+    RepositoryType.definition = definition;
+    RepositoryType.transformation = transformation;
+
+    /**
+     *
+     * @returns {string}
+     */
+    RepositoryType.prototype.getEntityName = function() {
+        return this.config.entity;
+    };
+
+    /**
+     *
+     * @param {*} entity
+     * @returns {{value: (string), id: {integer}}}
+     */
+    RepositoryType.prototype.insert = function(entity) {
+        var lastId = this.valueManager.get(this.lastId);
+        var size = this.valueManager.get(this.size);
+
+        var repository = this.getValue();
+
+        lastId.increment();
+        size.increment();
+        var record = { "value": this.name, "id": lastId.getValue() };
+        repository[record.id] = entity;
+        this.setValue(repository);
+
+        return record;
+    };
+
+    /**
+     *
+     * @param {{value: string, id: integer}} reference
+     */
+    RepositoryType.prototype.removeByReference = function(reference) {
+        if (reference.value !== this.name) {
+            throw new Error("Passed reference is for repository " + reference.value + " not " + this.name);
+        }
+
+        this.removeById(reference.id);
+    };
+
+    /**
+     *
+     * @param {integer} id
+     */
+    RepositoryType.prototype.removeById = function(id) {
+        var size = this.valueManager.get(this.size);
+
+        var repository = this.getValue();
+
+        if (repository[id] === undefined) {
+            throw new Error(id + ' does not exist in repository ' + this.name);
+        }
+
+        delete repository[id];
+
+        this.setValue(repository);
+        size.decrement();
+    };
+
+    /**
+     *
+     * @param {*} entity
+     */
+    RepositoryType.prototype.removeByEntity = function(entity) {
+        var repository = this.getValue();
+
+        var id = null;
+        _.each(repository, function(value, index) {
+            if (value === object) {
+                id = entity;
+            }
+        });
+
+        if (id === null) {
+            throw new Error("Could not find passed entity in repository " + this.name);
+        }
+
+        this.removeById(id);
+    };
+
+    /**
+     * @return {number}
+     */
+    RepositoryType.prototype.getValue = function() {
+        return this.valueManager.getData(this.name, this.config.default);
+    };
+
+    /**
+     *
+     * @param {string} value
+     * @returns {*}
+     */
+    RepositoryType.prototype.setValue = function(value) {
+        return this.valueManager.setData(this.name, value);
+    };
+
+    return RepositoryType;
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Thu Aug 06 2015 13:12:54 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
