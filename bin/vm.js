@@ -26,9 +26,9 @@ cli.main(function(args, options) {
         });
     });
 
-    var valuePath = __dirname + '/../etc/config.json';
+    var valuePath = '../build/config';
 
-    var valueConfig = JSON.parse(fs.readFileSync(valuePath));
+    var valueConfig = require(valuePath);
 
     if (args.length < 1) {
         console.error('Not enough arguments.');
@@ -47,9 +47,9 @@ cli.main(function(args, options) {
         process.exit(1);
     }
 
-    var statePath = __dirname + '/../state.json';
+    var statePath = '../build/state';
 
-    var state = (fs.existsSync(statePath)) ? JSON.parse(fs.readFileSync(statePath)) : {};
+    var state = (fs.existsSync(__dirname + '/' + statePath + '.js')) ? require(statePath) : {};
 
     var VM = require(__dirname + '/../lib/vm/index');
 
@@ -91,6 +91,6 @@ cli.main(function(args, options) {
         }
     }
 
-    fs.writeFileSync(statePath, JSON.stringify(vm.valueManager.dataManager.data.toJS()));
+    fs.writeFileSync(__dirname + '/' + statePath + '.js', 'module.exports = ' + JSON.stringify(vm.valueManager.dataManager.data.toJS()) + ';');
 });
 

@@ -43,9 +43,9 @@ cli.main(function(args, options) {
             console.error('error: ' + error);
         }
 
-        var etcPath = __dirname + '/../etc';
+        var buildPath = __dirname + '/../build';
 
-        child = exec("cp " + outputPath + '/config.json ' + etcPath + '/config.json', function (error, stdout, stderr) {
+        child = exec("cp " + outputPath + '/config.js ' + buildPath + '/config.js', function (error, stdout, stderr) {
             console.log(stdout);
 
             if (stderr) {

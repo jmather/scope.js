@@ -1,0 +1,27 @@
+{
+  "name": "scope.js",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jmather/scope.js",
+  "authors": [
+    "Jacob Mather <jmather@jmather.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "immutable": "~3.7.4",
+    "underscore": "~1.8.3",
+    "react": "~0.13.3",
+    "flux": "~2.0.2"
+  }
+}
