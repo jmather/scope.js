@@ -135,7 +135,22 @@ module.exports = {
         "scopes": [
           {
             "value": "counter.scope",
-            "title": "Counters"
+            "title": "Counters",
+            "display": [
+              {
+                "value": "counter.a",
+                "title": "A"
+              },
+              {
+                "value": "counter.b",
+                "title": "B"
+              }
+            ],
+            "commandMap": {
+              "incrementA": "Increment A",
+              "incrementB": "Increment B",
+              "incrementBoth": "Increment Both"
+            }
           },
           {
             "value": "entity.scope",

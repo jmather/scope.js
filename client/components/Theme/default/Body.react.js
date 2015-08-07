@@ -6,8 +6,8 @@ var Body = React.createClass({
      */
     render: function() {
         return (
-            <div class="container-fluid">
-                <div class="row">
+            <div className="container-fluid">
+                <div className="row">
                     {this.props.children}
                 </div>
             </div>

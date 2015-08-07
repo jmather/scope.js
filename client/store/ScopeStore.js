@@ -7,6 +7,9 @@ var vm = require('./ScopeStore/VM');
 
 var CHANGE_EVENT = 'change';
 
+/**
+ * @exports ScopeStore
+ */
 var ScopeStore = assign({}, EventEmitter.prototype, {
 
     getCommandsForScope: function(scope) {
@@ -19,6 +22,26 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
 
             return [];
         }
+    },
+
+    /**
+     *
+     * @param {*} value
+     */
+    getValue: function(value) {
+        return vm.getValue(value);
+    },
+
+    /**
+     *
+     * @param scope
+     * @param command
+     * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
+     */
+    execute: function(scope, command) {
+        var changes = vm.execute(scope, command);
+        this.emitChange();
+        return changes;
     },
 
     emitChange: function() {
