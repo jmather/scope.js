@@ -1,13 +1,12 @@
 var React = require('react');
 
-var ScopeStore = require('../store/ScopeStore');
+var Scope = require('./Scope.react');
 
 /**
  * Retrieve the current data from the scope
  */
 function getScopeState() {
     return {
-        scopes: ScopeStore.getCommandsForScope('counter.scope')
     };
 }
 
@@ -22,7 +21,7 @@ var ScopeJSClient = React.createClass({
     render: function() {
         return (
             <div>
-                Hello!
+                <Scope/>
             </div>
         );
     },

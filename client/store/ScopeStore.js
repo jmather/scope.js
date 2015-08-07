@@ -13,7 +13,7 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
         try {
             vm.execute(scope);
         } catch (e) {
-            console.log(e);
+            return e.questions[0].choices;
         }
     },
 
