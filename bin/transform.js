@@ -20,7 +20,7 @@ cli.main(function(args, options) {
         return new TransformerClass({});
     });
 
-    var transformer = new Transformer(transformers, ['init', 'copy', 'resolve', 'validate']);
+    var transformer = new Transformer(transformers, ['init', 'copy', 'resolve', 'validate', 'metadata']);
 
     if (args.length < 2) {
         console.error('Cannot proceed because we are missing arguments.');

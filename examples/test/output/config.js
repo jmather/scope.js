@@ -128,6 +128,27 @@ module.exports = {
     }
   },
   "decks": {},
+  "client": {
+    "views": {
+      "client.views.home": {
+        "type": "view",
+        "scopes": [
+          {
+            "value": "counter.scope",
+            "title": "Counters"
+          },
+          {
+            "value": "entity.scope",
+            "title": "Entities"
+          },
+          {
+            "value": "grid.scope",
+            "title": "Grids"
+          }
+        ]
+      }
+    }
+  },
   "entities": {
     "entity.thing": {
       "thing": {
@@ -139,6 +160,11 @@ module.exports = {
       }
     }
   },
+  "scopes": [
+    "counter.scope",
+    "entity.scope",
+    "grid.scope"
+  ],
   "plugins": [
     "scope-plugin-core",
     "scope-plugin-counter",

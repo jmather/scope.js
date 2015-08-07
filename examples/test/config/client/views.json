@@ -1,0 +1,10 @@
+{
+  "home": {
+    "type": "view",
+    "scopes": [
+      { "value": "counter.scope", "title": "Counters" },
+      { "value": "entity.scope", "title": "Entities" },
+      { "value": "grid.scope", "title": "Grids" }
+    ]
+  }
+}

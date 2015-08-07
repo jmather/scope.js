@@ -12,16 +12,35 @@ function getScopeState() {
 
 var ScopeJSClient = React.createClass({
     getInitialState: function() {
-        return getScopeState();
+        var state = getScopeState();
+        state.view = 'client.views.home';
+        state.theme = 'default';
+
+        return state;
     },
 
     /**
      * @return {object}
      */
     render: function() {
+        var Header = require('./Theme/default/Header.react');
+        var Body = require('./Theme/default/Body.react');
+
+        var view = this.props.config.client.views[this.state.view];
+
+        var scopes = [];
+
+        for (var i = 0; i < view.scopes.length; i++) {
+            scopes.push(<Scope key={view.scopes[i].value} config={this.props.config} view={view.scopes[i]} />);
+        }
+
         return (
-            <div>
-                <Scope/>
+
+            <div className="container">
+                <Header />
+                <Body>
+                    {scopes}
+                </Body>
             </div>
         );
     },
