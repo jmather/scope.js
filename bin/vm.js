@@ -10,22 +10,6 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-    var pluginPaths = [__dirname + '/../lib/vm/plugins', __dirname + '/../lib/plugins'];
-    var plugins = [];
-
-    _.each(pluginPaths, function(pluginPath) {
-        var pluginNames = fs.readdirSync(pluginPath);
-        _.each(pluginNames, function(plugin) {
-            var pluginModulePath = pluginPath + '/' + plugin + '/index';
-
-            if (fs.existsSync(pluginModulePath + '.js') === false) {
-                return;
-            }
-
-            plugins.push(require(pluginModulePath));
-        });
-    });
-
     var valuePath = '../build/config';
 
     var valueConfig = require(valuePath);
@@ -46,6 +30,10 @@ cli.main(function(args, options) {
         console.log('Scopes: ', scopes.join(', '));
         process.exit(1);
     }
+
+    var plugins = _.map(valueConfig.plugins, function(plugin) {
+        return require(plugin);
+    });
 
     var statePath = '../build/state';
 

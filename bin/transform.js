@@ -12,7 +12,7 @@ cli.main(function(args, options) {
     var Transformer = require('../lib/compiler/index');
 
     var basedir = __dirname + '/..';
-    var pluginsDir = basedir + '/lib/plugins/';
+    var pluginsDir = basedir + '/lib/plugins';
 
     var transformerModules = getTrasformerModules([process.cwd() + '/lib/vm/plugins', pluginsDir]);
 
@@ -34,6 +34,8 @@ cli.main(function(args, options) {
     var data = Transformer.loadData([options.configPath]);
 
     var compiledData = transformer.transform(data);
+
+    compiledData.plugins = getPlugins([process.cwd() + '/lib/vm/plugins', pluginsDir]);
 
     var output = JSON.stringify(compiledData);
 
@@ -84,6 +86,28 @@ function getTrasformerModules(paths) {
     });
 
     return transformers;
+}
+
+/**
+ *
+ * @param {Array.<string>} paths
+ */
+function getPlugins(paths) {
+    var plugins = [];
+
+    _.each(paths, function(path) {
+        var dirFiles = fs.readdirSync(path);
+
+        _.each(dirFiles, function(file) {
+            var filePath =  path + '/' + file + '/index';
+
+            if (fs.existsSync(filePath + '.js')) {
+                plugins.push('scope-plugin-' + file);
+            }
+        });
+    });
+
+    return plugins;
 }
 
 function printHelp() {

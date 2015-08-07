@@ -138,5 +138,12 @@ module.exports = {
         ]
       }
     }
-  }
+  },
+  "plugins": [
+    "scope-plugin-core",
+    "scope-plugin-counter",
+    "scope-plugin-entity",
+    "scope-plugin-grid",
+    "scope-plugin-scope"
+  ]
 };
