@@ -12,7 +12,9 @@
     "docs": "jsdoc -r lib/ -d docs && open docs/index.html",
     "lint": "jshint -c jshint.json lib --reporter=./node_modules/jshint-full-path/index.js",
     "complexity": "rm -rf complexity && mkdir complexity && plato -r -d complexity lib && open complexity/index.html",
-    "complexity-simple": "rm -rf complexity.* && find lib/ | grep .js | xargs ./node_modules/.bin/jsc --report complexity.json"
+    "complexity-simple": "rm -rf complexity.* && find lib/ | grep .js | xargs ./node_modules/.bin/jsc --report complexity.json",
+    "watch": "./bin/watch-js.sh",
+    "build": "./bin/compile-js.sh"
   },
   "author": "Jacob Mather",
   "license": "MIT",

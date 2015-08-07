@@ -7,6 +7,7 @@ var ScopeStore = require('../store/ScopeStore');
  */
 function getScopeState() {
     return {
+        scopes: ScopeStore.getCommandsForScope('counter.scope')
     };
 }
 

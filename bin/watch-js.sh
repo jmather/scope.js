@@ -8,7 +8,6 @@ BASEDIR=`pwd`
 PLUGIN_DIRS='lib/vm/plugins lib/plugins'
 PLUGINS=""
 
-
 for PLUGIN_DIR in $PLUGIN_DIRS
 do
     PLUGINS_IN_DIR=`ls -1 $PLUGIN_DIR`
@@ -16,7 +15,7 @@ do
     do
         if [ -f $PLUGIN_DIR/$PLUGIN/index.js ]
         then
-            PLUGINS="$PLUGINS $PLUGIN_DIR/$PLUGIN/index.js"
+            PLUGINS="$PLUGINS -r scope-plugin-$PLUGIN"
         fi
     done
 done
