@@ -3,7 +3,11 @@ var EventEmitter = require('events').EventEmitter;
 var ScopeConstants = require('../constants/ScopeConstants');
 var assign = require('object-assign');
 
-var vm = require('./ScopeStore/VM');
+var valueConfig = require('../../build/config');
+
+var vmBuilder = require('./ScopeStore/VM');
+
+var vm = vmBuilder.build({}, valueConfig);
 
 var CHANGE_EVENT = 'change';
 
@@ -11,6 +15,14 @@ var CHANGE_EVENT = 'change';
  * @exports ScopeStore
  */
 var ScopeStore = assign({}, EventEmitter.prototype, {
+    config: valueConfig,
+    state: {},
+
+    replaceVMConfig: function(config) {
+        this.config = config;
+        this.state = vm.valueManager.dataManager.data.toJS();
+        vm = vmBuilder(this.state, this.config);
+    },
 
     getCommandsForScope: function(scope) {
         try {

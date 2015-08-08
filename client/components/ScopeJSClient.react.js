@@ -19,7 +19,6 @@ var ScopeJSClient = React.createClass({
     },
 
     changeView: function(view) {
-        console.log('change view', view);
         this.setState({view: view});
     },
 

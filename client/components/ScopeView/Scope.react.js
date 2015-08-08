@@ -15,7 +15,6 @@ function getState(display) {
         results[val.value] = ScopeStore.getValue(val.value);
     });
 
-    console.log('set state', results);
     return results;
 }
 
@@ -38,7 +37,7 @@ var Scope = React.createClass({
     render: function() {
         var commands = ScopeStore.getCommandsForScope(this.props.view.value);
         var info = [];
-        console.log('state', this.state);
+
         if (this.props.view.display !== undefined) {
             _.each(this.props.view.display, function(val) {
                 info.push(<div key={val.value}><strong>{val.title}:</strong> {this.state[val.value]}</div>);
