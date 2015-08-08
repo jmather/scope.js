@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Scope = require('./Scope.react');
+var Scope = require('./ScopeView/Scope.react.js');
 
 /**
  * Retrieve the current data from the scope
@@ -15,8 +15,12 @@ var ScopeJSClient = React.createClass({
         var state = getScopeState();
         state.view = 'client.views.home';
         state.theme = 'default';
-
         return state;
+    },
+
+    changeView: function(view) {
+        console.log('change view', view);
+        this.setState({view: view});
     },
 
     /**
@@ -28,18 +32,27 @@ var ScopeJSClient = React.createClass({
 
         var view = this.props.config.client.views[this.state.view];
 
-        var scopes = [];
+        var content = null;
 
-        for (var i = 0; i < view.scopes.length; i++) {
-            scopes.push(<Scope key={view.scopes[i].value} config={this.props.config} view={view.scopes[i]} />);
+        // @TODO This should be cleaned up to use input from this.props.config.client
+        if (this.state.view == 'client.views.home') {
+            var ScopeView = require('./ScopeView.react');
+            content = <ScopeView view={view} config={this.props.config} />;
+        } else if (this.state.view == 'client.views.config') {
+            var TypesView = require('./TypesView.react');
+            content = <TypesView view={view} />
         }
+
+        var ContentHeader = require('./Header.react');
 
         return (
 
             <div className="container">
-                <Header />
+                <Header brand="Scope.js">
+                    <ContentHeader changeView={this.changeView} views={this.props.config.client.views} view={this.state.view} />
+                </Header>
                 <Body>
-                    {scopes}
+                    {content}
                 </Body>
             </div>
         );

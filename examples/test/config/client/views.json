@@ -18,5 +18,8 @@
       { "value": "entity.scope", "title": "Entities" },
       { "value": "grid.scope", "title": "Grids" }
     ]
+  },
+  "config": {
+    "type": "view"
   }
 }

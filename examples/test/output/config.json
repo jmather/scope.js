@@ -161,6 +161,9 @@
             "title": "Grids"
           }
         ]
+      },
+      "client.views.config": {
+        "type": "view"
       }
     }
   },

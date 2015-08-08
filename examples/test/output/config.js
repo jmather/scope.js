@@ -161,6 +161,9 @@ module.exports = {
             "title": "Grids"
           }
         ]
+      },
+      "client.views.config": {
+        "type": "view"
       }
     }
   },

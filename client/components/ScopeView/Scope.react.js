@@ -1,9 +1,9 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../store/ScopeStore');
+var ScopeStore = require('../../store/ScopeStore');
 
-var ButtonGroup = require('./Scope/ButtonGroup.react');
+var ButtonGroup = require('./ButtonGroup.react.js');
 
 function getState(display) {
     var results = {};

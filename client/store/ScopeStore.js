@@ -26,6 +26,22 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
 
     /**
      *
+     * @return {*}
+     */
+    getValueDefinitions: function() {
+        return vm.getValueDefinitions();
+    },
+
+    /**
+     *
+     * @return {*}
+     */
+    getValueDefinitionNames: function() {
+        return _.keys(vm.getValueDefinitions());
+    },
+
+    /**
+     *
      * @param {*} value
      */
     getValue: function(value) {
