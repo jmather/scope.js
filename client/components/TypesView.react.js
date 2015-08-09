@@ -37,8 +37,11 @@ var TypeEditor = React.createClass({
 
     },
 
-    save: function(value) {
-
+    doSave: function(value) {
+        var definitions = _.clone(this.state.definitions);
+        definitions[this.state.section][this.state.value] = value;
+        ScopeStore.replaceVMConfig(definitions);
+        this.setState({definitions: definitions});
     },
 
     /**
@@ -91,14 +94,14 @@ var TypeEditor = React.createClass({
                     </div>
                 </div>
                 <div className="col-xs-8">
-                    <TypeEditor key={editorKey} name={this.state.value} section={this.state.section} doSave={this.save} content={editorContent} />
+                    <TypeEditor key={editorKey} name={this.state.value} section={this.state.section} doSave={this.doSave} content={editorContent} />
                 </div>
             </div>
         );
     },
 
     /**
-     * Event handler for 'change' events coming from the TodoStore
+     * Event handler for 'change' events coming from the ScopeStore
      */
     _onChange: function() {
         this.setState(getState(this.props.view.display));

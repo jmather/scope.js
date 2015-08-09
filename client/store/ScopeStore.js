@@ -21,7 +21,8 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
     replaceVMConfig: function(config) {
         this.config = config;
         this.state = vm.valueManager.dataManager.data.toJS();
-        vm = vmBuilder(this.state, this.config);
+        vm = vmBuilder.build(this.state, this.config);
+        this.emitChange();
     },
 
     getCommandsForScope: function(scope) {

@@ -4,17 +4,10 @@ module.exports = {
       "type": "list",
       "default": []
     },
-    "counter.a": {
+    "counter.min0max10": {
       "type": "counter",
-      "min": null,
-      "max": null,
-      "step": 1,
-      "default": 0
-    },
-    "counter.b": {
-      "type": "counter",
-      "min": null,
-      "max": null,
+      "min": 0,
+      "max": 10,
       "step": 1,
       "default": 0
     },
@@ -47,7 +40,7 @@ module.exports = {
     "counter.scope": {
       "type": "scope",
       "choices": {
-        "incrementA": {
+        "increment": {
           "type": "choice",
           "when": [],
           "notWhen": [],
@@ -55,39 +48,20 @@ module.exports = {
             {
               "type": "instruction",
               "instruction": "increment",
-              "value": "counter.a",
+              "value": "counter.min0max10",
               "amount": 1
             }
           ]
         },
-        "incrementB": {
+        "decrement": {
           "type": "choice",
           "when": [],
           "notWhen": [],
           "instructions": [
             {
               "type": "instruction",
-              "instruction": "increment",
-              "value": "counter.b",
-              "amount": 1
-            }
-          ]
-        },
-        "incrementBoth": {
-          "type": "choice",
-          "when": [],
-          "notWhen": [],
-          "instructions": [
-            {
-              "type": "instruction",
-              "instruction": "increment",
-              "value": "counter.a",
-              "amount": 1
-            },
-            {
-              "type": "instruction",
-              "instruction": "increment",
-              "value": "counter.b",
+              "instruction": "decrement",
+              "value": "counter.min0max10",
               "amount": 1
             }
           ]
@@ -131,6 +105,7 @@ module.exports = {
   "client": {
     "views": {
       "client.views.home": {
+        "title": "Home",
         "type": "view",
         "scopes": [
           {
@@ -138,23 +113,24 @@ module.exports = {
             "title": "Counters",
             "display": [
               {
-                "value": "counter.a",
-                "title": "A"
-              },
-              {
-                "value": "counter.b",
-                "title": "B"
+                "value": "counter.min0max10",
+                "title": "Min 0 Max 10"
               }
             ],
             "commandMap": {
-              "incrementA": "Increment A",
-              "incrementB": "Increment B",
-              "incrementBoth": "Increment Both"
+              "increment": "Increment",
+              "decrement": "Decrement"
             }
           },
           {
             "value": "entity.scope",
-            "title": "Entities"
+            "title": "Entities",
+            "display": [
+              {
+                "value": "entity.thing.size",
+                "title": "Number of Things"
+              }
+            ]
           },
           {
             "value": "grid.scope",
@@ -163,6 +139,7 @@ module.exports = {
         ]
       },
       "client.views.config": {
+        "title": "Config",
         "type": "view"
       }
     }

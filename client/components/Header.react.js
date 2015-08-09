@@ -15,7 +15,7 @@ var Header = React.createClass({
 
         _.each(this.props.views, function(view, name) {
             var activeClass = (this.props.view === name) ? 'active': '';
-            links.push(<li key={name} className={activeClass}><a href="#" className="btn" data-name={name} onClick={this.changeView}>{name}</a></li>);
+            links.push(<li key={name} className={activeClass}><a href="#" className="btn" data-name={name} onClick={this.changeView}>{view.title}</a></li>);
         }.bind(this));
 
         return (

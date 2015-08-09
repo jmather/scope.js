@@ -19,7 +19,7 @@ var TypeEditor = React.createClass({
     },
 
     doSave: function(e) {
-        this.props.save(this.state.value);
+        this.props.doSave(JSON.parse(this.state.value));
     },
 
     /**
