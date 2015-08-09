@@ -143,3 +143,62 @@ This is used for validation.
 
 This will be where you introspect values and try to prime the config with relational data to help things like
 predictive caching, and cascading effects.
+
+## The VM
+
+The VM is built as follows:
+
+### DataManager
+
+The data manager handles all concerns about storing and maintaining the underlying user that powers the system.
+
+This is the "state" of the system.
+
+Every time you execute an action, the VM creates a copy of this data. If the action is successful (meaning no
+exceptions are thrown), then that state is promoted to the new true state of the VM.
+
+### InputManager
+
+This is the gateway for pulling in data from the outside world, used by the Instruction Executioner.
+
+It is primed by the VM via the input passed in from the third parameter, and then used by the Instruction Executioner
+when building the arguments to pass to an instruction.
+
+### QuestionManager
+
+The yin to the InputManager's yang - the question manager provides a way to build and throw a list of questions back to
+the edge of the VM. This is used to expose options for scope commands.
+
+### TimeManager
+
+This encapsulates time concerns in the system. Evetually this will have a way to map various views of the current time,
+such as 'end of current day', 'beginning of week', and similar.
+
+### TypeManager
+
+Acting as the storage location of all the type data for our system.
+
+### ValueManager
+
+This manages all the stateful values in the system. Values are instances of types, backed by a specific configuration.
+
+### InstructionExecutor
+
+This handles reading in plugin instructions, and executing instructions.
+
+We use reflection to introspect the names of the arguments required for an instruction, and then look for the answer like so:
+
+1. Check the instruction object we are executing
+2. Ask the input manager
+3. Use the question manager to send the list of questions out to the edge of the VM
+
+### Config
+
+Config manages to hide much of the wiring information nicely for these classes above.
+
+All you really need to start a VM is the current _state_, a value _config_, and the _plugins_ to use.
+
+    var VM = require('scope-vm');
+    var config = new VM.Config(state, config, plugins);
+    var vm = new VM(config);
+
