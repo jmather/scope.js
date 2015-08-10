@@ -5,6 +5,8 @@ var ScopeStore = require('../../store/ScopeStore');
 
 var ButtonGroup = require('./ButtonGroup.react.js');
 
+var DisplayCounter = require('./Display/Counter.react');
+
 function getState(display) {
     var results = {};
     if (display === undefined) {
@@ -36,12 +38,11 @@ var Scope = React.createClass({
      */
     render: function() {
         var commands = ScopeStore.getCommandsForScope(this.props.view.value);
-        console.log('commands', commands);
         var info = [];
 
         if (this.props.view.display !== undefined) {
             _.each(this.props.view.display, function(val) {
-                info.push(<div key={val.value}><strong>{val.title}:</strong> {this.state[val.value]}</div>);
+                info.push(buildTagForValue(val, this.state[val.value]))
             }.bind(this));
         }
         return (
@@ -49,7 +50,7 @@ var Scope = React.createClass({
                 <div className="panel panel-default">
                     <div className="panel-heading">{this.props.view.title}</div>
                     <div className="panel-body">{info}</div>
-                    <ButtonGroup view={this.props.view} commands={commands} />
+                    <ButtonGroup view={this.props.view} commands={commands} onQuestion={this.props.onQuestion} />
                 </div>
             </div>
         );
@@ -62,5 +63,15 @@ var Scope = React.createClass({
         this.setState(getState(this.props.view.display));
     }
 });
+
+
+function buildTagForValue(val, renderedValue) {
+    var type = ScopeStore.getValueDefinition(val.value).type;
+
+    switch(type) {
+        case 'counter':
+            return <DisplayCounter key={val.value} title={val.title} value={renderedValue} />;
+    }
+}
 
 module.exports = Scope;

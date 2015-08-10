@@ -5,8 +5,17 @@ var BootstrapButton = require('react-bootstrap').Button;
 var ScopeStore = require('../../store/ScopeStore');
 
 var Button = React.createClass({
-    handleClick: function() {
-        ScopeStore.execute(this.props.scope, this.props.command);
+    handleClick: function(event) {
+        try {
+            ScopeStore.execute(this.props.scope, this.props.command);
+        } catch (e) {
+            if (e.questions !== undefined) {
+                this.props.onQuestion(event, e.questions);
+                return;
+            }
+
+            throw e;
+        }
     },
     /**
      * @return {object}

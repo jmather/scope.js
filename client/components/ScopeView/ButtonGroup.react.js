@@ -12,7 +12,7 @@ var ButtonGroup = React.createClass({
 
         _.each(this.props.commands, function(command) {
             var label = (this.props.view.commandMap && this.props.view.commandMap[command]) ? this.props.view.commandMap[command] : command;
-            buttons.push(<Button key={command} scope={this.props.view.value} command={command} label={label} />)
+            buttons.push(<Button key={command} scope={this.props.view.value} command={command} label={label} onQuestion={this.props.onQuestion} />)
         }.bind(this));
 
         return (

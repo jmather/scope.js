@@ -7,8 +7,6 @@ var ButtonGroup = require('../ScopeView/ButtonGroup.react.js');
 
 var TypeEditor = React.createClass({
     getInitialState: function() {
-        console.log('initial state', this.props);
-
         return {
             value: require('pretty-data').pd.json(this.props.content)
         };
