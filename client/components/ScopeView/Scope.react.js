@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../../store/ScopeStore');
+var ScopeStore = require('../../store/VMStore');
 
 var ButtonGroup = require('./ButtonGroup.react.js');
 
@@ -18,7 +18,6 @@ function getState(display) {
         results[val.value] = ScopeStore.getValue(val.value);
     });
 
-    console.log(results);
     return results;
 }
 
@@ -39,6 +38,7 @@ var Scope = React.createClass({
      * @return {object}
      */
     render: function() {
+        console.log(this.props);
         var commands = ScopeStore.getCommandsForScope(this.props.view.value);
         var info = [];
 

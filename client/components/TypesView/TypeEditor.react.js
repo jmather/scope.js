@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../../store/ScopeStore');
+var ScopeStore = require('../../store/VMStore');
 
 var ButtonGroup = require('../ScopeView/ButtonGroup.react.js');
 
@@ -26,8 +26,6 @@ var TypeEditor = React.createClass({
      * @return {object}
      */
     render: function() {
-        console.log('state', this.state, this.props)
-
         if (this.props.content === undefined) {
             return (<div>Select a value to edit.</div>);
         }
@@ -41,8 +39,6 @@ var TypeEditor = React.createClass({
         }
 
         var value = this.state.value;
-
-        console.log('value', value);
 
         return (
             <div className="panel panel-default">

@@ -1,21 +1,18 @@
 var React = require('react');
+var VMActions = require('../constants/VMConstants').actionTypes;
+
+var DefaultTheme = require('./Theme/default/index');
+var VMStore = require('../store/VMStore');
 
 var Scope = require('./ScopeView/Scope.react.js');
 
-/**
- * Retrieve the current data from the scope
- */
-function getScopeState() {
-    return {
-    };
-}
-
 var ScopeJSClient = React.createClass({
     getInitialState: function() {
-        var state = getScopeState();
-        state.view = this.props.config.client.defaultView;
-        state.theme = 'default';
-        return state;
+        return {
+            view: false,
+            theme: 'default',
+            initialized: false
+        };
     },
 
     changeView: function(view) {
@@ -26,17 +23,18 @@ var ScopeJSClient = React.createClass({
      * @return {object}
      */
     render: function() {
-        var Header = require('./Theme/default/Header.react');
-        var Body = require('./Theme/default/Body.react');
+        if (this.state.initialized === false) {
+            return this.renderWaiting();
+        }
 
-        var view = this.props.config.client.views[this.state.view];
+        var view = this.state.config.views[this.state.view];
 
         var content = null;
 
         // @TODO This should be cleaned up to use input from this.props.config.client
         if (this.state.view == 'client.views.home') {
             var ScopeView = require('./ScopeView.react');
-            content = <ScopeView view={view} config={this.props.config} />;
+            content = <ScopeView view={view} />;
         } else if (this.state.view == 'client.views.config') {
             var TypesView = require('./TypesView.react');
             content = <TypesView view={view} />
@@ -49,22 +47,47 @@ var ScopeJSClient = React.createClass({
 
         return (
 
-            <div className="container">
-                <Header brand="Scope.js">
-                    <ContentHeader changeView={this.changeView} views={this.props.config.client.views} view={this.state.view} />
-                </Header>
-                <Body>
+            <DefaultTheme.Wrapper className="container">
+                <DefaultTheme.Header brand="Scope.js">
+                    <ContentHeader changeView={this.changeView} views={this.state.config.views} view={this.state.view} />
+                </DefaultTheme.Header>
+                <DefaultTheme.Body>
                     {content}
-                </Body>
-            </div>
+                </DefaultTheme.Body>
+            </DefaultTheme.Wrapper>
         );
+    },
+
+    renderWaiting: function() {
+        return (
+
+            <DefaultTheme.Wrapper className="container">
+                <DefaultTheme.Header brand="Scope.js" />
+                <DefaultTheme.Body>
+                    Loading engine...
+                </DefaultTheme.Body>
+            </DefaultTheme.Wrapper>
+        );
+    },
+
+    componentDidMount: function() {
+        VMStore.addInitListener(this._onInit);
+    },
+
+    componentWillUnmount: function() {
+        VMStore.removeInitListener(this._onInit);
     },
 
     /**
      * Event handler for 'change' events coming from the TodoStore
      */
-    _onChange: function() {
-        this.setState(getScopeState());
+    _onInit: function() {
+        var config = VMStore.getConfigCategory('client');
+        this.setState({
+            config: config,
+            initialized: true,
+            view: this.state.view || config.defaultView
+        });
     }
 
 });

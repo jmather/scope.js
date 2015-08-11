@@ -2,7 +2,7 @@ var React = require('react');
 var _ = require('underscore');
 
 var Scope = require('./ScopeView/Scope.react.js');
-var ScopeStore = require('../store/ScopeStore');
+var VMStore = require('../store/VMStore');
 var ReactBootstrap = require('react-bootstrap');
 var Modal = ReactBootstrap.Modal;
 var Button = ReactBootstrap.Button;
@@ -35,7 +35,7 @@ var ScopeView = React.createClass({
             data[question.name] = React.findDOMNode(this.refs[question.name]).value;
         }.bind(this));
 
-        ScopeStore.execute(this.state.scope, this.state.command, data);
+        VMStore.execute(this.state.scope, this.state.command, data);
 
         this.setState({
             scope: null,
@@ -54,7 +54,7 @@ var ScopeView = React.createClass({
         var scopes = [];
 
         for (var i = 0; i < view.scopes.length; i++) {
-            scopes.push(<Scope key={view.scopes[i].value} config={this.props.config} view={view.scopes[i]} onQuestion={this.onQuestion} />);
+            scopes.push(<Scope key={view.scopes[i].value} view={view.scopes[i]} onQuestion={this.onQuestion} />);
         }
 
         var modal = this.buildModal();

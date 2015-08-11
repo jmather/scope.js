@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../store/ScopeStore');
+var ScopeStore = require('../store/VMStore');
 
 var ButtonGroup = require('./ScopeView/ButtonGroup.react.js');
 
@@ -35,7 +35,7 @@ var TypeEditor = React.createClass({
     doSave: function(value) {
         var data = _.clone(this.state.data);
         data[this.state.value] = value;
-        ScopeStore.replaceVMData(data);
+        ScopeStore.replaceVMState(data);
         this.setState({data: data});
     },
 
@@ -45,8 +45,6 @@ var TypeEditor = React.createClass({
     render: function() {
         var types = this.state.data;
 
-        console.log(types);
-
         var contents = [];
         _.each(types, function(config, name) {
             contents.push(<button key={name} data-value={name} onClick={this.updateValue} className="list-group-item btn-block">{name}</button>);
@@ -55,7 +53,7 @@ var TypeEditor = React.createClass({
         var TypeEditor = require('./TypesView/TypeEditor.react');
 
         var editorContent = (types[this.state.value]) ? types[this.state.value] : undefined;
-        console.log(editorContent);
+
         var editorKey = this.state.value;
 
         return (

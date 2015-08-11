@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../store/ScopeStore');
+var ScopeStore = require('../store/VMStore');
 
 var ButtonGroup = require('./ScopeView/ButtonGroup.react.js');
 
