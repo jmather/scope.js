@@ -20,7 +20,14 @@
           { "value": "entity.thing.size", "title": "Number of Things" }
         ]
       },
-      { "value": "grid.scope", "title": "Grids" }
+      {
+        "value": "grid.scope",
+        "title": "Grids",
+        "display": [
+          { "value": "grid.grid", "title": "Grid Example" }
+        ]
+
+      }
     ]
   },
   "config": {

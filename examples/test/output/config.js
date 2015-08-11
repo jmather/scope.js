@@ -134,7 +134,13 @@ module.exports = {
           },
           {
             "value": "grid.scope",
-            "title": "Grids"
+            "title": "Grids",
+            "display": [
+              {
+                "value": "grid.grid",
+                "title": "Grid Example"
+              }
+            ]
           }
         ]
       },

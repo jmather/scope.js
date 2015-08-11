@@ -6,6 +6,7 @@ var ScopeStore = require('../../store/ScopeStore');
 var ButtonGroup = require('./ButtonGroup.react.js');
 
 var DisplayCounter = require('./Display/Counter.react');
+var DisplayGrid = require('./Display/Grid.react');
 
 function getState(display) {
     var results = {};
@@ -66,11 +67,14 @@ var Scope = React.createClass({
 
 
 function buildTagForValue(val, renderedValue) {
-    var type = ScopeStore.getValueDefinition(val.value).type;
+    var definition = ScopeStore.getValueDefinition(val.value);
+    var type = definition.type;
 
     switch(type) {
         case 'counter':
             return <DisplayCounter key={val.value} title={val.title} value={renderedValue} />;
+        case 'grid':
+            return <DisplayGrid key={val.value} title={val.title} value={renderedValue} definition={definition} />;
     }
 }
 
