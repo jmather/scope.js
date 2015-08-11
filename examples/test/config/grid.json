@@ -2,8 +2,7 @@
   "grid": {
     "type": "grid",
     "rows": 3,
-    "cols": 3,
-    "default": {"2-2": "thing"}
+    "cols": 3
   },
   "scope": {
     "type": "scope",

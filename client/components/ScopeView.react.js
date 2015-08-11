@@ -88,8 +88,8 @@ var ScopeView = React.createClass({
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button onClick={this.close}>Close</Button>
-                    <Button onClick={this.answer}>Answer</Button>
+                    <Button className="btn" onClick={this.close}>Close</Button>
+                    <Button className="btn btn-primary" onClick={this.answer}>Answer</Button>
                 </Modal.Footer>
             </Modal>
         );

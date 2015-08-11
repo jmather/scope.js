@@ -34,9 +34,7 @@ module.exports = {
       "type": "grid",
       "rows": 3,
       "cols": 3,
-      "default": {
-        "2-2": "thing"
-      },
+      "default": {},
       "nestedGrids": []
     },
     "counter.scope": {
