@@ -18,6 +18,7 @@ function getState(display) {
         results[val.value] = ScopeStore.getValue(val.value);
     });
 
+    console.log(results);
     return results;
 }
 

@@ -13,7 +13,7 @@ function getScopeState() {
 var ScopeJSClient = React.createClass({
     getInitialState: function() {
         var state = getScopeState();
-        state.view = 'client.views.home';
+        state.view = this.props.config.client.defaultView;
         state.theme = 'default';
         return state;
     },
@@ -40,6 +40,9 @@ var ScopeJSClient = React.createClass({
         } else if (this.state.view == 'client.views.config') {
             var TypesView = require('./TypesView.react');
             content = <TypesView view={view} />
+        } else if (this.state.view == 'client.views.data') {
+            var DataView = require('./DataView.react');
+            content = <DataView view={view} />
         }
 
         var ContentHeader = require('./Header.react');

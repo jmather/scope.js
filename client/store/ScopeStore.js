@@ -25,6 +25,13 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
         this.emitChange();
     },
 
+    replaceVMData: function(config) {
+        this.config = vm.valueManager.valueConfig;
+        this.state = config;
+        vm = vmBuilder.build(this.state, this.config);
+        this.emitChange();
+    },
+
     getCommandsForScope: function(scope) {
         try {
             vm.execute(scope);
@@ -70,14 +77,19 @@ var ScopeStore = assign({}, EventEmitter.prototype, {
         return vm.getValue(value);
     },
 
+    getData: function() {
+        return vm.getData();
+    },
+
     /**
      *
      * @param scope
      * @param command
+     * @param [arguments]
      * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
      */
-    execute: function(scope, command) {
-        var changes = vm.execute(scope, command);
+    execute: function(scope, command, arguments) {
+        var changes = vm.execute(scope, command, arguments);
         this.emitChange();
         return changes;
     },

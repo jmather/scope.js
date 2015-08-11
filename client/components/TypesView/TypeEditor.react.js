@@ -7,8 +7,10 @@ var ButtonGroup = require('../ScopeView/ButtonGroup.react.js');
 
 var TypeEditor = React.createClass({
     getInitialState: function() {
+        var rendered = require('pretty-data').pd.json(this.props.content);
+
         return {
-            value: require('pretty-data').pd.json(this.props.content)
+            value: (rendered === null) ? this.props.content : rendered
         };
     },
 
@@ -24,6 +26,8 @@ var TypeEditor = React.createClass({
      * @return {object}
      */
     render: function() {
+        console.log('state', this.state, this.props)
+
         if (this.props.content === undefined) {
             return (<div>Select a value to edit.</div>);
         }
@@ -38,10 +42,12 @@ var TypeEditor = React.createClass({
 
         var value = this.state.value;
 
+        console.log('value', value);
+
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">
-                    Edit config.{this.props.section}.{this.props.name}
+                    Edit {this.props.title}
                 </div>
                 <div className="panel-body">
                     <textarea rows="10" onChange={this.handleChange} value={value} className="form-control"></textarea>

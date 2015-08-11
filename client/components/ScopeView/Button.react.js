@@ -10,7 +10,7 @@ var Button = React.createClass({
             ScopeStore.execute(this.props.scope, this.props.command);
         } catch (e) {
             if (e.questions !== undefined) {
-                this.props.onQuestion(event, e.questions);
+                this.props.onQuestion(event, this.props.scope, this.props.command, e.questions);
                 return;
             }
 

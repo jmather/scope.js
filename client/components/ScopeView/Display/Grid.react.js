@@ -20,9 +20,11 @@ var Grid = React.createClass({
             tbody.push(<tr>{tbodyCols}</tr>);
         }
 
+        var caption = (this.props.title) ? <caption>{this.props.title}</caption> : '';
+
         return (
-            <Table striped responsive>
-                <caption>{this.props.title}</caption>
+            <Table bordered striped responsive>
+                {caption}
                 <thead>
                     <tr>{thead}</tr>
                 </thead>

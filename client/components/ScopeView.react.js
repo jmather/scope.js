@@ -2,6 +2,7 @@ var React = require('react');
 var _ = require('underscore');
 
 var Scope = require('./ScopeView/Scope.react.js');
+var ScopeStore = require('../store/ScopeStore');
 var ReactBootstrap = require('react-bootstrap');
 var Modal = ReactBootstrap.Modal;
 var Button = ReactBootstrap.Button;
@@ -14,13 +15,32 @@ var ScopeView = React.createClass({
     getInitialState: function() {
         return {
             showModal: false,
-            questions: []
+            questions: [],
+            scope: null,
+            command: null
         }
     },
 
-    onQuestion: function(event, questions) {
+    onQuestion: function(event, scope, command, questions) {
         this.setState({
+            scope: scope,
+            command: command,
             questions: questions
+        });
+    },
+
+    answer: function(event) {
+        var data = {};
+        _.each(this.state.questions, function(question) {
+            data[question.name] = React.findDOMNode(this.refs[question.name]).value;
+        }.bind(this));
+
+        ScopeStore.execute(this.state.scope, this.state.command, data);
+
+        this.setState({
+            scope: null,
+            command: null,
+            questions: []
         });
     },
 
@@ -69,6 +89,7 @@ var ScopeView = React.createClass({
 
                 <Modal.Footer>
                     <Button onClick={this.close}>Close</Button>
+                    <Button onClick={this.answer}>Answer</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -96,7 +117,7 @@ function buildPickOneQuestion(question) {
     });
 
     return (
-        <label>{question.name}: <select className="form-control" name={question.name}>{options}</select></label>
+        <label>{question.name}: <select className="form-control" ref={question.name}>{options}</select></label>
     );
 }
 

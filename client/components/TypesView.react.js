@@ -94,7 +94,7 @@ var TypeEditor = React.createClass({
                     </div>
                 </div>
                 <div className="col-xs-8">
-                    <TypeEditor key={editorKey} name={this.state.value} section={this.state.section} doSave={this.doSave} content={editorContent} />
+                    <TypeEditor key={editorKey} title={this.state.section + '.' + this.state.value} doSave={this.doSave} content={editorContent} />
                 </div>
             </div>
         );

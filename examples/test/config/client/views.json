@@ -2,6 +2,7 @@
   "home": {
     "title": "Home",
     "type": "view",
+    "default": true,
     "scopes": [
       {
         "value": "counter.scope",
@@ -22,9 +23,9 @@
       },
       {
         "value": "grid.scope",
-        "title": "Grids",
+        "title": "Grid Example",
         "display": [
-          { "value": "grid.grid", "title": "Grid Example" }
+          { "value": "grid.grid" }
         ]
 
       }
@@ -32,6 +33,10 @@
   },
   "config": {
     "title": "Config",
+    "type": "view"
+  },
+  "data": {
+    "title": "Data",
     "type": "view"
   }
 }

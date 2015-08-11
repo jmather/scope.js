@@ -34,7 +34,9 @@ module.exports = {
       "type": "grid",
       "rows": 3,
       "cols": 3,
-      "default": {},
+      "default": {
+        "2-2": "thing"
+      },
       "nestedGrids": []
     },
     "counter.scope": {
@@ -91,11 +93,31 @@ module.exports = {
     "grid.scope": {
       "type": "scope",
       "choices": {
-        "doSomething": {
+        "placeX": {
           "type": "choice",
           "when": [],
           "notWhen": [],
-          "instructions": []
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "grid.grid",
+              "value": "X"
+            }
+          ]
+        },
+        "placeO": {
+          "type": "choice",
+          "when": [],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "grid.grid",
+              "value": "O"
+            }
+          ]
         }
       },
       "default": {}
@@ -107,6 +129,7 @@ module.exports = {
       "client.views.home": {
         "title": "Home",
         "type": "view",
+        "default": true,
         "scopes": [
           {
             "value": "counter.scope",
@@ -134,11 +157,10 @@ module.exports = {
           },
           {
             "value": "grid.scope",
-            "title": "Grids",
+            "title": "Grid Example",
             "display": [
               {
-                "value": "grid.grid",
-                "title": "Grid Example"
+                "value": "grid.grid"
               }
             ]
           }
@@ -147,8 +169,13 @@ module.exports = {
       "client.views.config": {
         "title": "Config",
         "type": "view"
+      },
+      "client.views.data": {
+        "title": "Data",
+        "type": "view"
       }
-    }
+    },
+    "defaultView": "client.views.home"
   },
   "entities": {
     "entity.thing": {

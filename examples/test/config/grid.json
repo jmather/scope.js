@@ -2,13 +2,20 @@
   "grid": {
     "type": "grid",
     "rows": 3,
-    "cols": 3
+    "cols": 3,
+    "default": {"2-2": "thing"}
   },
   "scope": {
     "type": "scope",
     "choices": {
-      "doSomething": {
+      "placeX": {
         "instructions": [
+          { "instruction": "place", "gridValue": "grid.grid", "value": "X" }
+        ]
+      },
+      "placeO": {
+        "instructions": [
+          { "instruction": "place", "gridValue": "grid.grid", "value": "O" }
         ]
       }
     }
