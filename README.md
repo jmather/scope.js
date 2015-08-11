@@ -4,6 +4,17 @@ Explanation to come.
 
 # Usage
 
+## In Browser
+
+This will install the required deps, compile the necessary files, and open your browser to localhost:3000
+
+    npm install
+    ./bin/build-example.js test
+    ./bin/compile-js.sh
+    npm start
+
+## In CLI
+
 See a full flow:
 
     npm install
