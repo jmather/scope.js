@@ -7,6 +7,8 @@ var ButtonGroup = require('./ButtonGroup.react.js');
 
 var DisplayCounter = require('./Display/Counter.react');
 var DisplayGrid = require('./Display/Grid.react');
+var DisplayList = require('./Display/List.react');
+var DisplayMap = require('./Display/Map.react');
 
 function getState(display) {
     var results = {};
@@ -75,6 +77,10 @@ function buildTagForValue(val, renderedValue) {
             return <DisplayCounter key={val.value} title={val.title} value={renderedValue} />;
         case 'grid':
             return <DisplayGrid key={val.value} title={val.title} value={renderedValue} definition={definition} />;
+        case 'list':
+            return <DisplayList key={val.value} title={val.title} value={renderedValue} definition={definition} />;
+        case 'repository':
+            return <DisplayMap key={val.value} title={val.title} value={renderedValue} definition={definition} />;
     }
 }
 

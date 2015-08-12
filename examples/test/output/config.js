@@ -72,7 +72,7 @@ module.exports = {
     "entity.scope": {
       "type": "scope",
       "choices": {
-        "doSomething": {
+        "createThing": {
           "type": "choice",
           "when": [],
           "notWhen": [],
@@ -150,8 +150,19 @@ module.exports = {
               {
                 "value": "entity.thing.size",
                 "title": "Number of Things"
+              },
+              {
+                "value": "entity.thing",
+                "title": "Repository"
+              },
+              {
+                "value": "entity.things",
+                "title": "List"
               }
-            ]
+            ],
+            "commandMap": {
+              "createThing": "Create New Thing"
+            }
           },
           {
             "value": "grid.scope",

@@ -9,7 +9,7 @@
   "scope": {
     "type": "scope",
     "choices": {
-      "doSomething": {
+      "createThing": {
         "instructions": [
           { "instruction": "create", "entity": "thing", "listValue": "things"}
         ]
