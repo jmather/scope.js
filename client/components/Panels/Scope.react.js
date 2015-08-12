@@ -3,9 +3,9 @@ var _ = require('underscore');
 
 var ScopeStore = require('../../store/VMStore');
 
-var ButtonGroup = require('./ButtonGroup.react.js');
+var ButtonGroup = require('./Scope/ButtonGroup.react.js');
 
-var Displays = require('./Display/index');
+var Displays = require('./../Displays/index');
 
 function getState(display) {
     var results = {};
@@ -92,5 +92,7 @@ function buildTagForValue(val, renderedValue) {
 
     return <div key={val.value}><strong>{val.title}:</strong> {renderedValue}</div>;
 }
+
+Scope.ButtonGroup = ButtonGroup;
 
 module.exports = Scope;

@@ -1,10 +1,13 @@
 var React = require('react');
-var VMActions = require('../constants/VMConstants').actionTypes;
 
 var DefaultTheme = require('./Theme/default/index');
 var VMStore = require('../store/VMStore');
 
-var Scope = require('./ScopeView/Scope.react.js');
+var viewTypes = {
+    panel: require('./Views/Panel.react'),
+    config: require('./Views/Config.react'),
+    data: require('./Views/Data.react')
+};
 
 var ScopeJSClient = React.createClass({
     getInitialState: function() {
@@ -27,21 +30,9 @@ var ScopeJSClient = React.createClass({
             return this.renderWaiting();
         }
 
-        var view = this.state.config.views[this.state.view];
+        var viewConfig = this.state.config.views[this.state.view];
 
-        var content = null;
-
-        // @TODO This should be cleaned up to use input from this.props.config.client
-        if (this.state.view == 'client.views.home') {
-            var ScopeView = require('./ScopeView.react');
-            content = <ScopeView view={view} />;
-        } else if (this.state.view == 'client.views.config') {
-            var TypesView = require('./TypesView.react');
-            content = <TypesView view={view} />
-        } else if (this.state.view == 'client.views.data') {
-            var DataView = require('./DataView.react');
-            content = <DataView view={view} />
-        }
+        var View = viewTypes[viewConfig.layout];
 
         var ContentHeader = require('./Header.react');
 
@@ -52,7 +43,7 @@ var ScopeJSClient = React.createClass({
                     <ContentHeader changeView={this.changeView} views={this.state.config.views} view={this.state.view} />
                 </DefaultTheme.Header>
                 <DefaultTheme.Body>
-                    {content}
+                    <View view={viewConfig} />
                 </DefaultTheme.Body>
             </DefaultTheme.Wrapper>
         );

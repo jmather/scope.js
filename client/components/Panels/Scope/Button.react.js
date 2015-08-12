@@ -2,7 +2,9 @@ var React = require('react');
 
 var BootstrapButton = require('react-bootstrap').Button;
 
-var ScopeStore = require('../../store/VMStore');
+var ScopeStore = require('../../../store/VMStore');
+
+var VMActionCreators = require('../../../actions/VMActionCreators');
 
 var Button = React.createClass({
     handleClick: function(event) {

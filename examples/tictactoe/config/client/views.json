@@ -3,7 +3,8 @@
     "title": "Home",
     "type": "view",
     "default": true,
-    "scopes": [
+    "layout": "panel",
+    "panels": [
       {
         "value": "tictactoe.game",
         "title": "Tic Tac Toe",
@@ -16,10 +17,12 @@
   },
   "config": {
     "title": "Config",
-    "type": "view"
+    "type": "view",
+    "layout": "config"
   },
   "data": {
     "title": "Data",
-    "type": "view"
+    "type": "view",
+    "layout": "data"
   }
 }

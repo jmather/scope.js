@@ -2,11 +2,13 @@
   "home": {
     "title": "Home",
     "type": "view",
+    "layout": "panel",
     "default": true,
-    "scopes": [
+    "panels": [
       {
         "value": "counter.scope",
         "title": "Counters",
+        "type": "panel",
         "display": [
           { "value": "counter.min0max10", "title": "Min 0 Max 10" }
         ],
@@ -38,10 +40,12 @@
   },
   "config": {
     "title": "Config",
-    "type": "view"
+    "type": "view",
+    "layout": "config"
   },
   "data": {
     "title": "Data",
-    "type": "view"
+    "type": "view",
+    "layout": "data"
   }
 }

@@ -1,11 +1,6 @@
 var React = require('react');
-var _ = require('underscore');
 
-var ScopeStore = require('../../store/VMStore');
-
-var ButtonGroup = require('../ScopeView/ButtonGroup.react.js');
-
-var TypeEditor = React.createClass({
+var JSONEditor = React.createClass({
     getInitialState: function() {
         var rendered = require('pretty-data').pd.json(this.props.content);
 
@@ -27,7 +22,7 @@ var TypeEditor = React.createClass({
      */
     render: function() {
         if (this.props.content === undefined) {
-            return (<div>Select a value to edit.</div>);
+            return (<div>{this.props.defaultText || "Select a value to edit."}</div>);
         }
 
         var jsonInvalid = false;
@@ -46,7 +41,7 @@ var TypeEditor = React.createClass({
                     Edit {this.props.title}
                 </div>
                 <div className="panel-body">
-                    <textarea rows="10" onChange={this.handleChange} value={value} className="form-control"></textarea>
+                    <textarea rows={this.props.rows || 10 } onChange={this.handleChange} value={value} className="form-control"></textarea>
                 </div>
                 <div className="panel-footer text-right">
                     <button disabled={jsonInvalid} className="btn btn-primary" onClick={this.doSave}>Save</button>
@@ -57,4 +52,4 @@ var TypeEditor = React.createClass({
 
 });
 
-module.exports = TypeEditor;
+module.exports = JSONEditor;

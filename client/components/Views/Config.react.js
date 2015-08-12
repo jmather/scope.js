@@ -1,9 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var ScopeStore = require('../store/VMStore');
-
-var ButtonGroup = require('./ScopeView/ButtonGroup.react.js');
+var ScopeStore = require('../../store/VMStore');
 
 function getState(display) {
     return { definitions: ScopeStore.getValueDefinitions() };
@@ -63,7 +61,7 @@ var TypeEditor = React.createClass({
             contents.push(<button key={name} data-value={name} onClick={this.updateValue} className="list-group-item btn-block">{name}</button>);
         }.bind(this));
 
-        var TypeEditor = require('./TypesView/TypeEditor.react');
+        var TypeEditor = require('./../Panels/JSONEditor.react.js');
 
         var editorContent = (types[this.state.section] && types[this.state.section][this.state.value]) ? types[this.state.section][this.state.value] : undefined;
         var editorKey = this.state.section + '.' + this.state.value;

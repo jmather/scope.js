@@ -127,11 +127,13 @@ module.exports = {
       "client.views.home": {
         "title": "Home",
         "type": "view",
+        "layout": "panel",
         "default": true,
-        "scopes": [
+        "panels": [
           {
             "value": "counter.scope",
             "title": "Counters",
+            "type": "panel",
             "display": [
               {
                 "value": "counter.min0max10",
@@ -177,11 +179,13 @@ module.exports = {
       },
       "client.views.config": {
         "title": "Config",
-        "type": "view"
+        "type": "view",
+        "layout": "config"
       },
       "client.views.data": {
         "title": "Data",
-        "type": "view"
+        "type": "view",
+        "layout": "data"
       }
     },
     "defaultView": "client.views.home"

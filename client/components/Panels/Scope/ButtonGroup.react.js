@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var Button = require('./Button.react');
+var Button = require('./Button.react.js');
 
 var ButtonGroup = React.createClass({
     /**
@@ -20,5 +20,7 @@ var ButtonGroup = React.createClass({
         );
     }
 });
+
+ButtonGroup.Button = Button;
 
 module.exports = ButtonGroup;
