@@ -331,4 +331,7 @@ A sample Scope definition for a game of Tic-Tac-Toe could look like the followin
 
 #### Instructions
 
-##### execute(
+##### execute(scopeValue, [choice])
+
+Executes a given _choice_ on a _scopeValue_. If _choice_ is not provided, it will throw a Question exception
+detailing the commands available.
