@@ -14,7 +14,9 @@ var Grid = React.createClass({
 
             tbodyCols = [<td>{i}</td>];
             for (j = 1; j <= this.props.definition.rows; j++) {
-                tbodyCols.push(<td key={this.props.title + '_' + j + '-' + i} title={j + '-' + i}>{this.props.value[i + '-' + j] ? this.props.value[i + '-' + j] : ''}</td>)
+                var cell = i + '-' + j;
+                var display = this.props.value[cell] ? this.props.value[cell] : '';
+                tbodyCols.push(<td key={this.props.title + '_' + cell} title={cell}>{display}</td>)
             }
 
             tbody.push(<tr>{tbodyCols}</tr>);

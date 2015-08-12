@@ -153,11 +153,11 @@
               },
               {
                 "value": "entity.thing",
-                "title": "Repository"
+                "title": "Thing Repository"
               },
               {
                 "value": "entity.things",
-                "title": "List"
+                "title": "Things List"
               }
             ],
             "commandMap": {

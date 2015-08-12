@@ -5,10 +5,7 @@ var ScopeStore = require('../../store/VMStore');
 
 var ButtonGroup = require('./ButtonGroup.react.js');
 
-var DisplayCounter = require('./Display/Counter.react');
-var DisplayGrid = require('./Display/Grid.react');
-var DisplayList = require('./Display/List.react');
-var DisplayMap = require('./Display/Map.react');
+var Displays = require('./Display/index');
 
 function getState(display) {
     var results = {};
@@ -72,16 +69,28 @@ function buildTagForValue(val, renderedValue) {
     var definition = ScopeStore.getValueDefinition(val.value);
     var type = definition.type;
 
+    var DisplayTag = false;
+
     switch(type) {
         case 'counter':
-            return <DisplayCounter key={val.value} title={val.title} value={renderedValue} />;
+            DisplayTag = Displays.Counter;
+            break;
         case 'grid':
-            return <DisplayGrid key={val.value} title={val.title} value={renderedValue} definition={definition} />;
+            DisplayTag = Displays.Grid;
+            break;
         case 'list':
-            return <DisplayList key={val.value} title={val.title} value={renderedValue} definition={definition} />;
+            DisplayTag = Displays.List;
+            break;
         case 'repository':
-            return <DisplayMap key={val.value} title={val.title} value={renderedValue} definition={definition} />;
+            DisplayTag = Displays.Map;
+            break;
     }
+
+    if (DisplayTag) {
+        return <DisplayTag key={val.value} title={val.title} value={renderedValue} definition={definition} />
+    }
+
+    return <div key={val.value}><strong>{val.title}:</strong> {renderedValue}</div>;
 }
 
 module.exports = Scope;

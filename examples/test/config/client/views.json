@@ -19,8 +19,8 @@
         "title": "Entities",
         "display": [
           { "value": "entity.thing.size", "title": "Number of Things" },
-          { "value": "entity.thing", "title": "Repository" },
-          { "value": "entity.things", "title": "List" }
+          { "value": "entity.thing", "title": "Thing Repository" },
+          { "value": "entity.things", "title": "Things List" }
         ],
         "commandMap": {
           "createThing": "Create New Thing"
