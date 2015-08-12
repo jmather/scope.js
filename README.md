@@ -335,3 +335,21 @@ A sample Scope definition for a game of Tic-Tac-Toe could look like the followin
 
 Executes a given _choice_ on a _scopeValue_. If _choice_ is not provided, it will throw a Question exception
 detailing the commands available.
+
+
+# Todos
+
+## Test Client
+
+* Fix the Scope panel and sub systems to conform to proper React patterns with regards to Stores and flow of data.
+
+## VM
+
+* Teach it how to perform operations "over time"
+    - Will likely require new instructions: incrementOverTime, decrementOverTime, incrementInFuture, decrementInFuture, placeInFuture, removeInFuture, createInFuture, destroyInFuture
+    - all values will likely get a 'sideEffects' value to track these
+* Many more value types:
+    - Expressions: values which are merely named expressions. This should resuse the _wben_ expression system.
+    - TimedCounter: Counters that run based off of time (typcially used for things like Energy and Stamina)
+    - Collections: Groups of values. Useful for freating in-system taxonomies (object Widget property Foo takes any value in the collectio Bar, for example).
+    
