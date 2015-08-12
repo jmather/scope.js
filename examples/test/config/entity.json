@@ -11,7 +11,7 @@
     "choices": {
       "doSomething": {
         "instructions": [
-          { "instruction": "create", "entity": "entity.thing", "listValue": "entity.things"}
+          { "instruction": "create", "entity": "thing", "listValue": "things"}
         ]
       }
     }

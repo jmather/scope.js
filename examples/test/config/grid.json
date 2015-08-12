@@ -9,12 +9,12 @@
     "choices": {
       "placeX": {
         "instructions": [
-          { "instruction": "place", "gridValue": "grid.grid", "value": "X" }
+          { "instruction": "place", "gridValue": "grid", "data": "X" }
         ]
       },
       "placeO": {
         "instructions": [
-          { "instruction": "place", "gridValue": "grid.grid", "value": "O" }
+          { "instruction": "place", "gridValue": "grid", "data": "O" }
         ]
       }
     }

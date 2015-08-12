@@ -1,0 +1,25 @@
+{
+  "home": {
+    "title": "Home",
+    "type": "view",
+    "default": true,
+    "scopes": [
+      {
+        "value": "tictactoe.game",
+        "title": "Tic Tac Toe",
+        "display": [
+          { "value": "tictactoe.board" }
+        ]
+
+      }
+    ]
+  },
+  "config": {
+    "title": "Config",
+    "type": "view"
+  },
+  "data": {
+    "title": "Data",
+    "type": "view"
+  }
+}

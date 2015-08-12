@@ -9,12 +9,12 @@
     "choices": {
       "increment": {
         "instructions": [
-          { "instruction": "increment", "value": "counter.min0max10", "amount": 1 }
+          { "instruction": "increment", "counterValue": "min0max10", "amount": 1 }
         ]
       },
       "decrement": {
         "instructions": [
-          { "instruction": "decrement", "value": "counter.min0max10", "amount": 1 }
+          { "instruction": "decrement", "counterValue": "min0max10", "amount": 1 }
         ]
       }
     }

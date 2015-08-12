@@ -1,0 +1,35 @@
+{
+  "board": {
+    "type": "grid",
+    "rows": 3,
+    "cols": 3
+  },
+  "turn": {
+    "type": "counter",
+    "min": 1,
+    "default": 1
+  },
+  "game": {
+    "type": "scope",
+    "choices": {
+      "placeX": {
+        "when":[
+          "turn % 2 == 0"
+        ],
+        "instructions": [
+          { "instruction": "place", "gridValue": "board", "data": "X" },
+          { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+        ]
+      },
+      "placeO": {
+        "when":[
+          "turn % 2 == 1"
+        ],
+        "instructions": [
+          { "instruction": "place", "gridValue": "board", "data": "O" },
+          { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+        ]
+      }
+    }
+  }
+}

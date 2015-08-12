@@ -48,7 +48,7 @@
             {
               "type": "instruction",
               "instruction": "increment",
-              "value": "counter.min0max10",
+              "counterValue": "counter.min0max10",
               "amount": 1
             }
           ]
@@ -61,7 +61,7 @@
             {
               "type": "instruction",
               "instruction": "decrement",
-              "value": "counter.min0max10",
+              "counterValue": "counter.min0max10",
               "amount": 1
             }
           ]
@@ -100,7 +100,7 @@
               "type": "instruction",
               "instruction": "place",
               "gridValue": "grid.grid",
-              "value": "X"
+              "data": "X"
             }
           ]
         },
@@ -113,7 +113,7 @@
               "type": "instruction",
               "instruction": "place",
               "gridValue": "grid.grid",
-              "value": "O"
+              "data": "O"
             }
           ]
         }
