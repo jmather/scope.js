@@ -70,7 +70,8 @@ module.exports = {
         "title": "Home",
         "type": "view",
         "default": true,
-        "scopes": [
+        "layout": "panel",
+        "panels": [
           {
             "value": "tictactoe.game",
             "title": "Tic Tac Toe",
@@ -84,11 +85,13 @@ module.exports = {
       },
       "client.views.config": {
         "title": "Config",
-        "type": "view"
+        "type": "view",
+        "layout": "config"
       },
       "client.views.data": {
         "title": "Data",
-        "type": "view"
+        "type": "view",
+        "layout": "data"
       }
     },
     "defaultView": "client.views.home"

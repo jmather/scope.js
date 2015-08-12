@@ -1,6 +1,6 @@
 var React = require('react');
 
-var DefaultTheme = require('./Theme/default/index');
+var DefaultTheme = require('./Theme/default');
 var VMStore = require('../store/VMStore');
 
 var viewTypes = {
