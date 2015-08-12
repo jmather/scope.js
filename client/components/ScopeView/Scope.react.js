@@ -38,7 +38,6 @@ var Scope = React.createClass({
      * @return {object}
      */
     render: function() {
-        console.log(this.props);
         var commands = ScopeStore.getCommandsForScope(this.props.view.value);
         var info = [];
 

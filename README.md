@@ -213,3 +213,122 @@ All you really need to start a VM is the current _state_, a value _config_, and 
     var config = new VM.Config(state, config, plugins);
     var vm = new VM(config);
 
+## Types
+
+### Counter
+
+Counters are very basic. They hold an integer value, and can _increment_ and _decrement_.
+
+The default counter config is thus:
+
+    {
+      "type": "counter",
+      "min": null,
+      "max": null,
+      "step": 1,
+      "default": 0
+    }
+
+#### Instructions
+
+##### increment(counterValue, [amount])
+
+Increments the supplied counterValue. Supply an optional amount, or it will use the default _step_.
+
+##### decrement(counterValue, [amount])
+
+Decrement the supplied counterValue. Supply an optional amount, or it will use the default _step_.
+
+### Grid
+
+Grids are any N by N structure which you can place values into.
+
+The default grid config is thus:
+
+    {
+      "type": "grid",
+      "rows": 1,
+      "cols": 1,
+      "default": {},
+      "nestedGrids": []
+    }
+
+Note: The values for grids are stored in COL-ROW pairs. For example, if 1,1 and 1,2 were set
+to 'foo' and 'bar' respectively, the value would then look like this:
+
+    {
+        "1-1": "foo",
+        "1-2": "bar"
+    }
+
+#### Instructions
+
+##### place(gridValue, [cell], [data])
+
+Places _date_ into _cell_ of _gridValue_.
+
+If _cell_ is omitted, you will receive a Question exception with all available cells.
+
+If _data_ is comitted, you will receive a Question exception with all available values which can be placed. (COMING EVENTUALLY!)
+
+### Entity & Repository
+
+Entities and repositories give you a way to describe structured data within your application.
+
+Entities are defined by a { "type": "entity" } object which includes one or more other keys,
+whose values are either fully or partially rendered Question formats. A simple entity example
+looks like the following:
+
+    {
+        "type": "entity",
+        "thing": { "type": "pick-one", "choices": ["a", "b"] }
+    }
+
+This would create an entity which had one property, _thing_, which could be either "A" or "B".
+
+When you create an entity, a repository of the same name is created as a value.
+
+#### Instructions
+
+##### create(entity, listValue)
+
+Creates an object in the repository for _entity_, and places the reference to the object in _listValue_.
+
+### Scope
+
+Scopes are the heart of Scope.js. They provide you with logical groupings of commands you can take on values.
+
+A Scope is made up of one or more Commands, which each have one or more Instructions, which in turn perform operations on values.
+
+For each Command, you can define a series of _when_ expressions which will be evaluated to ensure a given command may be
+executed at any given time. All _when_ expressions must return true for the Command to be considered available.
+
+A sample Scope definition for a game of Tic-Tac-Toe could look like the following:
+
+    {
+        "type": "scope",
+        "choices": {
+          "placeX": {
+            "when":[
+              "turn % 2 == 0"
+            ],
+            "instructions": [
+              { "instruction": "place", "gridValue": "board", "data": "X" },
+              { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+            ]
+          },
+          "placeO": {
+            "when":[
+              "turn % 2 == 1"
+            ],
+            "instructions": [
+              { "instruction": "place", "gridValue": "board", "data": "O" },
+              { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+            ]
+          }
+        }
+    }
+
+#### Instructions
+
+##### execute(
