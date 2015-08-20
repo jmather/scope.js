@@ -141,8 +141,8 @@ module.exports = {
               }
             ],
             "commandMap": {
-              "increment": "Increment",
-              "decrement": "Decrement"
+              "increment": "Increment Counter",
+              "decrement": "Decrement Counter"
             }
           },
           {
@@ -174,6 +174,28 @@ module.exports = {
                 "value": "grid.grid"
               }
             ]
+          }
+        ]
+      },
+      "client.views.simple": {
+        "title": "Simple",
+        "type": "view",
+        "layout": "panel",
+        "panels": [
+          {
+            "value": "counter.scope",
+            "title": "Counters",
+            "type": "panel",
+            "display": [
+              {
+                "value": "counter.min0max10",
+                "title": "Min 0 Max 10"
+              }
+            ],
+            "commandMap": {
+              "increment": "Increment Counter",
+              "decrement": "Decrement Counter"
+            }
           }
         ]
       },

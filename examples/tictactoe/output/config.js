@@ -8,6 +8,27 @@ module.exports = {
       "default": 1
     },
     "tictactoe.board": {
+      "type": "grid-collection",
+      "rows": 3,
+      "cols": 3,
+      "default": {},
+      "includes": [
+        {
+          "gridValue": "tictactoe.player1.board"
+        },
+        {
+          "gridValue": "tictactoe.player2.board"
+        }
+      ]
+    },
+    "tictactoe.player1.board": {
+      "type": "grid",
+      "rows": 3,
+      "cols": 3,
+      "default": {},
+      "nestedGrids": []
+    },
+    "tictactoe.player2.board": {
       "type": "grid",
       "rows": 3,
       "cols": 3,
@@ -27,7 +48,8 @@ module.exports = {
             {
               "type": "instruction",
               "instruction": "place",
-              "gridValue": "tictactoe.board",
+              "gridValue": "tictactoe.player1.board",
+              "referenceGridValue": "tictactoe.board",
               "data": "X"
             },
             {
@@ -48,7 +70,8 @@ module.exports = {
             {
               "type": "instruction",
               "instruction": "place",
-              "gridValue": "tictactoe.board",
+              "gridValue": "tictactoe.player2.board",
+              "referenceGridValue": "tictactoe.board",
               "data": "O"
             },
             {

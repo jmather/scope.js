@@ -1,0 +1,26 @@
+{
+  "values": {
+    "collection": {
+      "type": "grid-collection",
+      "rows": 3,
+      "cols": 3,
+      "default": {},
+      "includes": [
+        { "gridValue": "grid1" },
+        { "gridValue": "grid2" }
+      ]
+    },
+    "grid1": {
+      "type": "grid",
+      "rows": 3,
+      "cols": 3,
+      "default": {}
+    },
+    "grid2": {
+      "type": "grid",
+      "rows": 3,
+      "cols": 3,
+      "default": {}
+    }
+  }
+}

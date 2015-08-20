@@ -1,5 +1,16 @@
 {
   "board": {
+    "type": "grid-collection",
+    "rows": 3,
+    "cols": 3,
+    "includes": [ "player1.board", "player2.board" ]
+  },
+  "player1.board": {
+    "type": "grid",
+    "rows": 3,
+    "cols": 3
+  },
+  "player2.board": {
     "type": "grid",
     "rows": 3,
     "cols": 3
@@ -17,7 +28,7 @@
           "turn % 2 == 0"
         ],
         "instructions": [
-          { "instruction": "place", "gridValue": "board", "data": "X" },
+          { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "X" },
           { "instruction": "increment", "counterValue": "turn", "amount": 1 }
         ]
       },
@@ -26,7 +37,7 @@
           "turn % 2 == 1"
         ],
         "instructions": [
-          { "instruction": "place", "gridValue": "board", "data": "O" },
+          { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "O" },
           { "instruction": "increment", "counterValue": "turn", "amount": 1 }
         ]
       }

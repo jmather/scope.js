@@ -76,6 +76,7 @@ function buildTagForValue(val, renderedValue) {
             DisplayTag = Displays.Counter;
             break;
         case 'grid':
+        case 'grid-collection':
             DisplayTag = Displays.Grid;
             break;
         case 'list':

@@ -171,4 +171,6 @@ AppDispatcher.register(function(action) {
     }
 });
 
+window.VMStore = VMStore;
+
 module.exports = VMStore;
