@@ -2,15 +2,56 @@
   "values": {
     "tictactoe.winner": {
       "type": "data",
-      "default": []
+      "default": null
     },
     "tictactoe.game": {
       "type": "scope",
       "choices": {
+        "instantWinX": {
+          "type": "choice",
+          "when": [
+            "{{= context.getValue('tictactoe.winner') === null }}"
+          ],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player1.board",
+              "cell": "1-1",
+              "referenceGridValue": "tictactoe.board",
+              "data": "X"
+            },
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player1.board",
+              "cell": "2-2",
+              "referenceGridValue": "tictactoe.board",
+              "data": "X"
+            },
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player1.board",
+              "cell": "3-3",
+              "referenceGridValue": "tictactoe.board",
+              "data": "X"
+            },
+            {
+              "type": "instruction",
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player1.board",
+              "dataValue": "tictactoe.winner",
+              "data": "X"
+            }
+          ]
+        },
         "placeX": {
           "type": "choice",
           "when": [
-            "{{= context.getValue('tictactoe.turns') % 2 == 0 }}"
+            "{{= context.getValue('tictactoe.turns') % 2 == 0 }}",
+            "{{= context.getValue('tictactoe.winner') === null }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -23,22 +64,24 @@
             },
             {
               "type": "instruction",
-              "instruction": "increment",
-              "counterValue": "tictactoe.turns",
-              "amount": 1
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player1.board",
+              "dataValue": "tictactoe.winner",
+              "data": "X"
             },
             {
               "type": "instruction",
-              "instruction": "hasWon",
-              "gridValue": "tictactoe.player1.board",
-              "dataValue": "tictactoe.winner"
+              "instruction": "increment",
+              "counterValue": "tictactoe.turns",
+              "amount": 1
             }
           ]
         },
         "placeO": {
           "type": "choice",
           "when": [
-            "{{= context.getValue('tictactoe.turns') % 2 == 1 }}"
+            "{{= context.getValue('tictactoe.turns') % 2 == 1 }}",
+            "{{= context.getValue('tictactoe.winner') === null }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -51,15 +94,47 @@
             },
             {
               "type": "instruction",
-              "instruction": "increment",
-              "counterValue": "tictactoe.turns",
-              "amount": 1
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player2.board",
+              "dataValue": "tictactoe.winner",
+              "data": "O"
             },
             {
               "type": "instruction",
-              "instruction": "hasWon",
-              "gridValue": "tictactoe.player2.board",
-              "dataValue": "tictactoe.winner"
+              "instruction": "increment",
+              "counterValue": "tictactoe.turns",
+              "amount": 1
+            }
+          ]
+        },
+        "newGame": {
+          "type": "choice",
+          "when": [
+            "{{= context.getValue('tictactoe.winner') !== null }}"
+          ],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "setValue",
+              "value": "tictactoe.turns",
+              "data": 0
+            },
+            {
+              "type": "instruction",
+              "instruction": "setValue",
+              "value": "tictactoe.player1.board"
+            },
+            {
+              "type": "instruction",
+              "instruction": "setValue",
+              "value": "tictactoe.player2.board"
+            },
+            {
+              "type": "instruction",
+              "instruction": "setValue",
+              "value": "tictactoe.winner",
+              "data": null
             }
           ]
         }
@@ -116,6 +191,10 @@
             "value": "tictactoe.game",
             "title": "Tic Tac Toe",
             "display": [
+              {
+                "title": "Winner",
+                "value": "tictactoe.winner"
+              },
               {
                 "value": "tictactoe.board"
               }

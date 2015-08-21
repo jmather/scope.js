@@ -1,6 +1,7 @@
 {
   "winner": {
-    "type": "data"
+    "type": "data",
+    "default": null
   },
   "board": {
     "type": "grid-collection",
@@ -26,24 +27,48 @@
   "game": {
     "type": "scope",
     "choices": {
+      "instantWinX": {
+        "when": [
+          "winner === null"
+        ],
+        "instructions": [
+          { "instruction": "place", "gridValue": "player1.board", "cell": "1-1", "referenceGridValue": "board", "data": "X" },
+          { "instruction": "place", "gridValue": "player1.board", "cell": "2-2", "referenceGridValue": "board", "data": "X" },
+          { "instruction": "place", "gridValue": "player1.board", "cell": "3-3", "referenceGridValue": "board", "data": "X" },
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X" }
+        ]
+      },
       "placeX": {
         "when":[
-          "turns % 2 == 0"
+          "turns % 2 == 0",
+          "winner === null"
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "increment", "counterValue": "turns", "amount": 1 },
-          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner" }
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X" },
+          { "instruction": "increment", "counterValue": "turns", "amount": 1 }
         ]
       },
       "placeO": {
         "when":[
-          "turns % 2 == 1"
+          "turns % 2 == 1",
+          "winner === null"
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "O" },
-          { "instruction": "increment", "counterValue": "turns", "amount": 1 },
-          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner" }
+          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "O" },
+          { "instruction": "increment", "counterValue": "turns", "amount": 1 }
+        ]
+      },
+      "newGame": {
+        "when": [
+          "winner !== null"
+        ],
+        "instructions": [
+          { "instruction": "setValue", "value": "turns", "data": 0 },
+          { "instruction": "setValue", "value": "player1.board", "data": {} },
+          { "instruction": "setValue", "value": "player2.board", "data": {} },
+          { "instruction": "setValue", "value": "winner", "data": null }
         ]
       }
     }

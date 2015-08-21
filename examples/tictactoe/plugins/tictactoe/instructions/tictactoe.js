@@ -10,9 +10,10 @@ var instructions = {};
  *
  * @param {string} gridValue
  * @param {string} dataValue
+ * @param {*} data
  * @param {ValueManager} valueManager
  */
-instructions.hasWon = function(gridValue, dataValue, valueManager) {
+instructions.hasWon = function(gridValue, dataValue, data, valueManager) {
     var grid = valueManager.get(gridValue);
 
     var occupied = grid.getOccupiedCellIds();
@@ -22,7 +23,7 @@ instructions.hasWon = function(gridValue, dataValue, valueManager) {
         return;
     }
 
-    var data = valueManager.get(dataValue);
+    valueManager.get(dataValue).setValue(data);
 };
 
 /**

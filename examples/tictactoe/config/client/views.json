@@ -9,6 +9,10 @@
         "value": "tictactoe.game",
         "title": "Tic Tac Toe",
         "display": [
+          {
+            "title": "Winner",
+            "value": "tictactoe.winner"
+          },
           { "value": "tictactoe.board" }
         ]
 
