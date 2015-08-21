@@ -3,17 +3,13 @@ var VM = require('scope-vm');
 module.exports = {
     /**
      *
+     * @param {function} VM Class
      * @param state
      * @param config
+     * @param plugins
      * @returns {VM}
      */
-    build: function (state, config) {
-        var plugins = [];
-
-        for (var plugin in config.plugins) {
-            plugins.push(require(config.plugins[plugin]));
-        }
-
+    build: function (VM, state, config, plugins) {
         var vmConfig = new VM.Config(state, config, new Date().getTime(), plugins);
 
         return new VM(vmConfig);

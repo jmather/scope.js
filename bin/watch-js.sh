@@ -5,19 +5,4 @@ cd $DIR/..
 
 BASEDIR=`pwd`
 
-PLUGIN_DIRS='lib/vm/plugins lib/plugins'
-PLUGINS=""
-
-for PLUGIN_DIR in $PLUGIN_DIRS
-do
-    PLUGINS_IN_DIR=`ls -1 $PLUGIN_DIR`
-    for PLUGIN in $PLUGINS_IN_DIR
-    do
-        if [ -f $PLUGIN_DIR/$PLUGIN/index.js ]
-        then
-            PLUGINS="$PLUGINS -r scope-plugin-$PLUGIN"
-        fi
-    done
-done
-
-./node_modules/.bin/watchify -d client/app.js build/config.js lib/vm/index.js $PLUGINS -o build/system.js
+./node_modules/.bin/watchify -v -d client/app.js -o build/system.js

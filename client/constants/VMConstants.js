@@ -7,6 +7,8 @@ module.exports = {
         VM_EXECUTE: null,
         RECEIVED_CONFIG: null,
         RECEIVED_STATE: null,
+        RECEIVED_CONSTRUCTOR: null,
+        RECEIVED_PLUGINS: null,
         INITIALIZED: null
     })
 };

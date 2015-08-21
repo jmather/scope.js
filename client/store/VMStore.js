@@ -1,5 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var _ = require('underscore');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var VMConstants = require('../constants/VMConstants');
@@ -15,20 +16,22 @@ var INITIALIZE_EVENT = 'initialize';
  * @exports VMStore
  */
 var VMStore = assign({}, EventEmitter.prototype, {
-    init: function(state, config) {
+    init: function(VMConstructor, state, config, plugins) {
         this.config = config;
-        this.vm = vmBuilder.build(state, config);
+        this.plugins = plugins;
+        this.VMConstructor = VMConstructor;
+        this.vm = vmBuilder.build(this.VMConstructor, state, this.config, this.plugins);
         this.emit(INITIALIZE_EVENT);
     },
 
     replaceVMConfig: function(config) {
         this.config = config;
-        this.vm = vmBuilder.build(this.vm.valueManager.dataManager.data.toJS(), config);
+        this.vm = vmBuilder.build(this.VMConstructor, this.vm.valueManager.dataManager.data.toJS(), config, this.plugins);
         this.emitChange();
     },
 
     replaceVMState: function(state) {
-        this.vm = vmBuilder.build(state, this.vm.valueManager.valueConfig);
+        this.vm = vmBuilder.build(this.VMConstructor, state, this.vm.valueManager.valueConfig, this.plugins);
         this.emitChange();
     },
 
@@ -144,15 +147,19 @@ var VMStore = assign({}, EventEmitter.prototype, {
 
 var received = {
     state: false,
-    config: false
+    config: false,
+    plugins: false,
+    VMConstructor: false
 };
 
 function attemptToInit() {
-    if (received.state === false || received.config === false) {
+    // this is crappy -- checks to see if any are not receeived and returns false,
+    // otherwise it returns true
+    if (_.reduce(received, function(memo, val) { return (val) ? memo : false; }, true) === false) {
         return;
     }
 
-    VMStore.init(received.state, received.config);
+    VMStore.init(received.VMConstructor, received.state, received.config, received.plugins);
 }
 
 // Register callback to handle all updates
@@ -164,6 +171,14 @@ AppDispatcher.register(function(action) {
             break;
         case VMActions.RECEIVED_CONFIG:
             received.config = action.config;
+            attemptToInit();
+            break;
+        case VMActions.RECEIVED_PLUGINS:
+            received.plugins = action.plugins;
+            attemptToInit();
+            break;
+        case VMActions.RECEIVED_CONSTRUCTOR:
+            received.VMConstructor = action.constructor;
             attemptToInit();
             break;
         default:

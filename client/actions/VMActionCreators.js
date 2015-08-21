@@ -35,6 +35,20 @@ module.exports = {
         });
     },
 
+    receivedConstructor: function(constructor) {
+        AppDispatcher.dispatch({
+            actionType: VMActions.RECEIVED_CONSTRUCTOR,
+            constructor: constructor
+        });
+    },
+
+    receivedPlugins: function(plugins) {
+        AppDispatcher.dispatch({
+            actionType: VMActions.RECEIVED_PLUGINS,
+            plugins: plugins
+        });
+    },
+
     initialized: function() {
         AppDispatcher.dispatch({
             actionType: VMActions.INITIALIZED

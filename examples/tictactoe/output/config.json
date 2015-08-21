@@ -1,6 +1,72 @@
 {
   "values": {
-    "tictactoe.turn": {
+    "tictactoe.winner": {
+      "type": "data",
+      "default": []
+    },
+    "tictactoe.game": {
+      "type": "scope",
+      "choices": {
+        "placeX": {
+          "type": "choice",
+          "when": [
+            "{{= context.getValue('tictactoe.turns') % 2 == 0 }}"
+          ],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player1.board",
+              "referenceGridValue": "tictactoe.board",
+              "data": "X"
+            },
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "counterValue": "tictactoe.turns",
+              "amount": 1
+            },
+            {
+              "type": "instruction",
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player1.board",
+              "dataValue": "tictactoe.winner"
+            }
+          ]
+        },
+        "placeO": {
+          "type": "choice",
+          "when": [
+            "{{= context.getValue('tictactoe.turns') % 2 == 1 }}"
+          ],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player2.board",
+              "referenceGridValue": "tictactoe.board",
+              "data": "O"
+            },
+            {
+              "type": "instruction",
+              "instruction": "increment",
+              "counterValue": "tictactoe.turns",
+              "amount": 1
+            },
+            {
+              "type": "instruction",
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player2.board",
+              "dataValue": "tictactoe.winner"
+            }
+          ]
+        }
+      },
+      "default": {}
+    },
+    "tictactoe.turns": {
       "type": "counter",
       "min": 1,
       "max": null,
@@ -34,58 +100,9 @@
       "cols": 3,
       "default": {},
       "nestedGrids": []
-    },
-    "tictactoe.game": {
-      "type": "scope",
-      "choices": {
-        "placeX": {
-          "type": "choice",
-          "when": [
-            "{{= context.getValue('tictactoe.turn') % 2 == 0 }}"
-          ],
-          "notWhen": [],
-          "instructions": [
-            {
-              "type": "instruction",
-              "instruction": "place",
-              "gridValue": "tictactoe.player1.board",
-              "referenceGridValue": "tictactoe.board",
-              "data": "X"
-            },
-            {
-              "type": "instruction",
-              "instruction": "increment",
-              "counterValue": "tictactoe.turn",
-              "amount": 1
-            }
-          ]
-        },
-        "placeO": {
-          "type": "choice",
-          "when": [
-            "{{= context.getValue('tictactoe.turn') % 2 == 1 }}"
-          ],
-          "notWhen": [],
-          "instructions": [
-            {
-              "type": "instruction",
-              "instruction": "place",
-              "gridValue": "tictactoe.player2.board",
-              "referenceGridValue": "tictactoe.board",
-              "data": "O"
-            },
-            {
-              "type": "instruction",
-              "instruction": "increment",
-              "counterValue": "tictactoe.turn",
-              "amount": 1
-            }
-          ]
-        }
-      },
-      "default": {}
     }
   },
+  "expressionTemplates": {},
   "decks": {},
   "client": {
     "views": {
@@ -125,9 +142,9 @@
   ],
   "plugins": [
     "scope-plugin-core",
+    "scope-plugin-scope",
     "scope-plugin-counter",
     "scope-plugin-entity",
-    "scope-plugin-grid",
-    "scope-plugin-scope"
+    "scope-plugin-grid"
   ]
 }

@@ -4,39 +4,6 @@
       "type": "list",
       "default": []
     },
-    "counter.min0max10": {
-      "type": "counter",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 0
-    },
-    "entity.thing": {
-      "type": "repository",
-      "entity": "entity.thing",
-      "default": {}
-    },
-    "entity.thing.lastId": {
-      "type": "counter",
-      "min": 0,
-      "max": null,
-      "step": 1,
-      "default": 0
-    },
-    "entity.thing.size": {
-      "type": "counter",
-      "min": null,
-      "max": null,
-      "step": 1,
-      "default": 0
-    },
-    "grid.grid": {
-      "type": "grid",
-      "rows": 3,
-      "cols": 3,
-      "default": {},
-      "nestedGrids": []
-    },
     "counter.scope": {
       "type": "scope",
       "choices": {
@@ -119,8 +86,42 @@
         }
       },
       "default": {}
+    },
+    "counter.min0max10": {
+      "type": "counter",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    "entity.thing": {
+      "type": "repository",
+      "entity": "entity.thing",
+      "default": {}
+    },
+    "entity.thing.lastId": {
+      "type": "counter",
+      "min": 0,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "entity.thing.size": {
+      "type": "counter",
+      "min": null,
+      "max": null,
+      "step": 1,
+      "default": 0
+    },
+    "grid.grid": {
+      "type": "grid",
+      "rows": 3,
+      "cols": 3,
+      "default": {},
+      "nestedGrids": []
     }
   },
+  "expressionTemplates": {},
   "decks": {},
   "client": {
     "views": {
@@ -230,9 +231,9 @@
   ],
   "plugins": [
     "scope-plugin-core",
+    "scope-plugin-scope",
     "scope-plugin-counter",
     "scope-plugin-entity",
-    "scope-plugin-grid",
-    "scope-plugin-scope"
+    "scope-plugin-grid"
   ]
 }

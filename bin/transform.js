@@ -2,9 +2,11 @@
 var fs = require('fs');
 var cli = require('cli');
 var _ = require('underscore');
+var $ = require('jquery');
 
 cli.parse({
     pretty: ['p', 'Output pretty', 'bool', false],
+    plugins: ['P', 'Additional plugin paths (comma separated)', 'string', ''],
     verbose: ['v', 'Verbose output']
 });
 
@@ -13,6 +15,19 @@ cli.main(function(args, options) {
 
     var basedir = __dirname + '/..';
     var pluginsDir = basedir + '/lib/plugins';
+
+    var pluginPaths = [process.cwd() + '/lib/vm/plugins', pluginsDir];
+
+    if (options.plugins !== '') {
+        var extraPlugins = options.plugins.split(' ');
+        _.each(extraPlugins, function(extraPlugin) {
+            if (fs.existsSync(extraPlugin) === false) {
+                return;
+            }
+
+            pluginPaths.push(fs.realpathSync(extraPlugin));
+        });
+    }
 
     var transformerModules = getTrasformerModules([process.cwd() + '/lib/vm/plugins', pluginsDir]);
 
@@ -49,6 +64,22 @@ cli.main(function(args, options) {
         require('fs').writeFileSync(options.outputPath + '/config.js', 'module.exports = ' + output + ';');
         console.log('Wrote data to ' + options.outputPath + '/config.json');
         console.log('Wrote js loadable data to ' + options.outputPath + '/config.js');
+        console.log('Building plugins...');
+        var pluginIndexes = getPluginIndexes(pluginPaths);
+
+        var pluginDefers = [];
+        var loaderFile = 'module.exports = {##PLUGINS##};';
+        var loaderFilePlugins = [];
+
+        _.each(pluginIndexes, function(pluginIndex) {
+            var pieces = pluginIndex.split('/');
+            var name = pieces[pieces.length - 2];
+            loaderFilePlugins.push('"' + name + '": require("' + pluginIndex + '")');
+            pluginDefers.push(name);
+        });
+
+        fs.writeFileSync(options.outputPath + '/plugins.js', loaderFile.replace('##PLUGINS##', loaderFilePlugins.join(',')));
+        console.log('plugins.js written');
     } else {
         console.log(output);
     }
@@ -103,6 +134,28 @@ function getPlugins(paths) {
 
             if (fs.existsSync(filePath + '.js')) {
                 plugins.push('scope-plugin-' + file);
+            }
+        });
+    });
+
+    return plugins;
+}
+
+/**
+ *
+ * @param {Array.<string>} paths
+ */
+function getPluginIndexes(paths) {
+    var plugins = [];
+
+    _.each(paths, function(path) {
+        var dirFiles = fs.readdirSync(path);
+
+        _.each(dirFiles, function(file) {
+            var filePath =  path + '/' + file + '/index';
+
+            if (fs.existsSync(filePath + '.js')) {
+                plugins.push(filePath + '.js');
             }
         });
     });

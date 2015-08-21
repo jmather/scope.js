@@ -1,4 +1,7 @@
 {
+  "winner": {
+    "type": "data"
+  },
   "board": {
     "type": "grid-collection",
     "rows": 3,
@@ -15,7 +18,7 @@
     "rows": 3,
     "cols": 3
   },
-  "turn": {
+  "turns": {
     "type": "counter",
     "min": 1,
     "default": 1
@@ -25,20 +28,22 @@
     "choices": {
       "placeX": {
         "when":[
-          "turn % 2 == 0"
+          "turns % 2 == 0"
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+          { "instruction": "increment", "counterValue": "turns", "amount": 1 },
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner" }
         ]
       },
       "placeO": {
         "when":[
-          "turn % 2 == 1"
+          "turns % 2 == 1"
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "O" },
-          { "instruction": "increment", "counterValue": "turn", "amount": 1 }
+          { "instruction": "increment", "counterValue": "turns", "amount": 1 },
+          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner" }
         ]
       }
     }

@@ -32,8 +32,11 @@ cli.main(function(args, options) {
     // executes `pwd`
     var configDir = exampleDir + '/config';
     var outputPath = exampleDir + '/output';
+    var pluginPath = exampleDir + '/plugins';
 
-    child = exec(__dirname + "/transform.js -p " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
+
+    console.log('executing: ' + __dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath);
+    child = exec(__dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
         console.log(stdout);
 
         if (stderr) {
@@ -44,6 +47,10 @@ cli.main(function(args, options) {
         }
 
         var buildPath = __dirname + '/../build';
+
+        fs.writeFileSync(buildPath + '/config.js', fs.readFileSync(outputPath + '/config.js'));
+        fs.writeFileSync(buildPath + '/plugins.js', fs.readFileSync(outputPath + '/plugins.js'));
+
 
         child = exec("cp " + outputPath + '/config.js ' + buildPath + '/config.js', function (error, stdout, stderr) {
             console.log(stdout);
