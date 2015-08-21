@@ -35,7 +35,7 @@
           { "instruction": "place", "gridValue": "player1.board", "cell": "1-1", "referenceGridValue": "board", "data": "X" },
           { "instruction": "place", "gridValue": "player1.board", "cell": "2-2", "referenceGridValue": "board", "data": "X" },
           { "instruction": "place", "gridValue": "player1.board", "cell": "3-3", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X" }
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X", "min": 3 }
         ]
       },
       "placeX": {
@@ -45,7 +45,7 @@
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X" },
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X", "min": 3 },
           { "instruction": "increment", "counterValue": "turns", "amount": 1 }
         ]
       },
@@ -56,7 +56,7 @@
         ],
         "instructions": [
           { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "O" },
-          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "O" },
+          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "O", "min": 3 },
           { "instruction": "increment", "counterValue": "turns", "amount": 1 }
         ]
       },

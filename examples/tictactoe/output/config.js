@@ -43,7 +43,8 @@ module.exports = {
               "instruction": "hasWon",
               "gridValue": "tictactoe.player1.board",
               "dataValue": "tictactoe.winner",
-              "data": "X"
+              "data": "X",
+              "min": 3
             }
           ]
         },
@@ -67,7 +68,8 @@ module.exports = {
               "instruction": "hasWon",
               "gridValue": "tictactoe.player1.board",
               "dataValue": "tictactoe.winner",
-              "data": "X"
+              "data": "X",
+              "min": 3
             },
             {
               "type": "instruction",
@@ -97,7 +99,8 @@ module.exports = {
               "instruction": "hasWon",
               "gridValue": "tictactoe.player2.board",
               "dataValue": "tictactoe.winner",
-              "data": "O"
+              "data": "O",
+              "min": 3
             },
             {
               "type": "instruction",
