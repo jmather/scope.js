@@ -19,40 +19,43 @@ See a full flow:
 
     npm install
     ./bin/build-example.js test
-    ./bin/vm.js counter.scope incrementA -v
-    ./bin/vm.js counter.scope incrementB -v
-    ./bin/vm.js counter.scope incrementA -v
-    ./bin/vm.js counter.scope incrementBoth -v
+    ./bin/vm.js counter.scope increment -v
+    ./bin/vm.js counter.scope increment -v
+    ./bin/vm.js counter.scope increment -v
+    ./bin/vm.js counter.scope decrement -v
 
 Example output:
 
-    Jacobs-MBP:scope.js jmather$ ./bin/build-example.js test
+    $ ./bin/build-example.js test
+    executing: /Users/jmather/code/scope.js/bin/transform.js -p -P /Users/jmather/code/scope.js/bin/../examples/test/plugins /Users/jmather/code/scope.js/bin/../examples/test/config /Users/jmather/code/scope.js/bin/../examples/test/output
+    Wrote data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.json
+    Wrote js loadable data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.js
+    Building plugins...
+    plugins.js written
 
-    Wrote data to /Users/jmather/code/scope.js/examples/test/output/data.json
-    Wrote js loadable data to /Users/jmather/code/scope.js/examples/test/output/data.js
 
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementA
+    $ ./bin/vm.js counter.scope increment -v
     Loaded state
     Changes to the data
-      counter.a: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementB
+      counter.min0max10: null -> 1
+    $ ./bin/vm.js counter.scope increment -v
+
     Loaded state
-      counter.a: 1
+      counter.min0max10: 1
     Changes to the data
-      counter.b: null -> 1
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementA
+      counter.min0max10: 1 -> 2
+
+    $ ./bin/vm.js counter.scope increment -v
     Loaded state
-      counter.a: 1
-      counter.b: 1
+      counter.min0max10: 2
     Changes to the data
-      counter.a: 1 -> 2
-    Jacobs-MBP:scope.js jmather$ ./bin/vm.js -v counter.scope incrementBoth
+      counter.min0max10: 2 -> 3
+
+    $ ./bin/vm.js counter.scope decrement -v
     Loaded state
-      counter.a: 2
-      counter.b: 1
+      counter.min0max10: 3
     Changes to the data
-      counter.a: 2 -> 3
-      counter.b: 1 -> 2
+      counter.min0max10: 3 -> 2
 
 
 Example command:
@@ -131,29 +134,46 @@ or
 
 ## Data Compiling
 
+### Phases
 Each transformation currently has many phases available:
 
-### init
+#### init
 
 This is where any initial priming needs to happen (initial keys for values and entities are created here, for example).
 
-### copy
+#### copy
 
 This is the step for actually moving data around. Copying raw data to specific areas (like values, or entities).
 
-### resolve
+#### resolve
 
 This is where you can 'fill in' the information. Currently this is primarily used to go back over all of the types and fill
 in their definitions from the definition templates.
 
-### validate
+#### validate
 
 This is used for validation.
 
-### metadata (coming soon)
+#### metadata (coming soon)
 
 This will be where you introspect values and try to prime the config with relational data to help things like
 predictive caching, and cascading effects.
+
+### Packaging
+
+Within the output directory, you will see several files:
+
+- config.js
+
+  This is the JavaScript module version of your compiled value config.
+
+- config.json
+
+  This is the JSON version of your compiled value config.
+
+- plugins.js
+
+  This is a wrapper file for the plugins to prevent having to dynamically load them in later.
 
 ## The VM
 

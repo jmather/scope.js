@@ -31,15 +31,13 @@ cli.main(function(args, options) {
         process.exit(1);
     }
 
-    var plugins = _.map(valueConfig.plugins, function(plugin) {
-        return require(plugin);
-    });
-
     var statePath = '../build/state';
 
     var state = (fs.existsSync(__dirname + '/' + statePath + '.js')) ? require(statePath) : {};
 
     var VM = require(__dirname + '/../lib/vm/index');
+
+    var plugins = require(__dirname + '/../build/plugins');
 
     var config = new VM.Config(state, valueConfig, new Date().getTime(), plugins);
 
