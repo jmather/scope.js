@@ -47,7 +47,7 @@ module.exports = {
         var ValueManager = require.main.require('lib/vm/value-manager');
         var TypeManager = require.main.require('lib/vm/type-manager');
         var InputManager = require.main.require('lib/vm/input-manager');
-        var InstructionExecutor = require.main.require('lib/vm/instruction-executor');
+        var InstructionExecutor = require.main.require('lib/vm/plugins/scope/lib/instruction-executor');
 
         var dataManager = new DataManager(state);
         var typeManager = new TypeManager(plugins);
