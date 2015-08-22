@@ -119,25 +119,13 @@ module.exports = {
           "instructions": [
             {
               "type": "instruction",
-              "instruction": "setValue",
-              "value": "tictactoe.turns",
-              "data": 0
-            },
-            {
-              "type": "instruction",
-              "instruction": "setValue",
-              "value": "tictactoe.player1.board"
-            },
-            {
-              "type": "instruction",
-              "instruction": "setValue",
-              "value": "tictactoe.player2.board"
-            },
-            {
-              "type": "instruction",
-              "instruction": "setValue",
-              "value": "tictactoe.winner",
-              "data": null
+              "instruction": "resetGame",
+              "gridValues": [
+                "tictactoe.player1.board",
+                "tictactoe.player2.board"
+              ],
+              "dataValue": "tictactoe.winner",
+              "counterValue": "tictactoe.turns"
             }
           ]
         }

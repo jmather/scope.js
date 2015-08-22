@@ -65,10 +65,7 @@
           "winner !== null"
         ],
         "instructions": [
-          { "instruction": "setValue", "value": "turns", "data": 0 },
-          { "instruction": "setValue", "value": "player1.board", "data": {} },
-          { "instruction": "setValue", "value": "player2.board", "data": {} },
-          { "instruction": "setValue", "value": "winner", "data": null }
+          { "instruction": "resetGame", "gridValues": ["player1.board", "player2.board"], "dataValue": "winner", "counterValue": "turns" }
         ]
       }
     }

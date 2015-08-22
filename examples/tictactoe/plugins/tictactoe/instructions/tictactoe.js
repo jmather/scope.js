@@ -24,6 +24,15 @@ instructions.hasWon = function(gridValue, dataValue, data, min, valueManager) {
     valueManager.get(dataValue).setValue(data);
 };
 
+instructions.resetGame = function(gridValues, dataValue, counterValue, valueManager) {
+    _.each(gridValues, function(gridValue) {
+        valueManager.get(gridValue).clearValue();
+    });
+
+    valueManager.get(dataValue).clearValue();
+    valueManager.get(counterValue).clearValue();
+};
+
 /**
  *
  * @param {GridType} grid
