@@ -21,48 +21,63 @@
   },
   "turns": {
     "type": "counter",
-    "min": 1,
-    "default": 1
+    "min": 0,
+    "default": 0
   },
   "game": {
     "type": "scope",
     "choices": {
-      "instantWinX": {
+      "instantWinPlayer1": {
         "when": [
-          "winner === null"
+          "winner === null",
+          "turns < 9"
         ],
         "instructions": [
-          { "instruction": "place", "gridValue": "player1.board", "cell": "1-1", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "place", "gridValue": "player1.board", "cell": "2-2", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "place", "gridValue": "player1.board", "cell": "3-3", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X", "min": 3 }
+          { "instruction": "place", "gridValue": "player1.board", "cell": "1-1", "referenceGridValue": "board", "data": "1" },
+          { "instruction": "place", "gridValue": "player1.board", "cell": "2-2", "referenceGridValue": "board", "data": "1" },
+          { "instruction": "place", "gridValue": "player1.board", "cell": "3-3", "referenceGridValue": "board", "data": "1" },
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "1", "min": 3 }
         ]
       },
-      "placeX": {
-        "when":[
-          "turns % 2 == 0",
-          "winner === null"
+      "instantWinPlayer2": {
+        "when": [
+          "winner === null",
+          "turns < 9"
         ],
         "instructions": [
-          { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "X" },
-          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "X", "min": 3 },
+          { "instruction": "place", "gridValue": "player2.board", "cell": "1-1", "referenceGridValue": "board", "data": "2" },
+          { "instruction": "place", "gridValue": "player2.board", "cell": "2-2", "referenceGridValue": "board", "data": "2" },
+          { "instruction": "place", "gridValue": "player2.board", "cell": "3-3", "referenceGridValue": "board", "data": "2" },
+          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "2", "min": 3 }
+        ]
+      },
+      "player1": {
+        "when":[
+          "turns % 2 == 0",
+          "winner === null",
+          "turns < 9"
+        ],
+        "instructions": [
+          { "instruction": "place", "gridValue": "player1.board", "referenceGridValue": "board", "data": "1" },
+          { "instruction": "hasWon", "gridValue": "player1.board", "dataValue": "winner", "data": "1", "min": 3 },
           { "instruction": "increment", "counterValue": "turns", "amount": 1 }
         ]
       },
-      "placeO": {
+      "player2": {
         "when":[
           "turns % 2 == 1",
-          "winner === null"
+          "winner === null",
+          "turns < 9"
         ],
         "instructions": [
-          { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "O" },
-          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "O", "min": 3 },
+          { "instruction": "place", "gridValue": "player2.board", "referenceGridValue": "board", "data": "2" },
+          { "instruction": "hasWon", "gridValue": "player2.board", "dataValue": "winner", "data": "2", "min": 3 },
           { "instruction": "increment", "counterValue": "turns", "amount": 1 }
         ]
       },
       "newGame": {
         "when": [
-          "winner !== null"
+          "winner !== null || turns >= 9"
         ],
         "instructions": [
           { "instruction": "resetGame", "gridValues": ["player1.board", "player2.board"], "dataValue": "winner", "counterValue": "turns" }

@@ -7,10 +7,11 @@ module.exports = {
     "tictactoe.game": {
       "type": "scope",
       "choices": {
-        "instantWinX": {
+        "instantWinPlayer1": {
           "type": "choice",
           "when": [
-            "{{= context.getValue('tictactoe.winner') === null }}"
+            "{{= context.getValue('tictactoe.winner') === null }}",
+            "{{= context.getValue('tictactoe.turns') < 9 }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -20,7 +21,7 @@ module.exports = {
               "gridValue": "tictactoe.player1.board",
               "cell": "1-1",
               "referenceGridValue": "tictactoe.board",
-              "data": "X"
+              "data": "1"
             },
             {
               "type": "instruction",
@@ -28,7 +29,7 @@ module.exports = {
               "gridValue": "tictactoe.player1.board",
               "cell": "2-2",
               "referenceGridValue": "tictactoe.board",
-              "data": "X"
+              "data": "1"
             },
             {
               "type": "instruction",
@@ -36,23 +37,66 @@ module.exports = {
               "gridValue": "tictactoe.player1.board",
               "cell": "3-3",
               "referenceGridValue": "tictactoe.board",
-              "data": "X"
+              "data": "1"
             },
             {
               "type": "instruction",
               "instruction": "hasWon",
               "gridValue": "tictactoe.player1.board",
               "dataValue": "tictactoe.winner",
-              "data": "X",
+              "data": "1",
               "min": 3
             }
           ]
         },
-        "placeX": {
+        "instantWinPlayer2": {
+          "type": "choice",
+          "when": [
+            "{{= context.getValue('tictactoe.winner') === null }}",
+            "{{= context.getValue('tictactoe.turns') < 9 }}"
+          ],
+          "notWhen": [],
+          "instructions": [
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player2.board",
+              "cell": "1-1",
+              "referenceGridValue": "tictactoe.board",
+              "data": "2"
+            },
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player2.board",
+              "cell": "2-2",
+              "referenceGridValue": "tictactoe.board",
+              "data": "2"
+            },
+            {
+              "type": "instruction",
+              "instruction": "place",
+              "gridValue": "tictactoe.player2.board",
+              "cell": "3-3",
+              "referenceGridValue": "tictactoe.board",
+              "data": "2"
+            },
+            {
+              "type": "instruction",
+              "instruction": "hasWon",
+              "gridValue": "tictactoe.player2.board",
+              "dataValue": "tictactoe.winner",
+              "data": "2",
+              "min": 3
+            }
+          ]
+        },
+        "player1": {
           "type": "choice",
           "when": [
             "{{= context.getValue('tictactoe.turns') % 2 == 0 }}",
-            "{{= context.getValue('tictactoe.winner') === null }}"
+            "{{= context.getValue('tictactoe.winner') === null }}",
+            "{{= context.getValue('tictactoe.turns') < 9 }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -61,14 +105,14 @@ module.exports = {
               "instruction": "place",
               "gridValue": "tictactoe.player1.board",
               "referenceGridValue": "tictactoe.board",
-              "data": "X"
+              "data": "1"
             },
             {
               "type": "instruction",
               "instruction": "hasWon",
               "gridValue": "tictactoe.player1.board",
               "dataValue": "tictactoe.winner",
-              "data": "X",
+              "data": "1",
               "min": 3
             },
             {
@@ -79,11 +123,12 @@ module.exports = {
             }
           ]
         },
-        "placeO": {
+        "player2": {
           "type": "choice",
           "when": [
             "{{= context.getValue('tictactoe.turns') % 2 == 1 }}",
-            "{{= context.getValue('tictactoe.winner') === null }}"
+            "{{= context.getValue('tictactoe.winner') === null }}",
+            "{{= context.getValue('tictactoe.turns') < 9 }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -92,14 +137,14 @@ module.exports = {
               "instruction": "place",
               "gridValue": "tictactoe.player2.board",
               "referenceGridValue": "tictactoe.board",
-              "data": "O"
+              "data": "2"
             },
             {
               "type": "instruction",
               "instruction": "hasWon",
               "gridValue": "tictactoe.player2.board",
               "dataValue": "tictactoe.winner",
-              "data": "O",
+              "data": "2",
               "min": 3
             },
             {
@@ -113,7 +158,7 @@ module.exports = {
         "newGame": {
           "type": "choice",
           "when": [
-            "{{= context.getValue('tictactoe.winner') !== null }}"
+            "{{= context.getValue('tictactoe.winner') !== null || context.getValue('tictactoe.turns') >= 9 }}"
           ],
           "notWhen": [],
           "instructions": [
@@ -134,10 +179,10 @@ module.exports = {
     },
     "tictactoe.turns": {
       "type": "counter",
-      "min": 1,
+      "min": 0,
       "max": null,
       "step": 1,
-      "default": 1
+      "default": 0
     },
     "tictactoe.board": {
       "type": "grid-collection",
