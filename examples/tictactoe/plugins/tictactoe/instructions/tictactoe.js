@@ -75,6 +75,8 @@ function checkDiagonals(grid, min) {
             } else {
                 rl_diagonal = 0;
             }
+
+            lastRL = row;
         }
     }
 
