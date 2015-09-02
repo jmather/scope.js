@@ -16,7 +16,7 @@ cli.main(function(args, options) {
     var basedir = __dirname + '/..';
     var pluginsDir = basedir + '/lib/plugins';
 
-    var pluginPaths = [process.cwd() + '/lib/vm/plugins', pluginsDir];
+    var pluginPaths = [__dirname + '/../lib/vm/plugins', pluginsDir];
 
     if (options.plugins !== '') {
         var extraPlugins = options.plugins.split(' ');
@@ -29,7 +29,7 @@ cli.main(function(args, options) {
         });
     }
 
-    var transformerModules = getTrasformerModules([process.cwd() + '/lib/vm/plugins', pluginsDir]);
+    var transformerModules = getTrasformerModules([__dirname + '/../lib/vm/plugins', pluginsDir]);
 
     var transformers = _.map(transformerModules, function(TransformerClass) {
         return new TransformerClass({});
@@ -50,7 +50,7 @@ cli.main(function(args, options) {
 
     var compiledData = transformer.transform(data);
 
-    compiledData.plugins = getPlugins([process.cwd() + '/lib/vm/plugins', pluginsDir]);
+    compiledData.plugins = getPlugins([__dirname + '/../lib/vm/plugins', pluginsDir]);
 
     var output = JSON.stringify(compiledData);
 

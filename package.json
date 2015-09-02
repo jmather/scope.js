@@ -1,8 +1,12 @@
 {
   "name": "scope.js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A tool for handling data transformations",
-  "main": "index.js",
+  "main": "lib/vm/index.js",
+  "bin": {
+    "scope-transform.js": "bin/transform.js",
+    "scope-vm.js": "bin/vm.js"
+  },
   "scripts": {
     "start": "open www/startup.html && DEBUG=express:* ./bin/dev-server.js",
     "pretest": "npm run-script lint",
