@@ -133,8 +133,6 @@ function checkRowsAndCols(grid, min) {
         }
     });
 
-    console.log(rows, cols);
-
     return hasWon;
 }
 
