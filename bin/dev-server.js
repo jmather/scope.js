@@ -10,4 +10,4 @@ app.use('/bootstrap', serveStatic(__dirname + '/../node_modules/bootstrap/dist')
 app.use('/jquery', serveStatic(__dirname + '/../node_modules/jquery/dist'));
 
 //create node.js http server and listen on port
-app.listen(3000);
+app.listen(3001);

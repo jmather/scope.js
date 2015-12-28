@@ -48,6 +48,8 @@ cli.main(function(args, options) {
 
         var buildPath = __dirname + '/../build';
 
+	fs.mkdirSync(buildPath);
+
         fs.writeFileSync(buildPath + '/config.js', fs.readFileSync(outputPath + '/config.js'));
         fs.writeFileSync(buildPath + '/plugins.js', fs.readFileSync(outputPath + '/plugins.js'));
 

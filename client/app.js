@@ -3,7 +3,7 @@ var VMActionCreators = require('./actions/VMActionCreators');
 
 var config = require('../build/config');
 var plugins = require('../build/plugins');
-var vm = require('../build/vm');
+var vm = require('../lib/vm');
 var state = {};
 
 var ScopeJSClient = require('./components/ScopeJSClient.react');
