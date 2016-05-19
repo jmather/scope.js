@@ -104,6 +104,8 @@ function buildQuestion(question) {
     switch(question.type) {
         case 'pick-one':
             return buildPickOneQuestion(question);
+        case 'string':
+            return buildEnterString(question);
     }
 
     throw new Error("Question type " + question.type + " not supported");
@@ -118,6 +120,12 @@ function buildPickOneQuestion(question) {
 
     return (
         <label>{question.name}: <select className="form-control" ref={question.name}>{options}</select></label>
+    );
+}
+
+function buildEnterString(question) {
+    return (
+        <label>{question.name}: <input className="form-control" ref={question.name} /></label>
     );
 }
 

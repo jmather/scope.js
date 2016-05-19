@@ -29,7 +29,7 @@ cli.main(function(args, options) {
         });
     }
 
-    var transformerModules = getTrasformerModules([__dirname + '/../lib/vm/plugins', pluginsDir]);
+    var transformerModules = getTrasformerModules(pluginPaths);
 
     var transformers = _.map(transformerModules, function(TransformerClass) {
         return new TransformerClass({});
@@ -50,7 +50,7 @@ cli.main(function(args, options) {
 
     var compiledData = transformer.transform(data);
 
-    compiledData.plugins = getPlugins([__dirname + '/../lib/vm/plugins', pluginsDir]);
+    compiledData.plugins = getPlugins(pluginPaths);
 
     var output = JSON.stringify(compiledData);
 
