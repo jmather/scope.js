@@ -45,12 +45,19 @@ var Scope = React.createClass({
                 info.push(buildTagForValue(val, this.state[val.value]))
             }.bind(this));
         }
+
+        var bg = null;
+
+        if (commands.length > 0) {
+            bg = (<ButtonGroup view={this.props.view} commands={commands} onQuestion={this.props.onQuestion} />);
+        }
+
         return (
             <div className="col-xs-4">
                 <div className="panel panel-default">
                     <div className="panel-heading">{this.props.view.title}</div>
                     <div className="panel-body">{info}</div>
-                    <ButtonGroup view={this.props.view} commands={commands} onQuestion={this.props.onQuestion} />
+                    {bg}
                 </div>
             </div>
         );
