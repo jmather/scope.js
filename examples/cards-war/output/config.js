@@ -1,4 +1,6 @@
 module.exports = {
+  "values": {},
+  "expressionTemplates": {},
   "decks": {
     "decks.standard": [
       {
@@ -263,5 +265,16 @@ module.exports = {
       }
     ]
   },
-  "values": {}
+  "client": {
+    "views": {}
+  },
+  "entities": {},
+  "scopes": [],
+  "plugins": [
+    "scope-plugin-core",
+    "scope-plugin-scope",
+    "scope-plugin-counter",
+    "scope-plugin-entity",
+    "scope-plugin-grid"
+  ]
 };

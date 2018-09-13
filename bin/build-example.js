@@ -36,7 +36,7 @@ cli.main(function(args, options) {
 
 
     console.log('executing: ' + __dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath);
-    child = exec(__dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
+    child = exec("node " + __dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
         console.log(stdout);
 
         if (stderr) {
@@ -47,9 +47,10 @@ cli.main(function(args, options) {
         }
 
         var buildPath = __dirname + '/../build';
-    if (fs.existsSync(buildPath) === false) {
-        fs.mkdirSync(buildPath);
-    }
+
+        if (fs.existsSync(buildPath) === false) {
+            fs.mkdirSync(buildPath);
+        }
 
         fs.writeFileSync(buildPath + '/config.js', fs.readFileSync(outputPath + '/config.js'));
         fs.writeFileSync(buildPath + '/plugins.js', fs.readFileSync(outputPath + '/plugins.js'));

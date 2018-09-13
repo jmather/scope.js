@@ -8,7 +8,7 @@
     "scope-vm.js": "bin/vm.js"
   },
   "scripts": {
-    "start": "open www/startup.html && DEBUG=express:* ./bin/dev-server.js",
+    "start": "open www/startup.html && DEBUG=express:* node ./bin/dev-server.js",
     "pretest": "npm run-script lint",
     "test": "mocha --recursive tests -r should -r sinon || echo ''",
     "coverage": "istanbul cover --report html _mocha -- --recursive -R spec -r should tests && open coverage/index.html",
@@ -17,8 +17,8 @@
     "lint": "jshint -c jshint.json lib --reporter=./node_modules/jshint-full-path/index.js",
     "complexity": "rm -rf complexity && mkdir complexity && plato -r -d complexity lib && open complexity/index.html",
     "complexity-simple": "rm -rf complexity.* && find lib/ | grep .js | xargs ./node_modules/.bin/jsc --report complexity.json",
-    "watch": "./bin/watch-js.sh",
-    "build": "./bin/compile-js.sh"
+    "watch": "watchify -v -d client/app.js -o build/system.js",
+    "build": "browserify -d client/app.js build/config.js build/plugins.js lib/vm/index.js -o build/system.js"
   },
   "author": "Jacob Mather",
   "license": "MIT",

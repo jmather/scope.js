@@ -9,8 +9,8 @@ Explanation to come.
 This will install the required deps, compile the necessary files, and open your browser to localhost:3000
 
     npm install
-    ./bin/build-example.js test
-    ./bin/compile-js.sh
+    node ./bin/build-example.js test
+    npm run build
     npm start
 
 ## In CLI
@@ -18,15 +18,15 @@ This will install the required deps, compile the necessary files, and open your 
 See a full flow:
 
     npm install
-    ./bin/build-example.js test
-    ./bin/vm.js counter.scope increment -v
-    ./bin/vm.js counter.scope increment -v
-    ./bin/vm.js counter.scope increment -v
-    ./bin/vm.js counter.scope decrement -v
+    node ./bin/build-example.js test
+    node ./bin/vm.js counter.scope increment -v
+    node ./bin/vm.js counter.scope increment -v
+    node ./bin/vm.js counter.scope increment -v
+    node ./bin/vm.js counter.scope decrement -v
 
 Example output:
 
-    $ ./bin/build-example.js test
+    $ node ./bin/build-example.js test
     executing: /Users/jmather/code/scope.js/bin/transform.js -p -P /Users/jmather/code/scope.js/bin/../examples/test/plugins /Users/jmather/code/scope.js/bin/../examples/test/config /Users/jmather/code/scope.js/bin/../examples/test/output
     Wrote data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.json
     Wrote js loadable data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.js
@@ -34,24 +34,24 @@ Example output:
     plugins.js written
 
 
-    $ ./bin/vm.js counter.scope increment -v
+    $ node ./bin/vm.js counter.scope increment -v
     Loaded state
     Changes to the data
       counter.min0max10: null -> 1
-    $ ./bin/vm.js counter.scope increment -v
+    $ node ./bin/vm.js counter.scope increment -v
 
     Loaded state
       counter.min0max10: 1
     Changes to the data
       counter.min0max10: 1 -> 2
 
-    $ ./bin/vm.js counter.scope increment -v
+    $ node ./bin/vm.js counter.scope increment -v
     Loaded state
       counter.min0max10: 2
     Changes to the data
       counter.min0max10: 2 -> 3
 
-    $ ./bin/vm.js counter.scope decrement -v
+    $ node ./bin/vm.js counter.scope decrement -v
     Loaded state
       counter.min0max10: 3
     Changes to the data
@@ -60,37 +60,37 @@ Example output:
 
 Example command:
 
-    ./bin/build-example.js cards-war
+    node ./bin/build-example.js cards-war
 
-    ./bin/transform.js examples/cards-war/config examples/cards-war/output -p
+    node ./bin/transform.js examples/cards-war/config examples/cards-war/output -p
 
 ## Usage Details
 
 The VM will now report back more options:
 
-    $ ./bin/build-example.js test
+    $ node ./bin/build-example.js test
     // snip...
 
-    $ ./bin/vm.js
+    $ node ./bin/vm.js
       Not enough arguments.
       usage: vm.js <scope> <choice>
       Scopes:  counter.scope, entity.scope, grid.scope
 
-    $ ./bin/vm.js entity.scope
+    $ node ./bin/vm.js entity.scope
       The command you executed requires more information.
       {"name":"choice","type":"pick-one","choices":["doSomething"]}
 
-    $ ./bin/vm.js entity.scope doSomething -v
+    $ node ./bin/vm.js entity.scope doSomething -v
       Loaded state
       The command you executed requires more information.
       {"name":"thing","type":"pick-one","choices":["a","b"]}
 
-    $ ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
+    $ node ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
       Loaded state
       The command you executed requires more information.
       {"name":"thing","type":"pick-one","choices":["a","b"]}
 
-    $ ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
+    $ node ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
       Loaded state
       Changes to the data
         entity.thing.lastId: null -> 1
@@ -372,4 +372,3 @@ detailing the commands available.
     - Expressions: values which are merely named expressions. This should resuse the _wben_ expression system.
     - TimedCounter: Counters that run based off of time (typcially used for things like Energy and Stamina)
     - Collections: Groups of values. Useful for freating in-system taxonomies (object Widget property Foo takes any value in the collectio Bar, for example).
-    
