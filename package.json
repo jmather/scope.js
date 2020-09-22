@@ -46,7 +46,8 @@
     "react": "^16.13.1",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.13.1",
-    "underscore": "^1.11.0"
+    "underscore": "^1.11.0",
+    "node-fetch": ">=2.6.1"
   },
   "devDependencies": {
     "babel": "^6.23.0",
