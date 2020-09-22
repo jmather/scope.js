@@ -35,6 +35,7 @@
     "bootstrap": "^3.3.5",
     "cli": "^1.0.1",
     "complexity-report": "^2.0.0-alpha",
+    "create-react-class": "^15.6.3",
     "dot": "^1.0.3",
     "flux": "^2.0.3",
     "immutable": "^3.7.4",
@@ -42,9 +43,9 @@
     "keymirror": "^0.1.1",
     "object-assign": "^3.0.0",
     "pretty-data": "^0.40.0",
-    "react": "^16.5.1",
+    "react": "^16.13.1",
     "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.5.1",
+    "react-dom": "^16.13.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

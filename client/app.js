@@ -1,4 +1,6 @@
 var React = require('react');
+React.createClass = require('create-react-class');
+var ReactDom = require('react-dom');
 var VMActionCreators = require('./actions/VMActionCreators');
 
 var config = require('../build/config');
@@ -8,7 +10,7 @@ var state = {};
 
 var ScopeJSClient = require('./components/ScopeJSClient.react');
 
-React.render(
+ReactDom.render(
     <ScopeJSClient config={config} />,
     document.body
 );
