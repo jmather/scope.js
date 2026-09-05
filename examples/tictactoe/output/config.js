@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   "values": {
     "tictactoe.winner": {
@@ -260,6 +261,7 @@ module.exports = {
     "scope-plugin-scope",
     "scope-plugin-counter",
     "scope-plugin-entity",
-    "scope-plugin-grid"
+    "scope-plugin-grid",
+    "scope-plugin-tictactoe"
   ]
 };

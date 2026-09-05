@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/store/VMStore.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/store/VMStore.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var EventEmitter = require('events').EventEmitter;
+var assign = require('object-assign');
+var _ = require('underscore');
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var VMConstants = require('../constants/VMConstants');
+var VMActions = VMConstants.actionTypes;
+var VMActionCreators = require('../actions/VMActionCreators');
+
+var vmBuilder = require('./VMStore/VM');
+
+var CHANGE_EVENT = 'change';
+var INITIALIZE_EVENT = 'initialize';
+
+/**
+ * @exports VMStore
+ */
+var VMStore = assign({}, EventEmitter.prototype, {
+    init: function(VMConstructor, state, config, plugins) {
+        this.config = config;
+        this.plugins = plugins;
+        this.VMConstructor = VMConstructor;
+        this.vm = vmBuilder.build(this.VMConstructor, state, this.config, this.plugins);
+        this.emit(INITIALIZE_EVENT);
+    },
+
+    replaceVMConfig: function(config) {
+        this.config = config;
+        this.vm = vmBuilder.build(this.VMConstructor, this.vm.valueManager.dataManager.data.toJS(), config, this.plugins);
+        this.emitChange();
+    },
+
+    replaceVMState: function(state) {
+        this.vm = vmBuilder.build(this.VMConstructor, state, this.vm.valueManager.valueConfig, this.plugins);
+        this.emitChange();
+    },
+
+    getCommandsForScope: function(scope) {
+        try {
+            this.vm.execute(scope);
+        } catch (e) {
+            if (e.questions &amp;&amp; e.questions.length > 0) {
+                return e.questions[0].choices;
+            }
+
+            return [];
+        }
+    },
+
+    /**
+     *
+     * @return {*}
+     */
+    getValueDefinitions: function() {
+        return this.vm.getValueDefinitions();
+    },
+
+    /**
+     *
+     * @param {string} name
+     * @return {*}
+     */
+    getValueDefinition: function(name) {
+        return this.vm.getValueDefinition(name);
+    },
+
+    /**
+     *
+     * @return {*}
+     */
+    getValueDefinitionNames: function() {
+        return _.keys(this.vm.getValueDefinitions());
+    },
+
+    /**
+     *
+     * @param {*} value
+     */
+    getValue: function(value) {
+        return this.vm.getValue(value);
+    },
+
+    getData: function() {
+        return this.vm.getData();
+    },
+
+    getConfig: function() {
+        return this.config;
+    },
+
+    getConfigCategory: function(category) {
+        if (this.config[category] === undefined) {
+            throw new Error("Unknown category: " + category);
+        }
+
+        return this.config[category];
+    },
+
+    /**
+     *
+     * @param scope
+     * @param command
+     * @param [args]
+     * @returns {Array.&lt;{value: string, old: *, new: *, caller: *}>}
+     */
+    execute: function(scope, command, args) {
+        var changes = this.vm.execute(scope, command, args);
+        this.emitChange(changes);
+    },
+
+    /**
+     *
+     * @param {*} [changes]
+     */
+    emitChange: function(changes) {
+        this.emit(CHANGE_EVENT, changes);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addChangeListener: function(callback) {
+        this.on(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeChangeListener: function(callback) {
+        this.removeListener(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addInitListener: function(callback) {
+        this.on(INITIALIZE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeInitListener: function(callback) {
+        this.removeListener(INITIALIZE_EVENT, callback);
+    }
+});
+
+var received = {
+    state: false,
+    config: false,
+    plugins: false,
+    VMConstructor: false
+};
+
+function attemptToInit() {
+    // this is crappy -- checks to see if any are not receeived and returns false,
+    // otherwise it returns true
+    if (_.reduce(received, function(memo, val) { return (val) ? memo : false; }, true) === false) {
+        return;
+    }
+
+    VMStore.init(received.VMConstructor, received.state, received.config, received.plugins);
+}
+
+// Register callback to handle all updates
+AppDispatcher.register(function(action) {
+    switch(action.actionType) {
+        case VMActions.RECEIVED_STATE:
+            received.state = action.state;
+            attemptToInit();
+            break;
+        case VMActions.RECEIVED_CONFIG:
+            received.config = action.config;
+            attemptToInit();
+            break;
+        case VMActions.RECEIVED_PLUGINS:
+            received.plugins = action.plugins;
+            attemptToInit();
+            break;
+        case VMActions.RECEIVED_CONSTRUCTOR:
+            received.VMConstructor = action.constructor;
+            attemptToInit();
+            break;
+        default:
+        // no op
+    }
+});
+
+window.VMStore = VMStore;
+
+module.exports = VMStore;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-DepBuilder.html">DepBuilder</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li><li><a href="module-VMStore.html">VMStore</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="DataTransformer.html">DataTransformer</a></li><li><a href="DataType.html">DataType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="ExecutorContext.html">ExecutorContext</a></li><li><a href="ExpressionExecutor.html">ExpressionExecutor</a></li><li><a href="ExpressionTransformer.html">ExpressionTransformer</a></li><li><a href="ExpressionValueNameResolver.html">ExpressionValueNameResolver</a></li><li><a href="GridCollectionTransformer.html">GridCollectionTransformer</a></li><li><a href="GridCollectionType.html">GridCollectionType</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="Question.html">Question</a></li><li><a href="QuestionError.html">QuestionError</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="ScopeValueNameResolver.html">ScopeValueNameResolver</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CorePlugin">CorePlugin</a></li><li><a href="global.html#CounterPlugin">CounterPlugin</a></li><li><a href="global.html#EntityPlugin">EntityPlugin</a></li><li><a href="global.html#GridPlugin">GridPlugin</a></li><li><a href="global.html#ScopePlugin">ScopePlugin</a></li><li><a href="global.html#ScopeView">ScopeView</a></li><li><a href="global.html#_onChange">_onChange</a></li><li><a href="global.html#_onInit">_onInit</a></li><li><a href="global.html#compile">compile</a></li><li><a href="global.html#getArgumentsForMethod">getArgumentsForMethod</a></li><li><a href="global.html#isAboveMax">isAboveMax</a></li><li><a href="global.html#isAvailable">isAvailable</a></li><li><a href="global.html#isBelowMin">isBelowMin</a></li><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li><li><a href="global.html#processChoice">processChoice</a></li><li><a href="global.html#processDeck">processDeck</a></li><li><a href="global.html#processExpression">processExpression</a></li><li><a href="global.html#processGrid">processGrid</a></li><li><a href="global.html#processGridCollection">processGridCollection</a></li><li><a href="global.html#processInstruction">processInstruction</a></li><li><a href="global.html#processScope">processScope</a></li><li><a href="global.html#processWhen">processWhen</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#resolveInstructionArguments">resolveInstructionArguments</a></li><li><a href="global.html#setValue">setValue</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Sep 05 2026 17:04:19 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

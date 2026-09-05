@@ -6,14 +6,11 @@ var VMActionCreators = require('./actions/VMActionCreators');
 var config = require('../build/config');
 var plugins = require('../build/plugins');
 var vm = require('../lib/vm');
-var state = {};
+var state = require('../build/state');
 
 var ScopeJSClient = require('./components/ScopeJSClient.react');
 
-ReactDom.render(
-    <ScopeJSClient config={config} />,
-    document.body
-);
+ReactDom.render(<ScopeJSClient config={config} />,document.getElementById('scopejs'));
 
 // Doing this on purpose to simulate loading remotely...
 VMActionCreators.receivedConfig(config);

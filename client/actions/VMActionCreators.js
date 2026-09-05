@@ -8,15 +8,15 @@ module.exports = {
      *
      * @param {string} scope
      * @param {string} [command]
-     * @param {Object.<string, *>} [arguments]
+     * @param {Object.<string, *>} [args]
      * @param {{target: Node}} source
      */
-    executeScope: function(scope, command, arguments, source) {
+    executeScope: function(scope, command, args, source) {
         AppDispatcher.dispatch({
             actionType: VMActions.VM_EXECUTE,
             scope: scope,
             command: command,
-            arguments: arguments,
+            arguments: args,
             source: source
         });
     },

@@ -1,0 +1,32 @@
+{
+  "home": {
+    "title": "Home",
+    "type": "view",
+    "default": true,
+    "layout": "panel",
+    "panels": [
+      {
+        "value": "tictactoe.game",
+        "title": "Tic Tac Toe",
+        "display": [
+          {
+            "title": "Winner",
+            "value": "tictactoe.winner"
+          },
+          { "value": "tictactoe.board" }
+        ]
+
+      }
+    ]
+  },
+  "config": {
+    "title": "Config",
+    "type": "view",
+    "layout": "config"
+  },
+  "data": {
+    "title": "Data",
+    "type": "view",
+    "layout": "data"
+  }
+}

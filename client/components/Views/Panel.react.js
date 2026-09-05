@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _ = require('underscore');
 
 var ScopePanel = require('./../Panels/Scope.react');
@@ -30,7 +31,7 @@ var ScopeView = React.createClass({
     answer: function(event) {
         var data = {};
         _.each(this.state.questions, function(question) {
-            data[question.name] = React.findDOMNode(this.refs[question.name]).value;
+            data[question.name] = ReactDOM.findDOMNode(this.refs[question.name]).value;
         }.bind(this));
 
         VMStore.execute(this.state.scope, this.state.command, data);
@@ -58,7 +59,6 @@ var ScopeView = React.createClass({
         var modal = this.buildModal();
 
         return (
-
             <div>
                 {scopes}
                 {modal}

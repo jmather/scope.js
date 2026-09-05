@@ -1,4 +1,4 @@
-var VM = require('scope-vm');
+var VM = require('scope.js');
 
 module.exports = {
     /**

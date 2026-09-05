@@ -1,75 +1,80 @@
 #!/usr/bin/env node
+'use strict';
+
 var fs = require('fs');
-var cli = require('cli');
-var _ = require('underscore');
-var examplePath = __dirname + '/../examples';
+var path = require('path');
+var ConfigBuilder = require('../lib/build/config-builder');
 
-cli.parse({
-    clean: ['c', 'Clean state', 'boolean', false],
-    verbose: ['v', 'Verbose output']
-});
-
-cli.main(function(args, options) {
-    if (args.length === 0) {
-        console.error("No example given.");
-        printHelp();
-        process.exit(1);
-    }
-
-    var example = args[0];
-
-    var exampleDir = examplePath + '/' + example;
-    var fs = require('fs');
-    if (fs.existsSync(exampleDir) === false) {
-        console.error('Example "' + example +'" does not exist.');
-        printHelp();
-        process.exit(1);
-    }
-
-    var sys = require('sys');
-    var exec = require('child_process').exec;
-    var child;
-    // executes `pwd`
-    var configDir = exampleDir + '/config';
-    var outputPath = exampleDir + '/output';
-    var pluginPath = exampleDir + '/plugins';
-
-
-    console.log('executing: ' + __dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath);
-    child = exec("node " + __dirname + "/transform.js -p -P " + pluginPath + " " + configDir + ' ' + outputPath, function (error, stdout, stderr) {
-        console.log(stdout);
-
-        if (stderr) {
-            console.error(stderr);
-        }
-        if (error !== null) {
-            console.error('error: ' + error);
-        }
-
-        var buildPath = __dirname + '/../build';
-
-        if (fs.existsSync(buildPath) === false) {
-            fs.mkdirSync(buildPath);
-        }
-
-        fs.writeFileSync(buildPath + '/config.js', fs.readFileSync(outputPath + '/config.js'));
-        fs.writeFileSync(buildPath + '/plugins.js', fs.readFileSync(outputPath + '/plugins.js'));
-
-
-        child = exec("cp " + outputPath + '/config.js ' + buildPath + '/config.js', function (error, stdout, stderr) {
-            console.log(stdout);
-
-            if (stderr) {
-                console.error(stderr);
-            }
-            if (error !== null) {
-                console.error('error: ' + error);
-            }
-        });
-    });
-});
+var projectRoot = path.resolve(__dirname, '..');
+var examplesRoot = path.join(projectRoot, 'examples');
 
 function printHelp() {
     console.log('usage: ' + process.argv[1] + ' [-c|--clean] <example>');
-    console.log('Available examples: ' + fs.readdirSync(examplePath).join(', '));
+    console.log('Available examples: ' + fs.readdirSync(examplesRoot).filter(function(name) {
+        return fs.statSync(path.join(examplesRoot, name)).isDirectory();
+    }).join(', '));
+}
+
+function main() {
+    var args = process.argv.slice(2);
+    var clean = false;
+    args = args.filter(function(argument) {
+        if (argument === '-c' || argument === '--clean') {
+            clean = true;
+            return false;
+        }
+        return true;
+    });
+
+    if (args.length === 0) {
+        console.error('No example given.');
+        printHelp();
+        process.exitCode = 1;
+        return;
+    }
+
+    var example = args[0];
+    var exampleDir = path.join(examplesRoot, example);
+    if (!fs.existsSync(exampleDir)) {
+        console.error('Example ' + JSON.stringify(example) + ' does not exist.');
+        printHelp();
+        process.exitCode = 1;
+        return;
+    }
+
+    var outputPath = path.join(exampleDir, 'output');
+    var buildPath = path.join(projectRoot, 'build');
+    if (clean) {
+        fs.rmSync(outputPath, { recursive: true, force: true });
+        fs.rmSync(buildPath, { recursive: true, force: true });
+    }
+
+    var pluginPaths = [
+        path.join(projectRoot, 'lib/vm/plugins'),
+        path.join(projectRoot, 'lib/plugins'),
+        path.join(exampleDir, 'plugins')
+    ];
+
+    var result = ConfigBuilder.compile({
+        configPath: path.join(exampleDir, 'config'),
+        outputPath: outputPath,
+        pluginPaths: pluginPaths,
+        pretty: true
+    });
+
+    fs.mkdirSync(buildPath, { recursive: true });
+    fs.copyFileSync(path.join(outputPath, 'config.json'), path.join(buildPath, 'config.json'));
+    fs.writeFileSync(path.join(buildPath, 'state.json'), "{}\n");
+    fs.copyFileSync(path.join(outputPath, 'config.js'), path.join(buildPath, 'config.js'));
+    fs.writeFileSync(path.join(buildPath, 'state.js'), "'use strict';\nmodule.exports = {};\n");
+    ConfigBuilder.writePluginLoader(buildPath, result.plugins);
+
+    console.log('Built example ' + example + ' into examples/' + example + '/output and build/');
+}
+
+try {
+    main();
+} catch (error) {
+    console.error(error.stack || error.message);
+    process.exitCode = 1;
 }

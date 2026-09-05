@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/components/Views/Panel.react.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/components/Views/Panel.react.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var React = require('react');
+var ReactDOM = require('react-dom');
+var _ = require('underscore');
+
+var ScopePanel = require('./../Panels/Scope.react');
+var VMStore = require('../../store/VMStore');
+var ReactBootstrap = require('react-bootstrap');
+
+/**
+ *
+ * @type {*|Function}
+ */
+var ScopeView = React.createClass({
+    getInitialState: function() {
+        return {
+            showModal: false,
+            questions: [],
+            scope: null,
+            command: null
+        }
+    },
+
+    onQuestion: function(event, scope, command, questions) {
+        this.setState({
+            scope: scope,
+            command: command,
+            questions: questions
+        });
+    },
+
+    answer: function(event) {
+        var data = {};
+        _.each(this.state.questions, function(question) {
+            data[question.name] = ReactDOM.findDOMNode(this.refs[question.name]).value;
+        }.bind(this));
+
+        VMStore.execute(this.state.scope, this.state.command, data);
+
+        this.setState({
+            scope: null,
+            command: null,
+            questions: []
+        });
+    },
+
+    /**
+     * @return {object}
+     */
+    render: function() {
+
+        var view = this.props.view;
+
+        var scopes = [];
+
+        for (var i = 0; i &lt; view.panels.length; i++) {
+            scopes.push(&lt;ScopePanel key={view.panels[i].value} view={view.panels[i]} onQuestion={this.onQuestion} />);
+        }
+
+        var modal = this.buildModal();
+
+        return (
+            &lt;div>
+                {scopes}
+                {modal}
+            &lt;/div>
+        );
+    },
+
+    close: function() {
+        this.setState({
+            questions: []
+        });
+    },
+
+    buildModal: function() {
+        var questions = buildQuestions(this.state.questions);
+        var Modal = ReactBootstrap.Modal;
+        var Button = ReactBootstrap.Button;
+
+        return (
+            &lt;Modal show={questions.length > 0} onHide={this.close}>
+                &lt;Modal.Header closeButton>
+                    &lt;Modal.Title>Need INPUT!&lt;/Modal.Title>
+                &lt;/Modal.Header>
+
+                &lt;Modal.Body>
+                    {questions}
+                &lt;/Modal.Body>
+
+                &lt;Modal.Footer>
+                    &lt;Button className="btn" onClick={this.close}>Close&lt;/Button>
+                    &lt;Button className="btn btn-primary" onClick={this.answer}>Answer&lt;/Button>
+                &lt;/Modal.Footer>
+            &lt;/Modal>
+        );
+    }
+});
+
+function buildQuestions(questions) {
+    return _.map(questions, buildQuestion);
+}
+
+function buildQuestion(question) {
+    switch(question.type) {
+        case 'pick-one':
+            return buildPickOneQuestion(question);
+        case 'string':
+            return buildEnterString(question);
+    }
+
+    throw new Error("Question type " + question.type + " not supported");
+}
+
+function buildPickOneQuestion(question) {
+    var options = [];
+
+    _.each(question.choices, function(choice) {
+        options.push(&lt;option key={choice} value={choice}>{choice}&lt;/option>);
+    });
+
+    return (
+        &lt;label>{question.name}: &lt;select className="form-control" ref={question.name}>{options}&lt;/select>&lt;/label>
+    );
+}
+
+function buildEnterString(question) {
+    return (
+        &lt;label>{question.name}: &lt;input className="form-control" ref={question.name} />&lt;/label>
+    );
+}
+
+module.exports = ScopeView;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-DepBuilder.html">DepBuilder</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li><li><a href="module-VMStore.html">VMStore</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="DataTransformer.html">DataTransformer</a></li><li><a href="DataType.html">DataType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="ExecutorContext.html">ExecutorContext</a></li><li><a href="ExpressionExecutor.html">ExpressionExecutor</a></li><li><a href="ExpressionTransformer.html">ExpressionTransformer</a></li><li><a href="ExpressionValueNameResolver.html">ExpressionValueNameResolver</a></li><li><a href="GridCollectionTransformer.html">GridCollectionTransformer</a></li><li><a href="GridCollectionType.html">GridCollectionType</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="Question.html">Question</a></li><li><a href="QuestionError.html">QuestionError</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="ScopeValueNameResolver.html">ScopeValueNameResolver</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CorePlugin">CorePlugin</a></li><li><a href="global.html#CounterPlugin">CounterPlugin</a></li><li><a href="global.html#EntityPlugin">EntityPlugin</a></li><li><a href="global.html#GridPlugin">GridPlugin</a></li><li><a href="global.html#ScopePlugin">ScopePlugin</a></li><li><a href="global.html#ScopeView">ScopeView</a></li><li><a href="global.html#_onChange">_onChange</a></li><li><a href="global.html#_onInit">_onInit</a></li><li><a href="global.html#compile">compile</a></li><li><a href="global.html#getArgumentsForMethod">getArgumentsForMethod</a></li><li><a href="global.html#isAboveMax">isAboveMax</a></li><li><a href="global.html#isAvailable">isAvailable</a></li><li><a href="global.html#isBelowMin">isBelowMin</a></li><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li><li><a href="global.html#processChoice">processChoice</a></li><li><a href="global.html#processDeck">processDeck</a></li><li><a href="global.html#processExpression">processExpression</a></li><li><a href="global.html#processGrid">processGrid</a></li><li><a href="global.html#processGridCollection">processGridCollection</a></li><li><a href="global.html#processInstruction">processInstruction</a></li><li><a href="global.html#processScope">processScope</a></li><li><a href="global.html#processWhen">processWhen</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#resolveInstructionArguments">resolveInstructionArguments</a></li><li><a href="global.html#setValue">setValue</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Sep 05 2026 17:04:19 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

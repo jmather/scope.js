@@ -100,11 +100,11 @@ var VMStore = assign({}, EventEmitter.prototype, {
      *
      * @param scope
      * @param command
-     * @param [arguments]
+     * @param [args]
      * @returns {Array.<{value: string, old: *, new: *, caller: *}>}
      */
-    execute: function(scope, command, arguments) {
-        var changes = this.vm.execute(scope, command, arguments);
+    execute: function(scope, command, args) {
+        var changes = this.vm.execute(scope, command, args);
         this.emitChange(changes);
     },
 

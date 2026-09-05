@@ -1,23 +1,25 @@
 {
   "name": "scope.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tool for handling data transformations",
   "main": "lib/vm/index.js",
+  "exports": {
+    ".": "./lib/vm/index.js"
+  },
   "bin": {
     "scope-transform.js": "bin/transform.js",
     "scope-vm.js": "bin/vm.js"
   },
   "scripts": {
-    "start": "open www/startup.html && DEBUG=express:* node ./bin/dev-server.js",
-    "pretest": "npm run-script lint",
-    "test": "mocha --recursive tests -r should -r sinon || echo ''",
-    "coverage": "istanbul cover --report html _mocha -- --recursive -R spec -r should tests && open coverage/index.html",
-    "loc": "sloc lib/",
-    "docs": "jsdoc -r lib/ -d docs && open docs/index.html",
-    "lint": "jshint -c jshint.json lib --reporter=./node_modules/jshint-full-path/index.js",
+    "start": "node ./bin/dev-server.js",
+    "test": "node --test tests/plugins/*/types/*.test.js tests/integration/*.test.js",
+    "check": "node --check lib/vm/index.js && node --check lib/compiler/index.js && node --check lib/build/config-builder.js && node --check bin/transform.js && node --check bin/build-example.js && node --check bin/build-web.js && node --check bin/dev-server.js",
+    "build:example": "node ./bin/build-example.js",
+    "build:web": "node ./bin/build-web.js example && ./bin/dev-server.js --open",
+    "build": "node ./bin/build-web.js example",
     "complexity": "rm -rf complexity.* && find lib/ | grep .js | xargs ./node_modules/.bin/cr --format plain --output complexity.txt",
-    "watch": "watchify -v -d client/app.js -o build/system.js",
-    "build": "browserify -d client/app.js build/config.js build/plugins.js lib/vm/index.js -o build/system.js"
+    "loc": "sloc lib/ client/",
+    "docs": "jsdoc -r lib/ -r client/ -d docs && open docs/index.html"
   },
   "author": "Jacob Mather",
   "license": "MIT",
@@ -25,46 +27,28 @@
     "type": "git",
     "url": "git+https://github.com/jmather/scope.js.git"
   },
-  "browserify": {
-    "transform": [
-      "reactify"
-    ]
-  },
   "dependencies": {
-    "amdefine": "^1.0.0",
-    "bootstrap": "^3.4.1",
-    "cli": "^1.0.1",
-    "complexity-report": "^2.0.0-alpha",
-    "create-react-class": "^15.6.3",
-    "dot": "^1.1.3",
-    "flux": "^2.0.3",
-    "immutable": "^3.7.4",
-    "jquery": "^3.5.1",
+    "create-react-class": "^15.7.0",
+    "flux": "^4.0.4",
     "keymirror": "^0.1.1",
-    "object-assign": "^3.0.0",
+    "object-assign": "^4.1.1",
     "pretty-data": "^0.40.0",
-    "react": "^16.13.1",
-    "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.13.1",
-    "underscore": "^1.11.0",
-    "node-fetch": ">=2.6.1"
+    "react": "16.13.1",
+    "react-bootstrap": "0.32.4",
+    "react-dom": "16.13.1",
+    "underscore": "^1.13.8"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "browserify": "^16.2.2",
-    "envify": "^3.0.0",
-    "express": "^4.17.1",
-    "jsdoc": "^3.6.6",
-    "jshint": "^2.12.0",
-    "jshint-full-path": "^1.1.1",
-    "mocha": "^8.1.3",
-    "nyc": "^15.1.0",
-    "reactify": "^0.15.2",
-    "serve-static": "^1.14.1",
-    "should": "^7.0.2",
-    "sinon": "^1.15.4",
-    "sloc": "^0.1.9",
-    "uglify-js": "^3.10.4",
-    "watchify": "^3.11.1"
+    "bootstrap": "3.4.1",
+    "cli": "^1.0.1",
+    "complexity-report": "^2.0.0-alpha",
+    "esbuild": "^0.28.2",
+    "esbuild-plugins-node-modules-polyfill": "^1.8.3",
+    "jsdoc": "^4.0.5",
+    "open": "^11.0.0",
+    "sloc": "^0.1.9"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

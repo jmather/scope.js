@@ -1,1 +1,0 @@
-module.exports = {"counter.min0max10":1};

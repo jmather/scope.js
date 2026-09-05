@@ -71,7 +71,6 @@ var TypeEditor = React.createClass({
                 <div className="col-xs-4">
                     <div className="panel panel-default">
                         <div className="panel-heading">
-
                             <div className="btn-group" role="group">
                                 <div className="btn-group">
                                     <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,73 +1,67 @@
-describe('CounterType', function() {
-    var DepBuilder = require.main.require('test-data/bootstrap/builder');
-    var plugins = DepBuilder.loadPlugins(['counter']);
-    var data;
+'use strict';
 
-    beforeEach(function() {
-        data = DepBuilder.byFileName(__filename, plugins);
-    });
+var describe = require('node:test').describe;
+var it = require('node:test').it;
+var beforeEach = require('node:test').beforeEach;
+var assert = require('node:assert/strict');
+var DepBuilder = require('../../../../lib/build/fixture-builder');
+var plugins = DepBuilder.loadPlugins(['counter']);
+var data;
 
-    it('Instantiates correctly', function() {
-        var counter = data.valueManager.get('incrementCounter');
-    });
+beforeEach(function() {
+    data = DepBuilder.byFileName(__filename, plugins);
+});
 
-    describe('increment', function() {
-        var counter;
-
-        beforeEach(function() {
-            counter = data.valueManager.get('incrementCounter');
+describe('Scope.js', function () {
+    describe('CounterType', function () {
+        it('instantiates correctly', function () {
+            assert.ok(data.valueManager.get('incrementCounter'));
         });
 
-        afterEach(function() {
-            counter = null;
+        describe('increment', function () {
+            it('allows valid increments', function () {
+                var counter = data.valueManager.get('incrementCounter');
+                for (var index = 0; index < 10; index += 1) {
+                    counter.increment();
+                }
+            });
+
+            it('throws on an invalid increment', function () {
+                var counter = data.valueManager.get('incrementCounter');
+                assert.throws(function () {
+                    counter.increment(400);
+                });
+            });
+
+            it('stores increments', function () {
+                var counter = data.valueManager.get('incrementCounter');
+                assert.equal(counter.getValue(), 0);
+                counter.increment(1);
+                assert.equal(counter.getValue(), 1);
+            });
         });
 
-        it('allows incrmenting when it should', function() {
-            for (var i = 0; i < 10; i++) {
-                counter.increment();
-            }
-        });
+        describe('decrement', function () {
+            it('allows valid decrements', function () {
+                var counter = data.valueManager.get('decrementCounter');
+                for (var index = 0; index < 10; index += 1) {
+                    counter.decrement();
+                }
+            });
 
-        it('throws an exception on invalid increment', function() {
-            (function() {
-                counter.increment(400);
-            }).should.throw();
-        });
+            it('throws on an invalid decrement', function () {
+                var counter = data.valueManager.get('decrementCounter');
+                assert.throws(function () {
+                    counter.decrement(11);
+                });
+            });
 
-        it('stores the increments correctly', function() {
-            counter.getValue().should.equal(0);
-            counter.increment(1);
-            counter.getValue().should.equal(1);
-        });
-    });
-
-    describe('decrement', function() {
-        var counter;
-
-        beforeEach(function() {
-            counter = data.valueManager.get('decrementCounter');
-        });
-
-        afterEach(function() {
-            counter = null;
-        });
-
-        it('allows decrementing when it should', function() {
-            for (var i = 0; i < 10; i++) {
-                counter.decrement();
-            }
-        });
-
-        it('throws an exception on invalid decrement', function() {
-            (function() {
-                counter.decrement(11);
-            }).should.throw();
-        });
-
-        it('stores the decrements correctly', function() {
-            counter.getValue().should.equal(10);
-            counter.decrement(1);
-            counter.getValue().should.equal(9);
+            it('stores decrements', function () {
+                var counter = data.valueManager.get('decrementCounter');
+                assert.equal(counter.getValue(), 10);
+                counter.decrement(1);
+                assert.equal(counter.getValue(), 9);
+            });
         });
     });
 });

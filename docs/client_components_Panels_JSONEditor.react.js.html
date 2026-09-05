@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/components/Panels/JSONEditor.react.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/components/Panels/JSONEditor.react.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var React = require('react');
+
+var JSONEditor = React.createClass({
+    getInitialState: function() {
+        var rendered = require('pretty-data').pd.json(this.props.content);
+
+        return {
+            value: (rendered === null) ? this.props.content : rendered
+        };
+    },
+
+    handleChange: function(event) {
+        this.setState({value: event.target.value});
+    },
+
+    doSave: function(e) {
+        this.props.doSave(JSON.parse(this.state.value));
+    },
+
+    /**
+     * @return {object}
+     */
+    render: function() {
+        if (this.props.content === undefined) {
+            return (&lt;div>{this.props.defaultText || "Select a value to edit."}&lt;/div>);
+        }
+
+        var jsonInvalid = false;
+        try {
+            JSON.parse(this.state.value);
+            jsonInvalid = false;
+        } catch (exc) {
+            jsonInvalid = true;
+        }
+
+        var value = this.state.value;
+
+        return (
+            &lt;div className="panel panel-default">
+                &lt;div className="panel-heading">
+                    Edit {this.props.title}
+                &lt;/div>
+                &lt;div className="panel-body">
+                    &lt;textarea rows={this.props.rows || 10 } onChange={this.handleChange} value={value} className="form-control">&lt;/textarea>
+                &lt;/div>
+                &lt;div className="panel-footer text-right">
+                    &lt;button disabled={jsonInvalid} className="btn btn-primary" onClick={this.doSave}>Save&lt;/button>
+                &lt;/div>
+            &lt;/div>
+        );
+    }
+
+});
+
+module.exports = JSONEditor;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-DepBuilder.html">DepBuilder</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li><li><a href="module-VMStore.html">VMStore</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="DataTransformer.html">DataTransformer</a></li><li><a href="DataType.html">DataType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="ExecutorContext.html">ExecutorContext</a></li><li><a href="ExpressionExecutor.html">ExpressionExecutor</a></li><li><a href="ExpressionTransformer.html">ExpressionTransformer</a></li><li><a href="ExpressionValueNameResolver.html">ExpressionValueNameResolver</a></li><li><a href="GridCollectionTransformer.html">GridCollectionTransformer</a></li><li><a href="GridCollectionType.html">GridCollectionType</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="Question.html">Question</a></li><li><a href="QuestionError.html">QuestionError</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="ScopeValueNameResolver.html">ScopeValueNameResolver</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CorePlugin">CorePlugin</a></li><li><a href="global.html#CounterPlugin">CounterPlugin</a></li><li><a href="global.html#EntityPlugin">EntityPlugin</a></li><li><a href="global.html#GridPlugin">GridPlugin</a></li><li><a href="global.html#ScopePlugin">ScopePlugin</a></li><li><a href="global.html#ScopeView">ScopeView</a></li><li><a href="global.html#_onChange">_onChange</a></li><li><a href="global.html#_onInit">_onInit</a></li><li><a href="global.html#compile">compile</a></li><li><a href="global.html#getArgumentsForMethod">getArgumentsForMethod</a></li><li><a href="global.html#isAboveMax">isAboveMax</a></li><li><a href="global.html#isAvailable">isAvailable</a></li><li><a href="global.html#isBelowMin">isBelowMin</a></li><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li><li><a href="global.html#processChoice">processChoice</a></li><li><a href="global.html#processDeck">processDeck</a></li><li><a href="global.html#processExpression">processExpression</a></li><li><a href="global.html#processGrid">processGrid</a></li><li><a href="global.html#processGridCollection">processGridCollection</a></li><li><a href="global.html#processInstruction">processInstruction</a></li><li><a href="global.html#processScope">processScope</a></li><li><a href="global.html#processWhen">processWhen</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#resolveInstructionArguments">resolveInstructionArguments</a></li><li><a href="global.html#setValue">setValue</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Sep 05 2026 17:04:19 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

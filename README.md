@@ -1,102 +1,125 @@
 # Scope.js
 
+
+## Modern quick start
+
+The VM/compiler and example generators run on current Node without third-party packages:
+
+### In the CLI
+
+See a full flow:
+
+```shell
+npm run build:example -- example
+node ./bin/vm.js counter.scope increment -v
+node ./bin/vm.js counter.scope increment -v
+node ./bin/vm.js counter.scope increment -v
+node ./bin/vm.js counter.scope decrement -v
+```
+
+Example output:
+
+```shell
+$ npm run build:example -- example
+
+> scope.js@1.0.3 build:example
+> node ./bin/build-example.js example
+
+Built example example into examples/example/output and build/
+$ node ./bin/vm.js counter.scope increment -v
+Loaded state
+Changes to the data
+  counter.min0max10: null -> 1
+$ node ./bin/vm.js counter.scope increment -v
+Loaded state
+  counter.min0max10: 1
+Changes to the data
+  counter.min0max10: 1 -> 2
+$ node ./bin/vm.js counter.scope increment -v
+Loaded state
+  counter.min0max10: 2
+Changes to the data
+  counter.min0max10: 2 -> 3
+$ node ./bin/vm.js counter.scope decrement -v
+Loaded state
+  counter.min0max10: 3
+Changes to the data
+  counter.min0max10: 3 -> 2
+```
+
+Example command:
+
+```shell
+$ node ./bin/build-example.js cards-war
+Built example cards-war into examples/cards-war/output and build/
+```
+
+
+To run the browser UI, install the dependencies and select an example:
+
+```bash
+npm install
+npm run build:web -- example
+```
+
+The browser build uses `esbuild` directly. Bootstrap JavaScript is not used; React-Bootstrap supplies the component behavior.
+
+Generated example artifacts are written to both `examples/<name>/output/` and `build/`. Plugin loaders now contain portable relative imports.
+
 Explanation to come.
 
 # Usage
 
-## In Browser
+## Browser UI
 
-This will install the required deps, compile the necessary files, and open your browser to localhost:3000
+Serve the checked-in historical bundle without installing anything:
 
-    npm install
-    node ./bin/build-example.js test
-    npm run build
-    npm start
+```bash
+npm start
+```
 
-## In CLI
+To compile an example and rebuild the UI from source:
 
-See a full flow:
+```bash
+npm install
+npm run build:web -- example       # cards-war, test, or tictactoe
+npm start
+```
 
-    npm install
-    node ./bin/build-example.js test
-    node ./bin/vm.js counter.scope increment -v
-    node ./bin/vm.js counter.scope increment -v
-    node ./bin/vm.js counter.scope increment -v
-    node ./bin/vm.js counter.scope decrement -v
+Example generation can be run independently of the browser dependencies:
 
-Example output:
+```bash
+npm run build:example -- tictactoe
+```
 
-    $ node ./bin/build-example.js test
-    executing: /Users/jmather/code/scope.js/bin/transform.js -p -P /Users/jmather/code/scope.js/bin/../examples/test/plugins /Users/jmather/code/scope.js/bin/../examples/test/config /Users/jmather/code/scope.js/bin/../examples/test/output
-    Wrote data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.json
-    Wrote js loadable data to /Users/jmather/code/scope.js/bin/../examples/test/output/config.js
-    Building plugins...
-    plugins.js written
+## VM CLI
 
+The VM will report back options:
 
-    $ node ./bin/vm.js counter.scope increment -v
-    Loaded state
-    Changes to the data
-      counter.min0max10: null -> 1
-    $ node ./bin/vm.js counter.scope increment -v
+```shell
+$ node ./bin/build-example.js example
+// snip...
+$ node ./bin/vm.js
+Not enough arguments.
+usage: vm.js <scope> <choice>
+Scopes:  counter.scope, entity.scope, grid.scope
+$ node ./bin/vm.js entity.scope      
+The command you executed requires more information.
+{"name":"choice","type":"pick-one","choices":["createThing"]}
+$ node ./bin/vm.js entity.scope createThing -v
+Loaded state
+The command you executed requires more information.
+{"name":"kind","type":"pick-one","choices":["a","b"]}
+$ node ./bin/vm.js entity.scope createThing '{"kind":"a"}' -v
+Loaded state
+Changes to the data
+  entity.thing.lastId: null -> 1
+  entity.thing.size: null -> 1
+  entity.thing: null -> {"1":{"entity":"entity.thing","kind":"a"}}
+  entity.things: null -> [{"value":"entity.thing","id":1}]
+```
 
-    Loaded state
-      counter.min0max10: 1
-    Changes to the data
-      counter.min0max10: 1 -> 2
-
-    $ node ./bin/vm.js counter.scope increment -v
-    Loaded state
-      counter.min0max10: 2
-    Changes to the data
-      counter.min0max10: 2 -> 3
-
-    $ node ./bin/vm.js counter.scope decrement -v
-    Loaded state
-      counter.min0max10: 3
-    Changes to the data
-      counter.min0max10: 3 -> 2
-
-
-Example command:
-
-    node ./bin/build-example.js cards-war
-
-    node ./bin/transform.js examples/cards-war/config examples/cards-war/output -p
-
-## Usage Details
-
-The VM will now report back more options:
-
-    $ node ./bin/build-example.js test
-    // snip...
-
-    $ node ./bin/vm.js
-      Not enough arguments.
-      usage: vm.js <scope> <choice>
-      Scopes:  counter.scope, entity.scope, grid.scope
-
-    $ node ./bin/vm.js entity.scope
-      The command you executed requires more information.
-      {"name":"choice","type":"pick-one","choices":["doSomething"]}
-
-    $ node ./bin/vm.js entity.scope doSomething -v
-      Loaded state
-      The command you executed requires more information.
-      {"name":"thing","type":"pick-one","choices":["a","b"]}
-
-    $ node ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
-      Loaded state
-      The command you executed requires more information.
-      {"name":"thing","type":"pick-one","choices":["a","b"]}
-
-    $ node ./bin/vm.js entity.scope doSomething '{"thing": "a"}' -v
-      Loaded state
-      Changes to the data
-        entity.thing.lastId: null -> 1
-        entity.thing.size: null -> 1
-        entity.thing: null -> {"1":{"entity":"entity.thing","thing":"a"}}
-        entity.things: null -> [{"value":"entity.thing","id":1}]
+This same behavior then becomes how the interface is discoverable within the client web UI as well.
 
 # QA Metrics
 
@@ -106,25 +129,13 @@ Because I'm a bit of a nerd about knowing the state of things:
 
     npm run loc
 
-## Linting
-
-    npm run lint
-
 ## Code Complexity
 
     npm run complexity
 
-or
-
-    npm run complexity-simple
-
 ## Tests
 
     npm test
-
-## Test Coverage
-
-    npm run coverage
 
 ## Docs
 

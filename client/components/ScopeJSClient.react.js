@@ -36,7 +36,6 @@ var ScopeJSClient = React.createClass({
         var ContentHeader = require('./Header.react');
 
         return (
-
             <DefaultTheme.Wrapper className="container">
                 <DefaultTheme.Header brand="Scope.js">
                     <ContentHeader changeView={this.changeView} views={this.state.config.views} view={this.state.view} />
@@ -50,7 +49,6 @@ var ScopeJSClient = React.createClass({
 
     renderWaiting: function() {
         return (
-
             <DefaultTheme.Wrapper className="container">
                 <DefaultTheme.Header brand="Scope.js" />
                 <DefaultTheme.Body>
@@ -79,7 +77,6 @@ var ScopeJSClient = React.createClass({
             view: this.state.view || config.defaultView
         });
     }
-
 });
 
 module.exports = ScopeJSClient;

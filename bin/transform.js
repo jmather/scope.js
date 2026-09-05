@@ -1,168 +1,71 @@
 #!/usr/bin/env node
-var fs = require('fs');
-var cli = require('cli');
-var _ = require('underscore');
-var $ = require('jquery');
+'use strict';
 
-cli.parse({
-    pretty: ['p', 'Output pretty', 'bool', false],
-    plugins: ['P', 'Additional plugin paths (comma separated)', 'string', ''],
-    verbose: ['v', 'Verbose output']
-});
+var path = require('path');
+var ConfigBuilder = require('../lib/build/config-builder');
 
-cli.main(function(args, options) {
-    var Transformer = require('../lib/compiler/index');
+function parseArguments(argv) {
+    var options = { pretty: false, pluginPaths: [], positional: [] };
 
-    var basedir = __dirname + '/..';
-    var pluginsDir = basedir + '/lib/plugins';
-
-    var pluginPaths = [__dirname + '/../lib/vm/plugins', pluginsDir];
-
-    if (options.plugins !== '') {
-        var extraPlugins = options.plugins.split(' ');
-        _.each(extraPlugins, function(extraPlugin) {
-            if (fs.existsSync(extraPlugin) === false) {
-                return;
+    for (var i = 0; i < argv.length; i++) {
+        var argument = argv[i];
+        if (argument === '-p' || argument === '--pretty') {
+            options.pretty = true;
+        } else if (argument === '-P' || argument === '--plugins') {
+            i++;
+            if (i >= argv.length) {
+                throw new Error(argument + ' requires a path');
             }
-
-            pluginPaths.push(fs.realpathSync(extraPlugin));
-        });
+            options.pluginPaths = options.pluginPaths.concat(argv[i].split(/[,:]/).filter(Boolean));
+        } else if (argument === '-h' || argument === '--help') {
+            options.help = true;
+        } else if (argument === '-v' || argument === '--verbose') {
+            options.verbose = true;
+        } else {
+            options.positional.push(argument);
+        }
     }
 
-    var transformerModules = getTrasformerModules(pluginPaths);
-
-    var transformers = _.map(transformerModules, function(TransformerClass) {
-        return new TransformerClass({});
-    });
-
-    var transformer = new Transformer(transformers, ['init', 'copy', 'resolve', 'validate', 'metadata']);
-
-    if (args.length < 2) {
-        console.error('Cannot proceed because we are missing arguments.');
-        printHelp();
-        process.exit(1);
-    }
-
-    options.configPath = args[0];
-    options.outputPath = args[1];
-
-    var data = Transformer.loadData([options.configPath]);
-
-    var compiledData = transformer.transform(data);
-
-    compiledData.plugins = getPlugins(pluginPaths);
-
-    var output = JSON.stringify(compiledData);
-
-    if (options.pretty) {
-        var pd = require('pretty-data').pd;
-        output = pd.json(compiledData);
-    }
-
-    if (options.outputPath) {
-        require('fs').writeFileSync(options.outputPath + '/config.json', output);
-        require('fs').writeFileSync(options.outputPath + '/config.js', 'module.exports = ' + output + ';');
-        console.log('Wrote data to ' + options.outputPath + '/config.json');
-        console.log('Wrote js loadable data to ' + options.outputPath + '/config.js');
-        console.log('Building plugins...');
-        var pluginIndexes = getPluginIndexes(pluginPaths);
-
-        var pluginDefers = [];
-        var loaderFile = 'module.exports = {##PLUGINS##};';
-        var loaderFilePlugins = [];
-
-        _.each(pluginIndexes, function(pluginIndex) {
-            var pieces = pluginIndex.split('/');
-            var name = pieces[pieces.length - 2];
-            loaderFilePlugins.push('"' + name + '": require("' + pluginIndex + '")');
-            pluginDefers.push(name);
-        });
-
-        fs.writeFileSync(options.outputPath + '/plugins.js', loaderFile.replace('##PLUGINS##', loaderFilePlugins.join(',')));
-        console.log('plugins.js written');
-    } else {
-        console.log(output);
-    }
-});
-
-/**
- *
- * @param {Array.<string>} paths
- */
-function getTrasformerModules(paths) {
-    var transformers = [];
-
-    _.each(paths, function(path) {
-        var dirFiles = fs.readdirSync(path);
-
-        _.each(dirFiles, function(file) {
-            var filePath =  path + '/' + file + '/transformation';
-
-            if (fs.existsSync(filePath + '.js')) {
-                transformers.push(require(filePath));
-            }
-
-            if (fs.existsSync(filePath + 's')) {
-                var dirPath = filePath + 's';
-
-                _.each(fs.readdirSync(dirPath), function(path) {
-                    var filePath = dirPath + '/' + path;
-
-                    if (fs.existsSync(filePath)) {
-                        transformers.push(require(filePath));
-                    }
-                });
-            }
-        });
-    });
-
-    return transformers;
-}
-
-/**
- *
- * @param {Array.<string>} paths
- */
-function getPlugins(paths) {
-    var plugins = [];
-
-    _.each(paths, function(path) {
-        var dirFiles = fs.readdirSync(path);
-
-        _.each(dirFiles, function(file) {
-            var filePath =  path + '/' + file + '/index';
-
-            if (fs.existsSync(filePath + '.js')) {
-                plugins.push('scope-plugin-' + file);
-            }
-        });
-    });
-
-    return plugins;
-}
-
-/**
- *
- * @param {Array.<string>} paths
- */
-function getPluginIndexes(paths) {
-    var plugins = [];
-
-    _.each(paths, function(path) {
-        var dirFiles = fs.readdirSync(path);
-
-        _.each(dirFiles, function(file) {
-            var filePath =  path + '/' + file + '/index';
-
-            if (fs.existsSync(filePath + '.js')) {
-                plugins.push(filePath + '.js');
-            }
-        });
-    });
-
-    return plugins;
+    return options;
 }
 
 function printHelp() {
-    console.log('usage: ' + process.argv[1] + ' [-h|--help] [options] <config path> <output path>');
+    console.log('usage: ' + process.argv[1] + ' [-p|--pretty] [-P|--plugins <path>] <config path> <output path>');
+}
+
+function main() {
+    var options = parseArguments(process.argv.slice(2));
+    if (options.help) {
+        printHelp();
+        return;
+    }
+    if (options.positional.length < 2) {
+        printHelp();
+        process.exitCode = 1;
+        return;
+    }
+
+    var projectRoot = path.resolve(__dirname, '..');
+    var pluginPaths = [
+        path.join(projectRoot, 'lib/vm/plugins'),
+        path.join(projectRoot, 'lib/plugins')
+    ].concat(options.pluginPaths.map(function(pluginPath) {
+        return path.resolve(pluginPath);
+    }));
+
+    var result = ConfigBuilder.compile({
+        configPath: path.resolve(options.positional[0]),
+        outputPath: path.resolve(options.positional[1]),
+        pluginPaths: pluginPaths,
+        pretty: options.pretty
+    });
+
+    console.log('Wrote config and ' + result.plugins.length + ' plugin registrations to ' + path.resolve(options.positional[1]));
+}
+
+try {
+    main();
+} catch (error) {
+    console.error(error.stack || error.message);
+    process.exitCode = 1;
 }

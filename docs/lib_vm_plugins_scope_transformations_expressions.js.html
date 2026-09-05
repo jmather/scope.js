@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/vm/plugins/scope/transformations/expressions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/vm/plugins/scope/transformations/expressions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var _ = require('../../../../internal/underscore');
+
+var ScopeDefinition = require('../definitions/scope');
+var ChoiceDefinition = require('../definitions/choice');
+var InstructionDefinition = require('../definitions/instruction');
+
+/**
+ *
+ * @param config
+ * @exports ExpressionTransformer
+ * @constructor
+ */
+function ExpressionTransformer(config) {
+    this.config = config;
+}
+
+/**
+ *
+ * @param {*} input
+ * @param {*} output
+ */
+ExpressionTransformer.prototype.init = function (input, output) {
+    output.expressionTemplates = {};
+};
+
+/**
+ *
+ * @param {*} input
+ * @param {*} output
+ */
+ExpressionTransformer.prototype.copy = function (input, output) {
+    _.each(input, function(instanceConfig, name) {
+        if (instanceConfig.type === 'expression') {
+            output.values[name] = instanceConfig;
+        }
+
+        if (instanceConfig.type === 'expression-template') {
+            output.expressionTemplates[name] = instanceConfig;
+        }
+    });
+};
+
+/**
+ *
+ * @param {*} input
+ * @param {*} output
+ */
+ExpressionTransformer.prototype.resolve = function (input, output) {
+    output.scopes = [];
+
+    _.each(output.values, function(config, name) {
+        if (config.type !== 'expression') {
+            return;
+        }
+
+        var resolver = new ExpressionValueNameResolver(name, output.values);
+
+        output.values[name] = processExpression(name, config, resolver, output.expressionTemplates);
+        output.scopes.push(name);
+    });
+};
+
+/**
+ *
+ * @param {string} expressionName
+ * @param {Object.&lt;string, *>} values
+ * @constructor
+ */
+function ExpressionValueNameResolver(expressionName, values) {
+    this.expressionName = expressionName;
+    this.values = values;
+}
+
+/**
+ *
+ * @param {string} name
+ * @param {string} value
+ * @returns {*}
+ */
+ExpressionValueNameResolver.prototype.resolve = function(name, value) {
+    // name should be value or somethingValue
+    if (name.match(/^(([a-zA-Z0-9]+V|v)alue|entity)$/) === false) {
+        return value;
+    }
+
+    var parentParts = this.expressionName.split('.').slice(0, -1);
+    var parentName = parentParts.length > 0 ? parentParts.join('.') + '.' : '';
+
+    if (this.values[parentName + value] !== undefined) {
+        return { value: parentName + value };
+    }
+
+    if (this.values[value] !== undefined) {
+        return { value: value };
+    }
+
+    return value;
+};
+
+/**
+ *
+ * @param {string} name
+ * @param {*} config
+ * @param {ExpressionValueNameResolver} resolver
+ * @param {Object.&lt;string, *>} templates
+ * @returns {*}
+ */
+function processExpression(name, config, resolver, templates) {
+
+    if (config.template) {
+        if (templates[config.template] === undefined) {
+            throw new Error('No expression template: ' + config.template);
+        }
+        config = _.defaults({}, config, templates[config.template]);
+    } else {
+        config = _.extend({}, config);
+    }
+
+    var pieces = config.expression.split(' ');
+    _.each(pieces, function(piece, index) {
+        var resolved = resolver.resolve('value', piece);
+        pieces[index] = (typeof resolved === "object") ? "context.getValue('" + resolved.value + "')" : piece;
+    });
+    config.expression = '{{= ' + pieces.join(' ') + ' }}';
+
+    return config;
+}
+
+module.exports = ExpressionTransformer;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CounterInstructions.html">CounterInstructions</a></li><li><a href="module-DepBuilder.html">DepBuilder</a></li><li><a href="module-EntityInstructions.html">EntityInstructions</a></li><li><a href="module-GridInstructions.html">GridInstructions</a></li><li><a href="module-ListInstructions.html">ListInstructions</a></li><li><a href="module-ScopeInstructions.html">ScopeInstructions</a></li><li><a href="module-VMStore.html">VMStore</a></li></ul><h3>Classes</h3><ul><li><a href="CardDeckTransformer.html">CardDeckTransformer</a></li><li><a href="CounterTransformer.html">CounterTransformer</a></li><li><a href="CounterType.html">CounterType</a></li><li><a href="DataTransformer.html">DataTransformer</a></li><li><a href="DataType.html">DataType</a></li><li><a href="EntityRepositoryTransformer.html">EntityRepositoryTransformer</a></li><li><a href="EntityRepositoryType.html">EntityRepositoryType</a></li><li><a href="EntityTransformer.html">EntityTransformer</a></li><li><a href="ExecutorContext.html">ExecutorContext</a></li><li><a href="ExpressionExecutor.html">ExpressionExecutor</a></li><li><a href="ExpressionTransformer.html">ExpressionTransformer</a></li><li><a href="ExpressionValueNameResolver.html">ExpressionValueNameResolver</a></li><li><a href="GridCollectionTransformer.html">GridCollectionTransformer</a></li><li><a href="GridCollectionType.html">GridCollectionType</a></li><li><a href="GridTransformer.html">GridTransformer</a></li><li><a href="GridType.html">GridType</a></li><li><a href="ListTransformer.html">ListTransformer</a></li><li><a href="ListType.html">ListType</a></li><li><a href="Question.html">Question</a></li><li><a href="QuestionError.html">QuestionError</a></li><li><a href="ScopeTransformer.html">ScopeTransformer</a></li><li><a href="ScopeType.html">ScopeType</a></li><li><a href="ScopeValueNameResolver.html">ScopeValueNameResolver</a></li><li><a href="Transformer.html">Transformer</a></li><li><a href="VM.html">VM</a></li><li><a href="VM.Config.html">Config</a></li><li><a href="VM.DataManager.html">DataManager</a></li><li><a href="VM.InputManager.html">InputManager</a></li><li><a href="VM.InstructionExecutor.html">InstructionExecutor</a></li><li><a href="VM.QuestionManager.html">QuestionManager</a></li><li><a href="VM.TimeManager.html">TimeManager</a></li><li><a href="VM.TypeManager.html">TypeManager</a></li><li><a href="VM.ValueManager.html">ValueManager</a></li><li><a href="VMTransformer.html">VMTransformer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CorePlugin">CorePlugin</a></li><li><a href="global.html#CounterPlugin">CounterPlugin</a></li><li><a href="global.html#EntityPlugin">EntityPlugin</a></li><li><a href="global.html#GridPlugin">GridPlugin</a></li><li><a href="global.html#ScopePlugin">ScopePlugin</a></li><li><a href="global.html#ScopeView">ScopeView</a></li><li><a href="global.html#_onChange">_onChange</a></li><li><a href="global.html#_onInit">_onInit</a></li><li><a href="global.html#compile">compile</a></li><li><a href="global.html#getArgumentsForMethod">getArgumentsForMethod</a></li><li><a href="global.html#isAboveMax">isAboveMax</a></li><li><a href="global.html#isAvailable">isAvailable</a></li><li><a href="global.html#isBelowMin">isBelowMin</a></li><li><a href="global.html#loadDataDirectory">loadDataDirectory</a></li><li><a href="global.html#processChoice">processChoice</a></li><li><a href="global.html#processDeck">processDeck</a></li><li><a href="global.html#processExpression">processExpression</a></li><li><a href="global.html#processGrid">processGrid</a></li><li><a href="global.html#processGridCollection">processGridCollection</a></li><li><a href="global.html#processInstruction">processInstruction</a></li><li><a href="global.html#processScope">processScope</a></li><li><a href="global.html#processWhen">processWhen</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#resolveInstructionArguments">resolveInstructionArguments</a></li><li><a href="global.html#setValue">setValue</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sat Sep 05 2026 17:04:19 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

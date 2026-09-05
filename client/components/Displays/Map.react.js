@@ -6,8 +6,8 @@ var Map = React.createClass({
     render: function() {
         var listItems = [];
 
-        _.each(this.props.value, function(data, index) {
-            listItems.push(<tr><td>{index}</td><td>{JSON.stringify(data)}</td></tr>);
+        _.each(this.props.value, (data, index) => {
+            listItems.push(<tr key={this.props.title + '_list_item_' + index}><td>{index}</td><td>{JSON.stringify(data)}</td></tr>);
         });
 
         return (

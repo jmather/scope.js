@@ -1,71 +1,67 @@
-describe('RepositoryType', function() {
-    var DepBuilder = require.main.require('test-data/bootstrap/builder');
-    var plugins = DepBuilder.loadPlugins(['entity', 'counter']);
-    var data;
+'use strict';
 
-    beforeEach(function() {
+var describe = require('node:test').describe;
+var it = require('node:test').it;
+var beforeEach = require('node:test').beforeEach;
+var assert = require('node:assert/strict');
+var DepBuilder = require('../../../../lib/build/fixture-builder');
+var plugins = DepBuilder.loadPlugins(['entity', 'counter']);
+var data;
+
+describe('Scope.js', function () {
+    beforeEach(function () {
         data = DepBuilder.byFileName(__filename, plugins);
     });
 
-    describe('constructor', function() {
-        it('Instantiates correctly', function() {
-            var collection = data.valueManager.get('entity.thing');
+    describe('RepositoryType', function () {
+        describe('constructor', function () {
+            it('instantiates correctly', function () {
+                assert.ok(data.valueManager.get('entity.thing'));
+            });
+
+            it('sets initial size to zero', function () {
+                assert.equal(data.valueManager.get('entity.thing.size').getValue(), 0);
+            });
+
+            it('sets last id to zero', function () {
+                assert.equal(data.valueManager.get('entity.thing.lastId').getValue(), 0);
+            });
         });
 
-        it('sets the initial size to zero', function() {
-            data.valueManager.get('entity.thing.size').getValue().should.equal(0);
+        describe('insert', function () {
+            it('returns a reference and updates counters', function () {
+                var repository = data.valueManager.get('entity.thing');
+                var ref = repository.insert({a: 'b'});
+
+                assert.deepEqual(ref, {value: 'entity.thing', id: 1});
+                assert.equal(data.valueManager.get('entity.thing.size').getValue(), 1);
+                assert.equal(data.valueManager.get('entity.thing.lastId').getValue(), 1);
+            });
         });
 
-        it('sets the last id to zero', function() {
-            data.valueManager.get('entity.thing.lastId').getValue().should.equal(0);
-        });
-    });
+        describe('removeByReference', function () {
+            it('removes the entity, decrements size, and retains lastId', function () {
+                var repository = data.valueManager.get('entity.thing');
+                var ref = repository.insert({a: 'b'});
+                repository.removeByReference(ref);
 
-    describe('insert', function() {
-        var repository, thing, ref;
-
-        beforeEach(function() {
-            repository = data.valueManager.get('entity.thing');
-            thing = {a: 'b'};
-            ref = repository.insert(thing);
+                assert.equal(repository.getValue()[ref.id], undefined);
+                assert.equal(data.valueManager.get('entity.thing.size').getValue(), 0);
+                assert.equal(data.valueManager.get('entity.thing.lastId').getValue(), 1);
+            });
         });
 
-        it('returns a reference on insertion', function() {
-            var expected = { value: 'entity.thing', id: 1 };
-            ref.should.eql(expected);
-        });
+        describe('removeByEntity', function () {
+            it('removes the entity, decrements size, and retains lastId', function () {
+                var repository = data.valueManager.get('entity.thing');
+                var entity = {a: 'b'};
+                var ref = repository.insert(entity);
+                repository.removeByEntity(entity);
 
-        it('increments the size by one', function() {
-            data.valueManager.get('entity.thing.size').getValue().should.equal(1);
-        });
-
-        it('sets the lastId to 1', function() {
-            data.valueManager.get('entity.thing.lastId').getValue().should.equal(1);
-        });
-    });
-
-    describe('removeByReference', function() {
-        var repository, thing, ref;
-
-        beforeEach(function() {
-            repository = data.valueManager.get('entity.thing');
-            thing = {a: 'b'};
-            ref = repository.insert(thing);
-            repository.removeByReference(ref);
-        });
-
-        it('removes the entity from the repo', function() {
-            var repoData = repository.getValue();
-
-            (typeof repoData[ref.id]).should.equal("undefined");
-        });
-
-        it('reduces size back to zero', function() {
-            data.valueManager.get('entity.thing.size').getValue().should.equal(0);
-        });
-
-        it('does not change lastId', function() {
-            data.valueManager.get('entity.thing.lastId').getValue().should.equal(1);
+                assert.equal(repository.getValue()[ref.id], undefined);
+                assert.equal(data.valueManager.get('entity.thing.size').getValue(), 0);
+                assert.equal(data.valueManager.get('entity.thing.lastId').getValue(), 1);
+            });
         });
     });
 });

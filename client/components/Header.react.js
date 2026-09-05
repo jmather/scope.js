@@ -19,11 +19,13 @@ var Header = React.createClass({
         }.bind(this));
 
         return (
-            <div id="navbar" className="navbar-collapse collapse">
-                <ul className="nav navbar-nav">
-                    {links}
-                </ul>
-            </div>
+            <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <div id="navbar" className="navbar-collapse collapse">
+                    <ul className="nav navbar-nav">
+                        {links}
+                    </ul>
+                </div>
+            </header>
         );
     }
 });
